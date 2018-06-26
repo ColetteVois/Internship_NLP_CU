@@ -5,6 +5,7 @@ library(tidytext)
 
 DEBUG = TRUE
 
+#---------------------------------MAIN-----------------------------------#
 #get the example
 original_books <- austen_books() %>%
   group_by(book) %>%
@@ -15,7 +16,9 @@ original_books <- austen_books() %>%
 
 if (DEBUG == TRUE) {original_books}
 
-##############################################TOKEN 1
+#------------------------------------WORD------------------------------------#
+
+#############################TOKEN 1
 
 tokenizer.word.1 <- function(my.texte) {
   tidy_books <- my.texte %>%
@@ -31,7 +34,7 @@ tokenizer.word.1 <- function(my.texte) {
 
 tokenizer.word.1(original_books)
 
-###########################################TOKEN 2
+###############################TOKEN 2
 
 tokenizer.word.2 <- function(my.texte) {
   tidy_books <- my.texte %>%
@@ -51,38 +54,71 @@ tokenizer.word.2(original_books)
 
 
 
-##################################################DRAFT
-
-
-
-
+###############################TOKEN 3
 library("tm")
 
-tokens <- Boost_tokenizer(austen_books()[1])
-#728907
+tokenizer.word.3 <- function(my.texte) {
+  tokens <- Boost_tokenizer(my.texte[1])
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- length(tokens)
+  return(nb.of.words)
+  #728907
+}
+
+tokenizer.word.3(original_books)
+
+
+###############################TOKEN 4
 
 library(tokenizers)
 
-token3 <- tokenize_words(paste0(austen_books()[1]), lowercase = TRUE)
-length(token3[1,1])
-#725056
+tokenizer.word.4 <- function(my.texte) {
+  tokens <- tokenize_words(paste0(my.texte[1]), lowercase = TRUE)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- dim(as.data.frame(tokens))
+  return(nb.of.words)
+  #725056
+}
 
+tokenizer.word.4(original_books)
+
+##############################TOKEN 5
+
+library(tokenizers)
+
+tokenizer.word.5 <- function(my.texte) {
+  tokens <- tokenize_tweets(paste0(my.texte[1]), lowercase = TRUE)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- dim(as.data.frame(tokens))
+  return(nb.of.words)
+  #717497
+}
+
+tokenizer.word.5(original_books)
+
+############################TOKEN 6
+
+
+#-----------------------------------------SENTENCE---------------------------#
+
+############################TOKEN 1
+
+library(tokenizers)
+
+tokenizer.sentence.1 <- function(my.texte) {
+  tokens <- tokenize_sentences(paste0(my.texte[1]), lowercase = TRUE)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- dim(as.data.frame(tokens))
+  return(nb.of.words)
+  #31396
+}
+
+tokenizer.sentence.1(original_books)
+
+#------------------------------------NOMALISATION----------------------------#
+#token by hand
+#lowercase, see options
+#leon
 #######################################################################
 
-nrcjoy <- get_sentiments("nrc") %>%
-  filter(sentiment == "joy")
-
-tidy_books %>%
-  filter(book == "Emma") %>%
-  semi_join(nrcjoy) %>%
-  count(word, sort = TRUE)
-
-library(tidyr)
-bing <- get_sentiments("bing")
-
-janeaustensentiment <- tidy_books %>%
-  inner_join(bing) %>%
-  count(book, index = line %/% 80, sentiment) %>%
-  spread(sentiment, n, fill = 0) %>%
-  mutate(sentiment = positive - negative)
 
