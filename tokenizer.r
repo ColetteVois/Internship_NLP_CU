@@ -20,10 +20,12 @@ if (DEBUG == TRUE) {original_books}
 
 #################################MAIN 2 TWITTER
 
-twitters <- read.csv("C:/Users/rubik/Desktop/Twitter-Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", fill = TRUE, header = FALSE)
+twitter <- read.csv("C:/Users/rubik/Desktop/Twitter-Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
 original_books <- as_data_frame(twitter)
+#original_books <- as.character(original_books1)
 
 if (DEBUG == TRUE) {original_books}
+
 
 #------------------------------------WORD------------------------------------#
 
@@ -115,7 +117,7 @@ library(tokenizers)
 tokenizer.word.4 <- function(my.texte) {
   tokens <- tokenize_words(paste0(my.texte[1]), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
-  nb.of.words <- dim(as.data.frame(tokens))
+  nb.of.words <- dim(as.data.frame(tokens))[1]
   return(nb.of.words)
     #725056
 }
@@ -129,7 +131,7 @@ library(tokenizers)
 tokenizer.word.5 <- function(my.texte) {
   tokens <- tokenize_tweets(paste0(my.texte[1]), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
-  nb.of.words <- dim(as.data.frame(tokens))
+  nb.of.words <- dim(as.data.frame(tokens))[1]
   return(nb.of.words)
     #717497
 }
@@ -210,7 +212,7 @@ tokenizer.sentence.1 <- function(my.texte) {
   tokens <- tokenize_sentences(paste0(my.texte[1]), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
   nb.of.words <- dim(as.data.frame(tokens))
-  return(nb.of.words)
+  return(nb.of.words)[1]
   #31396
 }
 
