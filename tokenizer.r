@@ -20,7 +20,7 @@ if (DEBUG == TRUE) {original_books}
 
 #################################MAIN 2 TWITTER
 
-twitter <- read.csv("C:/Users/rubik/Desktop/Twitter-Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
+twitter <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/Twitter-Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
 original_books <- as_data_frame(twitter)
 #original_books <- as.character(original_books1)
 
@@ -28,10 +28,10 @@ if (DEBUG == TRUE) {original_books}
 
 #################################MAIN 3 ARTICLE SCIENTIFIQUE
 
-article1 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11532192.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
-article2 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11597317.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
-article3 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11897010.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
-article4 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/12079497.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article1 <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/11532192.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article2 <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/11597317.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article3 <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/11897010.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article4 <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/12079497.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
 
 article <- merge(article1,article2,all=TRUE)
 article <- merge(article,article3,all=TRUE)
@@ -47,7 +47,7 @@ if (DEBUG == TRUE) {original_books}
 #############################TOKEN 1
 
 tokenizer.word.1 <- function(my.texte) {
-  tidy_books <- original_books %>%
+  tidy_books <- my.texte %>%
     unnest_tokens(word, text)
   if (DEBUG == TRUE) {tidy_books}
   tidy_books_count = tidy_books %>%
@@ -260,7 +260,24 @@ convert_text_to_sentences <- function(text, lang = "en") {
 
 convert_text_to_sentences(original_books)
 
-#a la main
+#########################TOKEN 3
+
+library("quanteda")
+
+tokenizer.sentence.3 <- function(my.texte) {
+  token <- unlist(my.texte, recursive=FALSE)
+  sentence <- tokens(token, what = "sentence", remove_numbers = FALSE, remove_punct = FALSE,
+                     remove_symbols = FALSE, remove_separators = TRUE,
+                     remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
+                     ngrams = 1L, skip = 0L, concatenator = "_",
+                     verbose = quanteda_options("verbose"), include_docvars = TRUE)
+  nb.of.words <-   length(sentence)
+  return(nb.of.words)
+  #31396
+}
+
+tokenizer.sentence.3(original_books[1]) #pour austen
+#pour article
 
 #------------------------------------NOMALIZATION----------------------------#
 
@@ -269,7 +286,9 @@ convert_text_to_sentences(original_books)
 library(tokenizers)
 
 normalize.1 <- function(my.texte) {
-  tokens <- tokenize_word_stems(paste0(my.texte[1]))
+  tokens1 <- tokenize_word_stems(paste0(my.texte[1]))
+  tokens2 <- unlist(tokens1, recursive=FALSE)
+  tokens <- unique(tokens2)
   if (DEBUG == TRUE) {tokens} 
   nb.of.words <- dim(as.data.frame(tokens))
   return(nb.of.words[1])
@@ -328,9 +347,19 @@ normalize.2(original_books)
 
 #################################NORMALIZE 3
 library("corpus")
+tweet = TRUE
+#attention ici avec meme tokenization de base pour tweet
 
 normalize.3 <- function(my.texte) {
-  tokens1 <- text_tokens(my.texte[1], stemmer = "en")
+  if(tweet == TRUE)#TO DO a mieux faire
+  {
+    tokens0 <- my.texte %>%
+      unnest_tokens(text, text)
+    if (DEBUG == TRUE) {tokens0} 
+  } else {
+    tokens0 <- my.texte
+  }
+  tokens1 <- text_tokens(tokens0[1], stemmer = "en")
   tokens2 <- unlist(tokens1, recursive=FALSE)
   tokens <- unique(tokens2)
   if (DEBUG == TRUE) {tokens} 
@@ -339,12 +368,13 @@ normalize.3 <- function(my.texte) {
   #725056
 }
 
-normalize.3(original_books)
+normalize.3(original_books[1])
 
 
 #############################NORMALIZE 4
 
 library(hunspell)
+#attention ici avec meme tokenization de base pour tweet
 
 stem_hunspell <- function(my.texte) {
   # look up the term in the dictionary
@@ -361,7 +391,15 @@ stem_hunspell <- function(my.texte) {
 }
 
 normalize.4 <- function(my.texte) {
-  tokens1 <- text_tokens(original_books, stemmer = stem_hunspell)
+  if(tweet == TRUE)#TO DO a mieux faire
+  {
+    tokens0 <- my.texte %>%
+      unnest_tokens(text, text)
+    if (DEBUG == TRUE) {tokens0} 
+  } else {
+    tokens0 <- my.texte
+  }
+  tokens1 <- text_tokens(tokens0, stemmer = stem_hunspell)
   tokens2 <- unlist(tokens1, recursive=FALSE)
   tokens <- unique(tokens2)
   if (DEBUG == TRUE) {tokens} 
@@ -371,6 +409,53 @@ normalize.4 <- function(my.texte) {
 }
 
 normalize.4(original_books)
+
+###########################NORMALIZE 5
+
+#attention ici avec meme tokenization de base pour tweet
+
+
+# download the list
+url <- "http://www.lexiconista.com/Datasets/lemmatization-en.zip"
+tmp <- tempfile()
+download.file(url, tmp)
+
+# extract the contents
+con <- unz(tmp, "lemmatization-en.txt", encoding = "UTF-8")
+tab <- read.delim(con, header=FALSE, stringsAsFactors = FALSE)
+names(tab) <- c("stem", "term")
+
+head(tab)
+
+stem_list <- function(term) {
+  i <- match(term, tab$term)
+  if (is.na(i)) {
+    stem <- term
+  } else {
+    stem <- tab$stem[[i]]
+  }
+  stem
+}
+
+normalize.5 <- function(my.texte) {
+  if(tweet == TRUE)#TO DO a mieux faire
+  {
+    tokens0 <- my.texte %>%
+      unnest_tokens(text, text)
+    if (DEBUG == TRUE) {tokens0} 
+  } else {
+    tokens0 <- my.texte
+  }
+  tokens1 <- text_tokens(tokens0, stemmer = stem_list)
+  tokens2 <- unlist(tokens1, recursive=FALSE)
+  tokens <- unique(tokens2)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- length(tokens)
+  return(nb.of.words)
+  #725056
+}
+
+normalize.5(original_books)
 
 #----------------------------------STOP WORDS-------------------------------#
 
