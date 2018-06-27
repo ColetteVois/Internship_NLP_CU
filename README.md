@@ -4,7 +4,7 @@ Project: Build a modular architecture to support experimentation with distributi
 
 Domain: Computational Biology/Computational Linguistics
 
-Mentor: Hunter
+Mentor: Cohen
 
 Description: In the 1950s, linguists began proposing what are called “distributional” models of lexical semantics.  These models use a sort of spatial metaphor for meaning, in which we can describe words as having meanings that are “close to” or “distant from” the meanings of other words.  The meanings themselves consist of a representation of the words with which that word occurs.  In the absence of an efficient way to compute those representations, the field of semantics gravitated towards representations of meaning that are more symbolic and qualitative than they are quantitative.  With the advent of large electronic collections of text and of increased computer processing power, distributional models of lexical semantics have become popular again, and they are one of the most active areas of research in natural language processing today, particularly in a form known as “word embeddings.”
 
