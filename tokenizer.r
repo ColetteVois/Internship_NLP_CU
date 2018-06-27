@@ -346,20 +346,31 @@ normalize.3(original_books)
 
 library(hunspell)
 
-normalize.4 <- function(term) {
+stem_hunspell <- function(my.texte) {
   # look up the term in the dictionary
-  stems <- hunspell::hunspell_stem(original_books[1])[[1]]
-  
+  tokens <- unlist(my.texte, recursive=FALSE)
+  stems <- hunspell_stem(tokens)[[1]]
+  #print(stems)
   if (length(stems) == 0) { # if there are no stems, use the original term
-    stem <- term
-  } else { # if there are multiple stems, use the last one
+    stem <- my.texte
+    } else { # if there are multiple stems, use the last one
     stem <- stems[[length(stems)]]
   }
   
   stem
 }
 
-normalize.4(original_books)#, stemmer = stem_hunspell)
+normalize.4 <- function(my.texte) {
+  tokens1 <- text_tokens(original_books, stemmer = stem_hunspell)
+  tokens2 <- unlist(tokens1, recursive=FALSE)
+  tokens <- unique(tokens2)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- length(tokens)
+  return(nb.of.words)
+  #725056
+}
+
+normalize.4(original_books)
 
 #----------------------------------STOP WORDS-------------------------------#
 
