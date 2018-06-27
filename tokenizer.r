@@ -33,6 +33,10 @@ article2 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11597317.txt
 article3 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11897010.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
 article4 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/12079497.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
 
+article <- merge(article1,article2,all=TRUE)
+article <- merge(article,article3,all=TRUE)
+article <- merge(article,article4,all=TRUE)
+
 original_books <- as_data_frame(article)
 
 if (DEBUG == TRUE) {original_books}
@@ -321,6 +325,41 @@ normalize.2 <- function(my.texte) {
 }
 
 normalize.2(original_books)
+
+#################################NORMALIZE 3
+library("corpus")
+
+normalize.3 <- function(my.texte) {
+  tokens1 <- text_tokens(my.texte[1], stemmer = "en")
+  tokens2 <- unlist(tokens1, recursive=FALSE)
+  tokens <- unique(tokens2)
+  if (DEBUG == TRUE) {tokens} 
+  nb.of.words <- length(tokens)
+  return(nb.of.words)
+  #725056
+}
+
+normalize.3(original_books)
+
+
+#############################NORMALIZE 4
+
+library(hunspell)
+
+normalize.4 <- function(term) {
+  # look up the term in the dictionary
+  stems <- hunspell::hunspell_stem(original_books[1])[[1]]
+  
+  if (length(stems) == 0) { # if there are no stems, use the original term
+    stem <- term
+  } else { # if there are multiple stems, use the last one
+    stem <- stems[[length(stems)]]
+  }
+  
+  stem
+}
+
+normalize.4(original_books)#, stemmer = stem_hunspell)
 
 #----------------------------------STOP WORDS-------------------------------#
 
