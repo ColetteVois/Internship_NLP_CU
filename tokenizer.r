@@ -26,6 +26,17 @@ original_books <- as_data_frame(twitter)
 
 if (DEBUG == TRUE) {original_books}
 
+#################################MAIN 3 ARTICLE SCIENTIFIQUE
+
+article1 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11532192.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article2 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11597317.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article3 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/11897010.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+article4 <- read.csv("C:/Users/rubik/Desktop/craft-2.0/articles/txt/12079497.txt", sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)
+
+original_books <- as_data_frame(article)
+
+if (DEBUG == TRUE) {original_books}
+
 
 #------------------------------------WORD------------------------------------#
 
@@ -211,8 +222,8 @@ library(tokenizers)
 tokenizer.sentence.1 <- function(my.texte) {
   tokens <- tokenize_sentences(paste0(my.texte[1]), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
-  nb.of.words <- dim(as.data.frame(tokens))
-  return(nb.of.words)[1]
+  nb.of.words <- dim(as.data.frame(tokens))[1]
+  return(nb.of.words)
   #31396
 }
 
