@@ -5,10 +5,6 @@ library(tidytext)
 
 DEBUG = TRUE
 
-#---------------------------------MAIN-----------------------------------#
-
-#################################MAIN 1 AUSTEN
-
 load.data.1 <- function() {
   original_books <- austen_books() %>%
     group_by(book) %>%
@@ -16,7 +12,8 @@ load.data.1 <- function() {
            chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                                    ignore_case = TRUE)))) %>%
     ungroup()
-  
-  if (DEBUG == TRUE) {original_books}
-  return(original_books)
+  return(original_books[1])
 }
+
+original_books <- load.data.1()
+if (DEBUG == TRUE) {print(original_books)}
