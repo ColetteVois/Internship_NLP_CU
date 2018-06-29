@@ -10,6 +10,7 @@ load.data.3 <- function() {
   myfiles <- myfiles1 %>% unlist %>% unlist(recursive=FALSE)
   
   original_books <- as_data_frame(myfiles)
+  colnames(original_books) <- "text"
 
   if (DEBUG == TRUE) {print(original_books)}
   return(original_books)
