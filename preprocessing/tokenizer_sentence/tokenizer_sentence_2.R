@@ -20,7 +20,7 @@ tokenizer.sentence.2 <- function(text, lang = "en") {
   print(nb.of.words)
   
   # return sentences
-  return(nb.of.words)
+  return(c(nb.of.words))
   #30844
 }
 
