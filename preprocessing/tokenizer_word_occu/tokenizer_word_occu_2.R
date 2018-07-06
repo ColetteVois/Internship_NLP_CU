@@ -38,9 +38,9 @@ tokenizer.word.2 <- function(my.texte) {
   v <- sort(rowSums(m),decreasing=TRUE)
   d <- data.frame(word = names(v),freq=v)
   
-  nb.of.words <- sum(d[2])
-  nb.of.types <- dim(d[2])[1]
-  return(nb.of.words)#c(nb.of.words, nb.of.types))
+  #nb.of.words <- sum(d[2])
+  #nb.of.types <- dim(d[2])[1]
+  return(as_tibble(d))#nb.of.words)#c(nb.of.words, nb.of.types))
   #562815  13679
   #557777  18954
 }

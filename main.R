@@ -3,7 +3,7 @@
 #write your path to go to your file
 my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU"
 #choose which data you want to load
-choose_load_data <- 3
+choose_load_data <- 1
 DEBUG = TRUE
 
 ################################### LOAD DATA ###########################################
@@ -30,6 +30,7 @@ for (i in 1:n.tokenizer.sentence){
 
 if (DEBUG == TRUE) {print(nb.of.sentence)}
 
+#download boxplot image
 jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Sentence_data_%d.jpg',choose_load_data),sep =""))
 boxplot(nb.of.sentence, main = "Sentence", asp = 1)
 dev.off()
@@ -39,20 +40,33 @@ dev.off()
 n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
 
 nb.of.word.occu <- c()
+nb.of.word.type <- c()
 
 for (i in 1:n.tokenizer.word.occu){
-  
+
   lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", i), sep="")
   source(lien)
   tokenizer.word.i <- sprintf("tokenizer.word.%d(original_books)", i)
   print(tokenizer.word.i)
-  nb.of.word.occu[i] <- eval(parse(text=tokenizer.word.i))
+  token_word <- eval(parse(text=tokenizer.word.i))
+  nb.of.word.occu[i]  <- sum(token_word[2])
+  nb.of.word.type[i]  <- dim(token_word[2])[1]
   
 }
 if (DEBUG == TRUE) {print(nb.of.word.occu)}
+if (DEBUG == TRUE) {print(nb.of.word.type)}
 
-jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Word_data_%d.jpg',choose_load_data),sep =""))
+#download boxplot image
+jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Word_occu_data_%d.jpg',choose_load_data),sep =""))
 boxplot(nb.of.word.occu, main = "Word Occurence", asp = 1)
+dev.off()
+
+jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Word_type_data_%d.jpg',choose_load_data),sep =""))
+boxplot(nb.of.word.type, main = "Word Type", asp = 1)
+dev.off()
+
+jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/ratio_data_%d.jpg',choose_load_data),sep =""))
+boxplot(nb.of.word.occu/nb.of.word.type, main = "Ratio", asp = 1)
 dev.off()
 
 ################################# NORMALIZATION ###################################
@@ -72,6 +86,7 @@ for (i in 1:n.normalization){
 }
 if (DEBUG == TRUE) {print(nb.of.normalization)}
 
+#download boxplot image
 jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Normalization_data_%d.jpg',choose_load_data),sep =""))
 boxplot(nb.of.normalization, main = "Normalization", asp = 1)
 dev.off()

@@ -76,7 +76,7 @@ Clean_Text_Block <- function(text){
 }
 
 tokenizer.word.6 <- function(my.texte) {
-  clean_speech <- Clean_Text_Block(my.texte)
+  clean_speech <- Clean_Text_Block(original_books)
   str(clean_speech)
   #729324-13731
 }
