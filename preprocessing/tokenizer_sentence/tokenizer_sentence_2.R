@@ -1,6 +1,7 @@
 library(tm)
 library(NLP)
 library(openNLP)
+library(tibble)
 
 
 tokenizer.sentence.2 <- function(text, lang = "en") {
@@ -8,19 +9,22 @@ tokenizer.sentence.2 <- function(text, lang = "en") {
   sentence_token_annotator <- Maxent_Sent_Token_Annotator(language = lang)
   
   # Convert text to class String from package NLP
-  text <- as.String(text)
+  text <- as.String(original_books)
   
   # Sentence boundaries in text
   sentence.boundaries <- annotate(text, sentence_token_annotator)
   
   # Extract sentences
   sentences <- text[sentence.boundaries]
+  names(sentences) <- "sentence"
+  sentences <- as_tibble(sentences)
+  names(sentences) <- "sentence"
   
-  nb.of.words <- length(sentences)
-  print(nb.of.words)
+  #nb.of.words <- length(sentences)
+  #print(nb.of.words)
   
   # return sentences
-  return(c(nb.of.words))
+  return(sentences)
   #30844
 }
 
