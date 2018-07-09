@@ -463,10 +463,9 @@ normalize.5(original_books)
 library(tidytext)
 
 stop.word.1 <- function(my.texte) {
-  tidy_books <- my.texte %>%
-    unnest_tokens(word, text)
-  cleaned_books <- tidy_books %>%
-    anti_join(get_stopwords())
+
+  cleaned_books <- my.texte[1] %>%
+    anti_join(get_stopwords(),by = "word")
   if (DEBUG == TRUE) {cleaned_books} 
   cleaned_books_count = cleaned_books %>%
     count(word, sort = TRUE)
