@@ -4,8 +4,6 @@ library(janeaustenr)
 library(stringr)
 library(tidytext)
 
-DEBUG = TRUE
-
 load.data.1 <- function() {
   original_book <- austen_books() %>%
     group_by(book) %>%
@@ -13,7 +11,7 @@ load.data.1 <- function() {
            chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                                    ignore_case = TRUE)))) %>%
     ungroup()
-  return(original_book[1])
+  return(original_book[,c(1,2,4)])
 }
 
 #original_books <- load.data.1()

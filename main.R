@@ -3,7 +3,7 @@
 #write your path to go to your file
 my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU"
 #choose which data you want to load
-choose_load_data <- 3
+choose_load_data <- 1
 DEBUG = TRUE
 
 ################################### LOAD DATA ###########################################
@@ -20,12 +20,11 @@ nb.of.sentence <- c()
 
 for (i in 1:n.tokenizer.sentence){
   
-  i=2
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
   source(lien)
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books)", i)
   if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
-  token_sentence <- eval(parse(text=tokenizer.sentence.i))[[1]][1]
+  token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
   nb.of.sentence[i] <- dim(token_sentence)[1]
     
 }

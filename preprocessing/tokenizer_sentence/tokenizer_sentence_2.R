@@ -9,7 +9,7 @@ tokenizer.sentence.2 <- function(text, lang = "en") {
   sentence_token_annotator <- Maxent_Sent_Token_Annotator(language = lang)
   
   # Convert text to class String from package NLP
-  text <- as.String(original_books)
+  text <- as.String(text)
   
   # Sentence boundaries in text
   sentence.boundaries <- annotate(text, sentence_token_annotator)
