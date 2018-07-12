@@ -1,5 +1,5 @@
-library("dplyr")
-
+library(dplyr)
+library(stringr)
 
 load.data.3 <- function() {
 

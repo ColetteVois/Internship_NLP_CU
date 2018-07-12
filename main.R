@@ -3,7 +3,7 @@
 #write your path to go to your file
 my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU"
 #choose which data you want to load
-choose_load_data <- 1
+choose_load_data <- 3
 DEBUG = TRUE
 
 ################################### LOAD DATA ###########################################
