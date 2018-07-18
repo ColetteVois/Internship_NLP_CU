@@ -2,9 +2,10 @@ library("tidytext")
 
 tokenizer.word.1 <- function(my.texte) {
   
-  my.texte <- token_sentence[k,][1]
-  book_name <- token_sentence[k,][2][[1]]
-  tidy_books <- my.texte %>%
+  my.texte <- token_sentence[k,]
+  my_texte <- my.texte[1]
+  book_name <- my.texte[2][[1]]
+  tidy_books <- my_texte %>%
     unnest_tokens(word, sentence)
   if (DEBUG == TRUE) {tidy_books}
   #tidy_books_count = tidy_books %>%
