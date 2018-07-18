@@ -1,5 +1,3 @@
-###############################TOKEN 2
-
 library("tm")
 
 tokenizer.word.2 <- function(my.texte) {
@@ -45,4 +43,4 @@ tokenizer.word.2 <- function(my.texte) {
   #557777  18954
 }
 
-tokenizer.word.2(original_books)
+#tokenizer.word.2(original_books)

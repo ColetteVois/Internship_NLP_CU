@@ -12,20 +12,54 @@ source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choo
 load.data.i <- sprintf("load.data.%d()", choose_load_data)
 original_books <- eval(parse(text=load.data.i))
 
-################################# TOKENIZER SENTENCE ###################################
+################################# TOKENIZER SENTENCE_WORD ###################################
 
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
+n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
 
 nb.of.sentence <- c()
+nb.of.word.occu <- c()
+nb.of.word.type <- c()
+
+token_word <- c()
 
 for (i in 1:n.tokenizer.sentence){
   
+  i = 2 #2,3
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
   source(lien)
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books)", i)
   if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
   token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
+  if (DEBUG == TRUE) { print(token_sentence) }
   nb.of.sentence[i] <- dim(token_sentence)[1]
+  if (DEBUG == TRUE) { print(nb.of.sentence) }
+  token_word <- c()
+  
+  for (j in 1:n.tokenizer.word.occu){
+    
+    j = 1 #3,4,5
+    if(i==1) {
+      lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
+      source(lien)
+    }
+    tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", j)
+    if (DEBUG == TRUE) { print(tokenizer.word.i) }
+    
+    for(k in 1:nb.of.sentence[i])
+    {
+      #k = 2   #2,3,4...15773
+      if (DEBUG == TRUE) { token_sentence[k,] }
+      new_token_word <- eval(parse(text=tokenizer.word.i))
+      if (DEBUG == TRUE) { new_token_word }
+      token_word <- dplyr::bind_rows(token_word,new_token_word) #TODO mettre bout à bout des matrice
+      if (DEBUG == TRUE) { token_word }
+      #nb.of.word.occu[i]  <- sum(token_word[2])
+      #nb.of.word.type[i]  <- dim(token_word[2])[1] 
+    }
+    ###TO DO NOMBREs de mots a verifier 464,193, 464,194
+    
+  }
     
 }
 
@@ -36,26 +70,6 @@ jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Sentence_data_%d.jpg',cho
 boxplot(nb.of.sentence, main = "Sentence", asp = 1)
 dev.off()
 
-################################# TOKENIZER WORD ###################################
-
-n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
-
-nb.of.word.occu <- c()
-nb.of.word.type <- c()
-
-for (i in 1:n.tokenizer.word.occu){
-
-  lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", i), sep="")
-  source(lien)
-  tokenizer.word.i <- sprintf("tokenizer.word.%d(original_books)", i)
-  print(tokenizer.word.i)
-  token_word <- eval(parse(text=tokenizer.word.i))
-  nb.of.word.occu[i]  <- sum(token_word[2])
-  nb.of.word.type[i]  <- dim(token_word[2])[1]
-  
-}
-if (DEBUG == TRUE) {print(nb.of.word.occu)}
-if (DEBUG == TRUE) {print(nb.of.word.type)}
 
 #download boxplot image
 jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/Word_occu_data_%d.jpg',choose_load_data),sep =""))
