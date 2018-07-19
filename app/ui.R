@@ -57,8 +57,8 @@ body <- dashboardBody(
         box(
           checkboxInput("all", label = "Select all the data", value = TRUE),
           checkboxInput("num_check", label = "Choose the data with the numeric input, else you can select it on the graph", value = FALSE),
-          numericInput(inputId = "num_offset_data", label = "Choose the number of the first word", min = 1, max = n, value = 1),
-          numericInput(inputId = "num_word_data", label = "Choose the number of words follwing the offset", min = 1, max = n, value = n),
+          numericInput(inputId = "num_offset_data", label = "Choose the number of the first line", min = 1, max = n, value = 1),
+          numericInput(inputId = "num_word_data", label = "Choose the number of lines follwing the offset", min = 1, max = n, value = n),
           uiOutput("num_data")
         ),
         box(

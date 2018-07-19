@@ -1,9 +1,10 @@
 ################################ USER CHANGE ############################################
 
 #write your path to go to your file
-my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU"
+#my_path <- "C:/Users/Projet/Intership_NLP_CU"
+my_path <- "C:/Users/Projet"
 #choose which data you want to load
-choose_load_data <- 3
+choose_load_data <- 1
 DEBUG = TRUE
 
 ################################### LOAD DATA ###########################################
