@@ -23,12 +23,10 @@ nb.of.sentence <- c()
 nb.of.word.occu <- c()
 nb.of.word.type <- c()
 
-token_word <- c()
-
 #fait n.tokenizer.sentence tokenisations de senctence differntes
 for (i in 1:n.tokenizer.sentence){
   
-  i = 1 #2,3
+  #i = 1 #2,3
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
   source(lien)
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books)", i)
