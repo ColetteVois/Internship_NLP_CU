@@ -2,40 +2,39 @@
 
 server <- function(input, output, session){
   
-  
   d_num <- reactive({
-    head(subset(d, rowname >= input$num_offset_data), input$num_word_data)
+    head(subset(original_books, rowname >= input$num_offset_data), input$num_word_data)
   })
   
   # use the key aesthetic/argument to help uniquely identify selected observations
-  key_first <- row.names(d)
+  key_first <- row.names(original_books)
   
   
   
   #Almost all Data that will be given to the analysis part as main data. It depends on the way to choose it (select, numeric input, checkbox). It is firstly done without the checkbox group, then just below, it is done with it.
   d_selected_av <- reactive({
     if(input$all == TRUE){
-      d
+      original_books
     }
     else if(input$all == FALSE){
       if(input$num_check== TRUE){
         d_num()
       }
       else if(input$num_check == FALSE){
-        SharedData$new(d, ~key_first)
+        SharedData$new(original_books, ~key_first)
       }
     }
   })
   d_sel_use_av <- reactive({
     if(input$all == TRUE){
-      d
+      original_books
     }
     else if(input$all == FALSE){
       if(input$num_check==TRUE){
         d_num()
       }
       else if(input$num_check ==FALSE){
-        d[d_selected()$selection(),]
+        original_books[d_selected()$selection(),]
       }
     }
     })
@@ -82,20 +81,20 @@ server <- function(input, output, session){
     output$plot_data <- renderPlotly({
       s <- input$rows_selected
       if(input$all==TRUE){
-        plot_ly(d, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Word'), titlefont = 'arial', dragmode = "select")
+        plot_ly(original_books, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       else if(input$num_check==TRUE){
-        plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Word'), titlefont = 'arial', dragmode = "select")
+        plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       else if(length(input$book)){
-        plot_ly(d_books(), x = ~rowname, y = rep(1, NROW(d_books())), key = ~row.names(d_books()), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Word'), titlefont = 'arial', dragmode = "select")
+        plot_ly(d_books(), x = ~rowname, y = rep(1, NROW(d_books())), key = ~row.names(d_books()), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       else{
         if(!length(s)){
-          plot_ly(d_selected(), x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Word'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
+          plot_ly(d_selected(), x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
         }
         else if(length(s)){
-          plot_ly(d, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Word'), titlefont = 'arial', dragmode = "select")
+          plot_ly(original_books, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
         }
       }
     })
@@ -128,14 +127,14 @@ server <- function(input, output, session){
        updateCheckboxGroupInput(session, "book", selected = character(0))
      })
      
-  #Printing the number of words and the maximum number of words 
+  #Printing the number of Lines and the maximum number of Lines 
   output$num_data <- renderUI({
-    tagList(renderText({"The number of words of the input file is"}),
+    tagList(renderText({"The number of lines of the input file is"}),
       renderPrint({n}),
-      renderText({"and the maximum number of words you can currently choose is"}),
+      renderText({"and the maximum number of lines you can currently choose is"}),
       renderPrint({n-input$num_offset_data+1}),
       if(input$num_word_data > n-input$num_offset_data+1){
-        renderText("You have chosen a number of words that is too high, it will just pick every word after the chosen offset")
+        renderText("You have chosen a number of lines that is too high, it will just pick every line after the chosen offset")
       }
       )
     })
