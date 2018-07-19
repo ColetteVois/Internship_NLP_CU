@@ -70,5 +70,6 @@ token.boxplot <- function(original_books_select) {
     }
     
   }
+  return(c(list(nb.of.sentence),list(nb.of.word.occu),list(nb.of.word.type)))
 
 }
