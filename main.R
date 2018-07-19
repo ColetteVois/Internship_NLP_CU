@@ -1,8 +1,7 @@
 ################################ USER CHANGE ############################################
 
 #write your path to go to your file
-#my_path <- "C:/Users/Projet/Intership_NLP_CU"
-my_path <- "C:/Users/Projet"
+my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU"
 #choose which data you want to load
 choose_load_data <- 1
 DEBUG = TRUE
@@ -13,6 +12,7 @@ source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choo
 load.data.i <- sprintf("load.data.%d()", choose_load_data)
 original_books <- eval(parse(text=load.data.i))
 original_books <- original_books %>% mutate(rowname = 1:nrow(original_books))
+original_books_select <- original_books[1:400,]
 
 ################################# TOKENIZER SENTENCE_WORD ###################################
 
@@ -28,7 +28,7 @@ token_word <- c()
 #fait n.tokenizer.sentence tokenisations de senctence differntes
 for (i in 1:n.tokenizer.sentence){
   
-  #i = 1 #2,3
+  i = 1 #2,3
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
   source(lien)
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books)", i)
@@ -37,8 +37,7 @@ for (i in 1:n.tokenizer.sentence){
   if (DEBUG == TRUE) { print(token_sentence) }
   nb.of.sentence[i] <- dim(token_sentence)[1]
   if (DEBUG == TRUE) { print(nb.of.sentence) }
-  #token_word <- c()
-  
+
   for (j in 1:n.tokenizer.word.occu){
     
     token_word <- c()

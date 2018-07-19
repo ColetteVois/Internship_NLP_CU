@@ -19,7 +19,7 @@ tokenizer.sentence.3.bis <- function(my.texte) {
 
 tokenizer.sentence.3 <- function(my.texte) {
   
-  my.texte <- original_books
+  #my.texte <- original_books
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1

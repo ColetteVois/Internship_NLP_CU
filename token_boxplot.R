@@ -14,7 +14,7 @@ token.boxplot <- function(original_books_select) {
   #fait n.tokenizer.sentence tokenisations de senctence differntes
   for (i in 1:n.tokenizer.sentence){
     
-    #i = 1 #2,3
+    #i = 3 #2,3
     lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
     source(lien)
     tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_select)", i)
@@ -73,3 +73,5 @@ token.boxplot <- function(original_books_select) {
   return(c(list(nb.of.sentence),list(nb.of.word.occu),list(nb.of.word.type)))
 
 }
+
+token.boxplot(original_books_select)
