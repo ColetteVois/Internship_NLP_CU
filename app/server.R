@@ -46,7 +46,7 @@ server <- function(input, output, session){
       #num_book_input is the number of the book. gsub find the number by removing "Book" from "Booki" and then strtoi converts that to an integer to subset the data
       id_book_input <- gsub("Book", "",b_id)
       #Subesting the data d and then adding this subset to the local data with all books selected
-      local_data <- rbind(local_data, subset(d, book == id_book_input))
+      local_data <- rbind(local_data, subset(original_books, book == id_book_input))
     }
     local_data
     
@@ -135,7 +135,9 @@ server <- function(input, output, session){
       renderPrint({n-input$num_offset_data+1}),
       if(input$num_word_data > n-input$num_offset_data+1){
         renderText("You have chosen a number of lines that is too high, it will just pick every line after the chosen offset")
-      }
+      },
+      renderPrint({d_books()}),
+      renderPrint({input$book})
       )
     })
   
