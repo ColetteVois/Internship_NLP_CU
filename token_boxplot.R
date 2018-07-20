@@ -74,4 +74,4 @@ token.boxplot <- function(original_books_select) {
 
 }
 
-token.boxplot(original_books_select)
+#token.boxplot(original_books_select)
