@@ -33,7 +33,7 @@ tokenizer.sentence.2.bis <- function(text, lang = "en") {
 
 tokenizer.sentence.2 <- function(my.texte) {
   
-  my.texte <- original_books_bis
+  #my.texte <- original_books_bis
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1
@@ -41,7 +41,7 @@ tokenizer.sentence.2 <- function(my.texte) {
   col_2 <- c()
   for(docu in 1:length(listfiles)) {
     
-    docu = 1
+    #docu = 2
     while(identical(listfiles[docu], my.texte[[2]][curseur])) {
       curseur <- curseur + 1
     }
