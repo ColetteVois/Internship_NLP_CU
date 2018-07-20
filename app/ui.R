@@ -12,7 +12,10 @@ library(shinydashboard)
 #library(tinytext)
 library(knitrProgressBar)
 library(rlist)
-
+#Pour Colette
+library("pracma")
+library("openNLP")
+library("quanteda")
 
 #Shiny App
 #UI and layout. It implements the front-end
@@ -45,7 +48,13 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "data",
-      fileInput("inputdata", "Choose PDF File", multiple = FALSE)
+      fileInput("inputdata", "Choose PDF File", multiple = FALSE),
+      radioButtons("choice_token_moment", "Choose if you want to choose the tokenization now or in the filter view of the pre processing table",
+                   choices = c("Now", "Later")),
+      radioButtons("token_sentence_radio_button_now", "Choose the tokenization of sentences",
+                   check_choices_token_sentence_check, inline = TRUE),
+      radioButtons("token_word_radio_button_now", "Choose the tokenization of words",
+                   check_choices_token_word_check, inline = TRUE)
     ),
     tabItem(
       tabName = "overview_pre",
@@ -85,10 +94,19 @@ body <- dashboardBody(
                ),
                box(width = 4,
                  plotlyOutput("box_5")
-               )),
-      box(width = 4,
-          uiOutput("description_token")
-          )
+               ),
+              box(width = 4,
+                  uiOutput("description_token")
+          )),
+      fluidRow(
+        box(
+          radioButtons("token_sentence_radio_button_later", "Choose the tokenization of sentences",
+                             check_choices_token_sentence_check, inline = TRUE),
+          radioButtons("token_word_radio_button_later", "Choose the tokenization of words",
+                             check_choices_token_word_check, inline = TRUE),
+          uiOutput("warning_choose_before")
+        )
+      )
     ),
     tabItem(
       tabName = "overview_ana",
