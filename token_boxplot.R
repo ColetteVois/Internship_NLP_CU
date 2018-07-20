@@ -1,5 +1,5 @@
 
-token.boxplot <- function(original_books_select) {
+token.boxplot <- function(original_books_bis) {
 
 
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
@@ -17,7 +17,7 @@ token.boxplot <- function(original_books_select) {
     #i = 3 #2,3
     lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
     source(lien)
-    tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_select)", i)
+    tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_bis)", i)
     if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
     token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
     if (DEBUG == TRUE) { print(token_sentence) }
@@ -74,4 +74,4 @@ token.boxplot <- function(original_books_select) {
 
 }
 
-#token.boxplot(original_books_select)
+# token.boxplot(original_books_bis)

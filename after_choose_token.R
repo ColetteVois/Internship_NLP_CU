@@ -1,8 +1,8 @@
 
 after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, choose_tokenizer_word) {
   
-  choose_tokenizer_sentence <- 1
-  choose_tokenizer_word <- 1
+  # choose_tokenizer_sentence <- 1
+  # choose_tokenizer_word <- 1
   token_word <- c()
   
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", choose_tokenizer_word), sep="")
@@ -40,5 +40,5 @@ after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, ch
     token_word_freq
   }
 
-  return(c(token_sentence, token_word, token_word_freq))
+  return(c(list(token_sentence), list(token_word), list(token_word_freq)))
 }

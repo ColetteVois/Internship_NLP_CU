@@ -15,7 +15,7 @@ tokenizer.sentence.2.bis <- function(text, lang = "en") {
   text <- as.String(text)
   
   # Sentence boundaries in text
-  sentence.boundaries <- annotate(text, sentence_token_annotator)
+  sentence.boundaries <- NLP::annotate(text, sentence_token_annotator)
   
   # Extract sentences
   sentences <- text[sentence.boundaries]

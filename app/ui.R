@@ -15,6 +15,7 @@ library(rlist)
 #Pour Colette
 library("pracma")
 library("openNLP")
+library("NLP")
 library("quanteda")
 
 #Shiny App
