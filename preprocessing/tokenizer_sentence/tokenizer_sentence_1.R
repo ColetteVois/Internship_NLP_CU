@@ -19,7 +19,7 @@ tokenizer.sentence.1 <- function(my.texte) {
     while(identical(listfiles[docu], my.texte[[2]][curseur])) {
       curseur <- curseur + 1
     }
-    new_token <- tokenize_sentences(paste0(as_tibble(original_books[[1]][pre_curseur:(curseur-1)])), lowercase = TRUE)[[1]]
+    new_token <- tokenize_sentences(stri_encode(paste0(as_tibble(my.texte[[1]][pre_curseur:(curseur-1)])), "", "UTF-8"), lowercase = TRUE)[[1]]
     tokens <- c(tokens, new_token)
     col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
