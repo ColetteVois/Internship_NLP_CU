@@ -51,4 +51,4 @@ heaps.law <- function(original_books_bis, choose_tokenizer_sentence, choose_toke
 }
 
 
-heaps.law(original_books_bis, 1, 1)
+heaps.law(original_books_bis, 2, 1)
