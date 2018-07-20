@@ -28,7 +28,7 @@ server <- function(input, output, session){
       }
     }
   })
-  original_books_sel_use_av <- reactive({
+  original_books_selected_used_av <- reactive({
     if(input$all == TRUE){
       original_books_bis
     }
@@ -56,12 +56,12 @@ server <- function(input, output, session){
   
   
   #All Data that will be given to the analysis part as main data
-  original_books_sel_use <- reactive({
+  original_books_selected_used <- reactive({
     if(length(input$book)){
       d_books()
     }
     else if(!length(input$book)){
-      original_books_sel_use_av()
+      original_books_selected_used_av()
     }
   })
   
@@ -75,13 +75,13 @@ server <- function(input, output, session){
   })
   
   #Creating a new original_books_selected in order to print the text in the app
-  original_books_selected_print <- reactive({head(noquote(original_books_selected()$text), 50)})
+  original_books_selected_print <- reactive({head(noquote(original_books_selected_used()$text), 50)})
   
   # use the key aesthetic/argument to help uniquely identify selected observations
-  key <- reactive({row.names(original_books_sel_use())})
+  key <- reactive({row.names(original_books_selected_used())})
   
   #length of the selected data with the numeric conditions
-  l <- reactive({NROW(original_books_sel_use())})
+  l <- reactive({NROW(original_books_selected_used())})
   
   
   #############################################################  Pre Processing Overview  ######################################################
@@ -162,6 +162,7 @@ server <- function(input, output, session){
   d_boxplot_1 <- reactive({data.frame(token_sentence_col = unlist(d_token_boxplot()[1]), token_word_ocu_col = d_token_boxplot()[2], token_word_type_col = d_token_boxplot()[3])})
   d_boxplot_2 <- reactive({data.frame(token_word_ocu_col = unlist(d_token_boxplot()[2]))})
   d_boxplot_3 <- reactive({data.frame(token_word_type_col = unlist(d_token_boxplot()[3]))})
+  d_boxplot_4 <- reactive({data.frame(token_ratio_col = unlist(d_token_boxplot()[2])/unlist(d_token_boxplot()[3]))})
   
   #Doing the boxplots
   
@@ -176,11 +177,13 @@ server <- function(input, output, session){
     plot_ly(d_boxplot_3(),x = rep(0, length(d_boxplot_3()$token_word_type_col)), y=~token_word_type_col, type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3(), y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_4 <- renderPlotly({
-    plot_ly(test_d,x = rep(0, length(test)), y=~test, type = "scatter", source = "box4", mode='markers')%>%add_trace(test_d, y=~test, type = "box",  marker = list(outliercolor = "red"))
+    plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_5 <- renderPlotly({
     plot_ly(test_d,x = rep(0, length(test)), y=~test, type = "scatter", source = "box5", mode='markers')%>%add_trace(test_d, y=~test, type = "box",  marker = list(outliercolor = "red"))
   })
+  
+  #Doing the hover descritpion
   output$description_token <- renderUI({
     d1 <- event_data("plotly_hover", source = "box1")
     d2 <- event_data("plotly_hover", source = "box2")
@@ -245,14 +248,15 @@ server <- function(input, output, session){
     tagList(
       if(input$choice_token_moment == "Now"){
         renderText("You have chosen to choose the tokenization at the beginning of the app. So what you will choose here will have no effect on the tokenization used for the analysis. If you want to choose here, you need to go back to the first page (Data) and choose 'Later'")
-      }
+      },
+      renderPrint({original_books_tokenized()})
     )
   })
   
   #Creating the data with the chosen tokenization
   # id_token_sentence_selected <- reactive({strtoi(gsub("TokenizationSentence", "",token_sentence_radio_button()))})
   # id_token_word_selected <- reactive({strtoi(gsub("TokenizationWord", "",token_word_radio_button()))})
-  # tokenizer.sentence.i <- reactive({sprintf("tokenizer.sentence.%d(original_books_sel_use())", id_token_sentence_selected())})
+  # tokenizer.sentence.i <- reactive({sprintf("tokenizer.sentence.%d(original_books_selected_used())", id_token_sentence_selected())})
   # original_books_tokenized_sentence <- reactive({eval(parse(text=tokenizer.sentence.i()))})
   # tokenizer.word.i <- reactive({sprintf("tokenizer.word.%d(original_books_tokenized_sentence())", id_token_word_selected())})
   # 
@@ -267,9 +271,16 @@ server <- function(input, output, session){
   # })
   
   ########################################################################## DATA  ###########################################################
+  #Data created using a function taking the koens used as arguments
+  lien <- paste(my_path,"/Intership_NLP_CU/after_choose_token.R", sep="")
+  source(lien)
+  id_token_sentence_selected <- reactive({strtoi(gsub("TokenizationSentence", "",token_sentence_radio_button()))})
+  id_token_word_selected <- reactive({strtoi(gsub("TokenizationWord", "",token_word_radio_button()))})
+  original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected())})
+  
   
   #Shared data between the plot and the datatable of the overview and the wordcloud for the analysis
-  d_shared <- reactive({SharedData$new(original_books_sel_use(), ~key())})
+  d_shared <- reactive({SharedData$new(original_books_selected_used(), ~key())})
   
   ######################################################################### Overview Analysis  ####################################################
   
@@ -291,10 +302,10 @@ server <- function(input, output, session){
     #If there are row selected, you can't higlight the plot because it is already highlighted 
     else if(length(s)){
       if(input$choice=='Frequency'){
-        plot_ly(original_books_sel_use(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)
+        plot_ly(original_books_selected_used(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)
       }
       else if(input$choice=='Random'){
-        plot_ly(original_books_sel_use(), x = ~rowname, y = ~random, key = ~key(), type = 'scatter', mode='markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Random according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)      
+        plot_ly(original_books_selected_used(), x = ~rowname, y = ~random, key = ~key(), type = 'scatter', mode='markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Random according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)      
       }
     }
   })
@@ -302,9 +313,9 @@ server <- function(input, output, session){
   #Plotting the Data Table
   output$table_overview <- DT::renderDataTable({
     #Choosing the data selected in the plot. It is done by crosstalk, see CRAN R Crosstalk SharedData for more details
-    dsel <- original_books_sel_use()[d_shared()$selection(),]
+    dsel <- original_books_selected_used()[d_shared()$selection(),]
     #Creating the data table with the initial data
-    dt <-DT::datatable(original_books_sel_use(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
+    dt <-DT::datatable(original_books_selected_used(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
     #This condition is whether a data is selected on the plot
     if (NROW(dsel) == 0) {
       dt
@@ -318,7 +329,7 @@ server <- function(input, output, session){
   ################################################################################  DATA  ###############################################
   
   #Choosing the data which is shared with the plot
-  d_real_shared <- reactive({original_books_sel_use()[d_shared()$selection(),]})
+  d_real_shared <- reactive({original_books_selected_used()[d_shared()$selection(),]})
   #Choosing the data to give to the wordcloud, depending on which data is taken from plotly
   filter_d <- reactive({
     #Changing the data in order to match what the wordcloud takes as an input
@@ -331,10 +342,10 @@ server <- function(input, output, session){
   ################################################################################ Filter Analysis  #########################################################
   
   #Updating the value of the maximum of the slider input for the number of words and for the frequency
-  m_act <- reactive({max(original_books_sel_use()$freq)})
-  n_act <- reactive({NROW(original_books_sel_use())})
-  observeEvent(original_books_sel_use(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
-  observeEvent(original_books_sel_use(),{updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
+  m_act <- reactive({max(original_books_selected_used()$freq)})
+  n_act <- reactive({NROW(original_books_selected_used())})
+  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
+  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
   
   
   #Creating the wordcloud and making it reactive to change in the input values

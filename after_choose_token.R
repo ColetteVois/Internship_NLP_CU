@@ -40,5 +40,5 @@ after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, ch
     token_word_freq
   }
 
-  return(token_sentence, token_word, token_word_freq)
+  return(c(token_sentence, token_word, token_word_freq))
 }
