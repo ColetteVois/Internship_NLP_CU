@@ -7,7 +7,7 @@ DEBUG = TRUE
 
 tokenizer.sentence.1 <- function(my.texte) {
   
-  #my.texte <- original_books2
+  #my.texte <- original_books_bis
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1
@@ -21,7 +21,7 @@ tokenizer.sentence.1 <- function(my.texte) {
     }
     new_token <- tokenize_sentences(paste0(as_tibble(original_books[[1]][pre_curseur:(curseur-1)])), lowercase = TRUE)[[1]]
     tokens <- c(tokens, new_token)
-    col_2 <- c(col_2, toString(rep(listfiles[docu], length(new_token))))
+    col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
     
   }

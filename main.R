@@ -12,7 +12,7 @@ source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choo
 load.data.i <- sprintf("load.data.%d()", choose_load_data)
 original_books <- eval(parse(text=load.data.i))
 original_books <- original_books %>% mutate(rowname = 1:nrow(original_books))
-original_books_select <- original_books[1:400,]
+original_books_bis <- original_books[1:400,]
 
 ################################# TOKENIZER SENTENCE_WORD ###################################
 
