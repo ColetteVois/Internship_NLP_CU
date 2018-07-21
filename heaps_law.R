@@ -1,11 +1,12 @@
 library(tibble)
 
-heaps.law <- function(original_books_select, choose_tokenizer_sentence, choose_tokenizer_word) {
+heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
 
-  #choose_tokenizer_sentence <- 1
+  #my.texte <- original_books[1:400,]
+  #choose_tokenizer_sentence <- 2
   #choose_tokenizer_word <- 1
   
-  book.length <- nrow(original_books_select)
+  book.length <- nrow(my.texte)
     
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", choose_tokenizer_word), sep="")
   source(lien)
@@ -22,12 +23,12 @@ heaps.law <- function(original_books_select, choose_tokenizer_sentence, choose_t
   accura <- 2
   
   for(i in 1:(10^accura)) {
-    #i <- 1
+    #i <- 2
     
     token_word <- c()
     
     extrait.length <- round(i*(0.1^accura)*book.length)
-    original_books2 <- as_tibble(original_books_select[1:extrait.length,1:2])
+    original_books2 <- as_tibble(my.texte[1:extrait.length,1:2])
     
     tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books2)", choose_tokenizer_sentence)
     token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
@@ -35,7 +36,7 @@ heaps.law <- function(original_books_select, choose_tokenizer_sentence, choose_t
     tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", choose_tokenizer_word)
     
     for(k in 1:dim(token_sentence)[1]) {
-      #k = 2
+      #k = 1
       new_token_word <- eval(parse(text=tokenizer.word.i))
       token_word <- dplyr::bind_rows(token_word,new_token_word) 
     }
@@ -47,8 +48,10 @@ heaps.law <- function(original_books_select, choose_tokenizer_sentence, choose_t
     
   }
   
-  return(list(list(nb.of.word.occu), list(nb.of.stop.word)))
+  return(c(list(nb.of.word.occu), list(nb.of.stop.word)))
 }
 
 
-heaps.law(original_books_select, 1, 1)
+heaps.law(original_books, 2, 1)
+
+#24, 25,26

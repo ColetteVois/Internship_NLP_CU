@@ -1,8 +1,10 @@
 
-after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, choose_tokenizer_word) {
+after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
   
-  # choose_tokenizer_sentence <- 1
-  # choose_tokenizer_word <- 1
+  #my.texte <- original_books_bis
+  #choose_tokenizer_sentence <- 1
+  #choose_tokenizer_word <- 1
+
   token_word <- c()
   
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", choose_tokenizer_word), sep="")
@@ -11,7 +13,7 @@ after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, ch
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
   source(lien)
 
-  tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_bis)", choose_tokenizer_sentence)
+  tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)
   token_sentence <- eval(parse(text=tokenizer.sentence.i))
     
   tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", choose_tokenizer_word)
@@ -42,3 +44,5 @@ after.choose.token <- function(original_books_bis, choose_tokenizer_sentence, ch
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq)))
 }
+
+after.choose.token(original_books_bis, 1, 1) 

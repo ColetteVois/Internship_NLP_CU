@@ -33,13 +33,11 @@ tokenizer.sentence.3 <- function(my.texte) {
     }
     new_token <- tokenizer.sentence.3.bis(original_books[[1]][pre_curseur:curseur])[[1]]
     tokens <- c(tokens, new_token)
-    col_2 <- c(col_2, rep(listfiles[docu], length(new_token)))
+    col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
     
   }
   
-  #tokens1 <- tokenize_sentences(paste0(as_tibble(original_books[[1]])), lowercase = TRUE)
-  #if (DEBUG == TRUE) {tokens} 
   tokens <- as_tibble(tokens)
   tokens <- tokens %>% mutate(book = col_2)
   names(tokens) <- c("sentence","book")
