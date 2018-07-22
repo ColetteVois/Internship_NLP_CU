@@ -277,6 +277,7 @@ server <- function(input, output, session){
   #   original_books_tokenized
   # })
   
+  
   ########################################################################## DATA  ###########################################################
   #Data created using a function taking the koens used as arguments
   lien <- paste(my_path,"/Intership_NLP_CU/after_choose_token.R", sep="")
@@ -293,6 +294,37 @@ server <- function(input, output, session){
   #Shared data between the plot and the datatable of the overview and the wordcloud for the analysis
   original_books_tokenized_freq_shared <- reactive({SharedData$new(original_books_tokenized_freq(), ~key())})
   
+  #########################################################################  Details on demand Pre processing  ################################################
+  lien <- paste(my_path,"/Intership_NLP_CU/heaps_law.R", sep="")
+  source(lien)
+  
+  heaps_law_result <- reactive({heaps.law(original_books_selected_used(), id_token_sentence_selected(), id_token_word_selected())})
+  nb.of.word.occu <- reactive({heaps_law_result()[[1]]}) 
+  nb.of.stop.word <- reactive({heaps_law_result()[[2]]}) 
+  data_heaps_law <- reactive({data.frame(nb.of.word.occu = nb.of.word.occu(),nb.of.stop.word = nb.of.stop.word())})
+  reg_lin <- reactive({lm(log(nb.of.stop.word()) ~ log(nb.of.word.occu()))})
+  K <- reactive({exp(reg_lin()$coefficients[[1]])})
+  beta <- reactive({reg_lin()$coefficients[[2]]})
+  output$plot_log_heaps_law <- renderPlot({
+    # data_line_log_plotly <- c()
+    # for(i in 1:length(nb.of.word.occu())){
+    #   data_line_log_plotly <- c(data_line_log_plotly, log_K()*i + log_beta())
+    # }
+    # data_line_log_plotly <- data.frame(reg_lin_col = data_line_log_plotly)
+    # plot_ly(data_heaps_law(), x =~ log(nb.of.word.occu), y =~ log(nb.of.stop.word))%>%add_trace(data_line_log_plotly, y =~ reg_lin_col, type = "scatter", mode = "line")
+  
+    plot(log(nb.of.word.occu()),log(nb.of.stop.word()))
+    abline(reg_lin()) 
+    })
+  output$summary_reg_heaps_law <- renderUI(
+    tagList(
+      renderPrint(summary(reg_lin()))
+    )
+  )
+  output$plot_heaps_law <- renderPlot({
+    plot(nb.of.word.occu(), nb.of.stop.word())
+    lines(nb.of.word.occu(), K()*nb.of.word.occu()^beta(), col="red")
+  })
   ######################################################################### Overview Analysis  ####################################################
   
   #Plotting the scatterplot with plotly
@@ -355,7 +387,6 @@ server <- function(input, output, session){
   ################################################################################ Filter Analysis  #########################################################
   
   #Updating the value of the maximum of the slider input for the number of words and for the frequency
-  m <- 400
   m_act <- reactive({max(original_books_tokenized_freq()$freq)})
   n_act <- reactive({NROW(original_books_tokenized_freq())})
   observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
@@ -366,8 +397,11 @@ server <- function(input, output, session){
   output$wordcloud  <- renderWordcloud2(wordcloud2(data = filter_d(),
                                                    shape = 'star', size = 0.8, shuffle =FALSE))
   output$test <- renderPrint({
-    filter_d()
+    # filter_d()
+    input$selected_word
   })
+  
+  word_wordcloud_selected_filter <- reactive({input$selected_word})
   
   ###########################################################################  Report ##############################################################
   

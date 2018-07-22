@@ -2,7 +2,7 @@ library("tidytext")
 
 tokenizer.word.1 <- function(my.texte) {
   
-  my.texte <- token_sentence[k,]
+  #my.texte <- token_sentence[k,]
   my_texte <- my.texte[1]
   book_name <- my.texte[2][[1]]
   tidy_books <- my_texte %>%
