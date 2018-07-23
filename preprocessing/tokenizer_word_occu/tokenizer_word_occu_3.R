@@ -2,7 +2,7 @@ library("tm")
 
 tokenizer.word.3 <- function(my.texte,k) {
   
-  #my.texte <- token_sentence[k,]
+  my.texte <- token_sentence[k,]
   book_name <- my.texte[2][[1]]
   tokens <- Boost_tokenizer(my.texte[1])
   if (DEBUG == TRUE) {tokens} 
