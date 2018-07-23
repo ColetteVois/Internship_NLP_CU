@@ -286,7 +286,8 @@ server <- function(input, output, session){
   id_token_word_selected <- reactive({strtoi(gsub("TokenizationWord", "",token_word_radio_button()))})
   original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected())})
   
-  original_books_tokenized_freq <- reactive({original_books_tokenized()[[3]]%>%mutate(rowname = 1:nrow(original_books_tokenized()[[3]]))})
+  original_books_tokenized_inter <- reactive({arrange(original_books_tokenized()[[3]], desc(freq))})
+  original_books_tokenized_freq <- reactive({original_books_tokenized_inter()%>%mutate(rowname = 1:nrow(original_books_tokenized()[[3]]))})
   
   # use the key aesthetic/argument to help uniquely identify selected observations
   key <- reactive({row.names(original_books_tokenized_freq())})
@@ -295,6 +296,7 @@ server <- function(input, output, session){
   original_books_tokenized_freq_shared <- reactive({SharedData$new(original_books_tokenized_freq(), ~key())})
   
   #########################################################################  Details on demand Pre processing  ################################################
+  #Heaps law
   lien <- paste(my_path,"/Intership_NLP_CU/heaps_law.R", sep="")
   source(lien)
   
@@ -318,13 +320,17 @@ server <- function(input, output, session){
     })
   output$summary_reg_heaps_law <- renderUI(
     tagList(
-      renderPrint(summary(reg_lin()))
+      renderPrint({list_sentences_wordcloud_filter()}),
+      renderPrint({summary(reg_lin())})
     )
   )
   output$plot_heaps_law <- renderPlot({
     plot(nb.of.word.occu(), nb.of.stop.word())
     lines(nb.of.word.occu(), K()*nb.of.word.occu()^beta(), col="red")
   })
+  
+  #Zips law
+  
   ######################################################################### Overview Analysis  ####################################################
   
   #Plotting the scatterplot with plotly
@@ -401,7 +407,25 @@ server <- function(input, output, session){
     input$selected_word
   })
   
-  word_wordcloud_selected_filter <- reactive({input$selected_word})
+  ####################################################################  DATA  ################################################################################
+  
+  word_freq_wordcloud_selected_filter <- reactive({input$selected_word})
+  word_wordcloud_selected_filter <- reactive({gsub(":[0-9]+", "", word_freq_wordcloud_selected_filter())})
+  list_sentences_wordcloud_filter <- reactive({subset(original_books_tokenized_freq(), word == word_wordcloud_selected_filter())$sentences})
+  data_selected_sentences_wordcloud <- reactive({
+    local_data_selected_sentences_wordcloud <- c()
+    for(i in list_sentences_wordcloud_filter()){
+      local_data_selected_sentences_wordcloud <- c(local_data_selected_sentences_wordcloud , original_books_tokenized()[[1]]$sentence[i])
+    }
+    data.frame(sentence = local_data_selected_sentences_wordcloud)
+    })
+  
+  ########################################################################## DATA table analysis sentences  ########################################################
+  
+  output$sentence_table_wordcloud <- DT::renderDataTable({
+    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
+    
+  })
   
   ###########################################################################  Report ##############################################################
   

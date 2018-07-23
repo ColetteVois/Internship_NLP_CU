@@ -1,7 +1,7 @@
 
 zipfs.law <- function(my.texte) {
   
-  my.texte <- token_word_freq
+  #my.texte <- token_word_freq
   
   total <- sum(my.texte$freq)
   nb.mot <- nrow(my.texte)
