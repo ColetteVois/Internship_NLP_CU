@@ -296,6 +296,7 @@ server <- function(input, output, session){
   original_books_tokenized_freq_shared <- reactive({SharedData$new(original_books_tokenized_freq(), ~key())})
   
   #########################################################################  Details on demand Pre processing  ################################################
+  #Heaps law
   lien <- paste(my_path,"/Intership_NLP_CU/heaps_law.R", sep="")
   source(lien)
   
@@ -327,6 +328,9 @@ server <- function(input, output, session){
     plot(nb.of.word.occu(), nb.of.stop.word())
     lines(nb.of.word.occu(), K()*nb.of.word.occu()^beta(), col="red")
   })
+  
+  #Zips law
+  
   ######################################################################### Overview Analysis  ####################################################
   
   #Plotting the scatterplot with plotly
