@@ -52,6 +52,22 @@ heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word
 }
 
 
-heaps.law(original_books, 2, 1)
+a = heaps.law(original_books_bis, 1, 1)
+nb.of.word.occu = a[[1]]
+nb.of.stop.word = a[[2]]
 
 #24, 25,26
+#jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/log_heaps_law_data_%d.jpg',choose_load_data),sep =""))
+plot(log(nb.of.word.occu),log(nb.of.stop.word))
+reg_lin <- lm(log(nb.of.stop.word) ~ log(nb.of.word.occu))
+abline(reg_lin)
+#dev.off()
+
+K <- exp(reg_lin$coefficients[[1]]) #normalement entre 30 et 100
+beta <- reg_lin$coefficients[[2]]   #environ 0.5
+summary(reg_lin)
+
+#jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/heaps_law_data_%d.jpg',choose_load_data),sep =""))
+plot(nb.of.word.occu, nb.of.stop.word)
+lines(nb.of.word.occu, K*nb.of.word.occu^beta, col="red")
+#dev.off()

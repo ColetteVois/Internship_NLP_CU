@@ -15,7 +15,9 @@ library(rlist)
 #Pour Colette
 library("pracma")
 library("openNLP")
+library("NLP")
 library("quanteda")
+library("stringi")
 
 #Shiny App
 #UI and layout. It implements the front-end
@@ -108,6 +110,19 @@ body <- dashboardBody(
         )
       )
     ),
+    tabItem(
+      tabName = "details_pre",
+      fluidRow(
+        box(width = 4,
+            plotOutput("plot_log_heaps_law")
+        ),
+        box(width = 4,
+            uiOutput("summary_reg_heaps_law")
+        ),
+        box(width = 4,
+            plotOutput("plot_heaps_law")
+        )
+      )),
     tabItem(
       tabName = "overview_ana",
       h2("Plot overview"),

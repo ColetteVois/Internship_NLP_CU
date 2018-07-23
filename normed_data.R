@@ -117,3 +117,5 @@ while(count_2 <= n.tokenizer.word.occu){
   check_choices_token_word_check <- c(check_choices_token_word_check, c_paste_local)
   count_2 =count_2 +1
 }
+
+m <- 400
