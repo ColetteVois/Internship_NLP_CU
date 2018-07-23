@@ -10,6 +10,7 @@ zipfs.law <- function(my.texte) {
   
   
   #on ne prend que la partie du milieu car c est la plus lineaire  
+
   rank_subset <- freq_by_rank %>% filter(rank> 0.1*nb.mot, rank < 0.9*nb.mot) # entre 10% et 90% peut être changer ?
   reg_lin <- lm(log10(rank_subset$term_frequency) ~ log10(rank_subset$rank))
   
