@@ -18,13 +18,13 @@ zipfs.law <- function(my.texte) {
   inv <- reg_lin$coefficients[[2]]   #environ -1
   summary(reg_lin)
   
-  jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
+  #jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
   freq_by_rank %>% ggplot(aes(rank, term_frequency)) + 
     geom_abline(intercept = reg_lin$coefficients[[1]], slope = inv, color = "red") + 
     geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) + 
     scale_x_log10() + 
     scale_y_log10()
-  dev.off()
+  #dev.off()
   
 }
 
