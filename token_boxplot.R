@@ -32,7 +32,7 @@ token.boxplot <- function(original_books_bis) {
         lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
         source(lien)
       }
-      tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", j)
+      tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", j)
       if (DEBUG == TRUE) { print(tokenizer.word.i) }
       
       for(k in 1:nb.of.sentence[i]) {

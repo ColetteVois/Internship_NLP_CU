@@ -1,6 +1,8 @@
 library(shiny)
 library(DT)
 library(plotly)
+library(dplyr)
+library(tidyverse)
 library(wordcloud2)
 library(wordcloud)
 library(tm)
