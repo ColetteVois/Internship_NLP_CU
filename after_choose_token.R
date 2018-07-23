@@ -16,7 +16,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)
   token_sentence <- eval(parse(text=tokenizer.sentence.i))
     
-  tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", choose_tokenizer_word)
+  tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", choose_tokenizer_word)
     
   for(k in 1:dim(token_sentence)[1]) {
     # k = 3
@@ -39,10 +39,12 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
     names(token_word_freq1) <- c("word","sentences", "freq")
     token_word_freq <- dplyr::bind_rows(token_word_freq, as_tibble(token_word_freq1))
     pre_curseur <- curseur
-    token_word_freq
+    #print(token_word_freq)
   }
+  #print(token_word_freq)
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq)))
+
 }
 
 after.choose.token(original_books_bis, 1, 1) 

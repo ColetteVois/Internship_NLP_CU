@@ -1,6 +1,6 @@
 library("tidytext")
 
-tokenizer.word.1 <- function(my.texte) {
+tokenizer.word.1 <- function(my.texte,k) {
   
   #my.texte <- token_sentence[k,]
   my_texte <- my.texte[1]

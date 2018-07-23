@@ -1,15 +1,16 @@
 
 zipfs.law <- function(my.texte) {
   
-  my.texte <- token_word
+  my.texte <- token_word_freq
   
-  total <- nrow(token_word)
+  total <- sum(my.texte$freq)
+  nb.mot <- nrow(my.texte)
   
-  freq_by_rank <- token_word %>% mutate(rank = row_number(), term_frequency = n/total)
+  freq_by_rank <- my.texte %>% mutate(rank = row_number(), term_frequency = freq/total)
   
   
   #on ne prend que la partie du milieu car c est la plus lineaire  
-  rank_subset <- freq_by_rank %>% filter(rank<500, rank > 10) # 10 et 500 peut etre changer
+  rank_subset <- freq_by_rank %>% filter(rank<0.1*nb.mot, rank > 0.9*nb.mot) # entre 10% et 90% peut être changer ?
   
   reg_lin <- lm(log10(term_frequency) ~ log10(rank), data = rank_subset)
   
@@ -27,4 +28,4 @@ zipfs.law <- function(my.texte) {
   
 }
 
-zipfs.law(token_word)
+#zipfs.law(token_word_freq)

@@ -3,7 +3,7 @@ library(tibble)
 heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
 
   #my.texte <- original_books[1:400,]
-  #choose_tokenizer_sentence <- 2
+  #choose_tokenizer_sentence <- 1
   #choose_tokenizer_word <- 1
   
   book.length <- nrow(my.texte)
@@ -33,7 +33,7 @@ heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word
     tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books2)", choose_tokenizer_sentence)
     token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
 
-    tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", choose_tokenizer_word)
+    tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", choose_tokenizer_word)
     
     for(k in 1:dim(token_sentence)[1]) {
       #k = 1

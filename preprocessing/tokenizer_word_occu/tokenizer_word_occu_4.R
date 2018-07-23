@@ -1,8 +1,8 @@
 library(tokenizers)
 
-tokenizer.word.4 <- function(my.texte) {
+tokenizer.word.4 <- function(my.texte,k) {
   
-  my.texte <- token_sentence[k,]
+  #my.texte <- token_sentence[k,]
   book_name <- my.texte[2][[1]]
   tokens <- tokenize_words(paste0(my.texte[1]), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
@@ -13,4 +13,4 @@ tokenizer.word.4 <- function(my.texte) {
 
 }
 
-#tokenizer.word.4(original_books)
+#tokenizer.word.4(original_books,k)
