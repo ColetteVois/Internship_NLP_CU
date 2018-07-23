@@ -40,6 +40,9 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
     token_word_freq <- dplyr::bind_rows(token_word_freq, as_tibble(token_word_freq1))
     pre_curseur <- curseur
   }
+  
+  token_word_freq <- token_word_freq %>% mutate(book = "all")
+  token_word_freq %>% bind_tf_idf(word, book, freq)
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq)))
 
