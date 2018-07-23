@@ -66,4 +66,4 @@ tokenizer.word.2 <- function(my.texte,k) {
   
 }
 
-#tokenizer.word.2(original_books)
+#tokenizer.word.2(original_books,k)

@@ -2,7 +2,7 @@
 
 #write your path to go to your file
 #my_path <- "C:/Users/Projet/Intership_NLP_CU"
-my_path <- "C:/Users/Projet"
+# my_path <- "C:/Users/Projet"
 #choose which data you want to load
 choose_load_data <- 1
 DEBUG = TRUE
@@ -40,7 +40,7 @@ token_word <- c()
 
 for (i in 1:n.tokenizer.sentence){
   
-  i = 1 #2,3
+  #i = 1 #2,3
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
   source(lien)
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_bis)", i)
@@ -54,16 +54,16 @@ for (i in 1:n.tokenizer.sentence){
   for (j in 1:n.tokenizer.word.occu){
     
     token_word <- c()
-    j = 3 #3,4,5
+    #j = 3 #3,4,5
     if(i==1) {
       lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
       source(lien)
     }
-    tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,])", j)
+    tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", j)
     if (DEBUG == TRUE) { print(tokenizer.word.i) }
     
     for(k in 1:nb.of.sentence[i]) {
-      #k = 2  #2,3,4...15773
+      #k = 1 #2,3,4...15773
       if (DEBUG == TRUE) { token_sentence[k,] }
       new_token_word <- eval(parse(text=tokenizer.word.i))
       if (DEBUG == TRUE) { new_token_word }
