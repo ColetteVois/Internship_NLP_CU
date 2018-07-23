@@ -320,7 +320,6 @@ server <- function(input, output, session){
     })
   output$summary_reg_heaps_law <- renderUI(
     tagList(
-      renderPrint({list_sentences_wordcloud_filter()}),
       renderPrint({summary(reg_lin())})
     )
   )
@@ -330,7 +329,31 @@ server <- function(input, output, session){
   })
   
   #Zips law
+  lien <- paste(my_path,"/Intership_NLP_CU/zips_law.R", sep="")
+  source(lien)
+  zips_law_result <- reactive({zipfs.law(original_books_tokenized_freq())})
+  zips_law_data <- reactive({zips_law_result()[[1]]})
+  lambda <- reactive({zips_law_result()[[2]]}) 
+  inv <-reactive({zips_law_result()[[3]]})
   
+  output$summary_reg_zips_law <- renderUI({
+    tagList(
+      renderPrint({zips_law_result()[[4]]})
+    )
+  })
+  # jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
+  # freq_by_rank %>% ggplot(aes(rank, term_frequency)) +
+  #   geom_abline(intercept = reg_lin$coefficients[[1]], slope = inv, color = "red") +
+  #   geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
+  #   scale_x_log10() +
+  #   scale_y_log10()
+  output$plot_zips_law <- renderPlot({
+    zips_law_data() %>% ggplot(aes(rank, term_frequency)) +
+      geom_abline(intercept = log(lambda()), slope = inv(), color = "red") +
+      geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
+      scale_x_log10() +
+      scale_y_log10()
+  })
   ######################################################################### Overview Analysis  ####################################################
   
   #Plotting the scatterplot with plotly

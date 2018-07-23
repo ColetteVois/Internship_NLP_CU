@@ -1,6 +1,8 @@
 library(shiny)
 library(DT)
 library(plotly)
+library(dplyr)
+library(tidyverse)
 library(wordcloud2)
 library(wordcloud)
 library(tm)
@@ -18,6 +20,7 @@ library("openNLP")
 library("NLP")
 library("quanteda")
 library("stringi")
+library("tibble")
 
 #Shiny App
 #UI and layout. It implements the front-end
@@ -122,6 +125,13 @@ body <- dashboardBody(
         box(width = 4,
             plotOutput("plot_heaps_law")
         )
+        ),
+      fluidRow(
+        box(width = 4,
+            uiOutput("summary_reg_zips_law")
+        ),
+        box(width = 4,
+            plotOutput("plot_zips_law"))
       )),
     tabItem(
       tabName = "overview_ana",
