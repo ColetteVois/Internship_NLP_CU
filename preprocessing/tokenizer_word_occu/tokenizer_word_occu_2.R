@@ -54,9 +54,9 @@ Clean_Text_Block <- function(text){
   return(to_return)
 }
 
-tokenizer.word.2 <- function(my.texte) {
+tokenizer.word.2 <- function(my.texte,k) {
   
-  my.texte <- token_sentence[k,]
+  #my.texte <- token_sentence[k,]
   book_name <- my.texte[2][[1]]
   clean_speech <- Clean_Text_Block(my.texte)
   tokens <- as_tibble(clean_speech$text)

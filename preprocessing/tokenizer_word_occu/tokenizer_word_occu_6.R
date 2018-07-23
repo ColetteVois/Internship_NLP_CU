@@ -1,8 +1,8 @@
 library("tm")
 
-tokenizer.word.6 <- function(my.texte) {
+tokenizer.word.6 <- function(my.texte,k) {
   
-  my.texte <- token_sentence[k,]
+  #my.texte <- token_sentence[k,]
   # Load the data as a corpus
   docs <- Corpus(VectorSource(my.texte[1]))
   #if (DEBUG == TRUE) {docs}
@@ -44,4 +44,4 @@ tokenizer.word.6 <- function(my.texte) {
   return(document)
 }
 
-#tokenizer.word.6(original_books)
+#tokenizer.word.6(original_books,k)
