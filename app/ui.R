@@ -169,11 +169,17 @@ body <- dashboardBody(
                  
                ))
       )
-    )
-  ),
-  tabItem(
-    tabName = "details_pre"
+    ),
+    tabItem(
+      tabName = "wcontext_ana",
+      fluidRow(
+        column(width = 8, offset =4,
+               box(
+                 DT::dataTableOutput("sentence_table_wordcloud")
+               )))
   )
+ 
+)
 )
 
 ui <- dashboardPage(header, sidebar, body)
