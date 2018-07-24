@@ -4,6 +4,10 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   # my.texte <- original_books_bis
   # choose_tokenizer_sentence <- 1
   # choose_tokenizer_word <- 1
+  
+  if(nrow(my.texte)==0) {
+    return(c(list(tribble(~sentence,~book)), list(tribble(~word,~sentence,~book)), list(tribble(~word,~sentences,~freq))))
+  }
 
   token_word <- c()
   
@@ -41,11 +45,11 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
     pre_curseur <- curseur
   }
   
-  token_word_freq <- token_word_freq %>% mutate(book = "all")
-  token_word_freq %>% bind_tf_idf(word, book, freq)
+  #token_word_freq <- token_word_freq %>% mutate(book = "all")
+  #token_word_freq %>% bind_tf_idf(word, book, freq)
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq)))
 
 }
 
-token_info <- after.choose.token(original_books_bis, 1, 1) 
+#token_info <- after.choose.token(original_books_bis, 1, 1) 
