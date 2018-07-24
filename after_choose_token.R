@@ -5,6 +5,10 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   # my.texte <- original_books_bis
   # choose_tokenizer_sentence <- 1
   # choose_tokenizer_word <- 1
+  
+  if(nrow(my.texte)==0) {
+    return(c(list(tribble(~sentence,~book)), list(tribble(~word,~sentence,~book)), list(tribble(~word,~sentences,~freq))))
+  }
 
   token_word <- c()
   
@@ -61,3 +65,4 @@ token_info <- after.choose.token(original_books_bis, 1, 1,1)
 #token_word <- token_info[[2]]
 #token_word_freq <- token_info[[3]]
 token_word_stem <- token_info[[4]]
+

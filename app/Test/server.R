@@ -15,7 +15,9 @@ server <- function(input, output, session){
   
   
   #Almost all Data that will be given to the analysis part as main data. It depends on the way to choose it (select, numeric input, checkbox). It is firstly done without the checkbox group, then just below, it is done with it.
-  original_books_selected_av <- reactive({
+  shared_data_check_num_false_original_books <- reactive({SharedData$new(original_books_bis, ~key_first)})
+  data_frame_shared_data_check_num_false_original_books <- reactive({original_books_bis[shared_data_check_num_false_original_books()$selection(),]}) 
+    original_books_selected_av <- reactive({
     if(input$all == TRUE){
       original_books_bis
     }
@@ -23,8 +25,8 @@ server <- function(input, output, session){
       if(input$num_check== TRUE){
         d_num()
       }
-      else if(input$num_check == FALSE){
-        SharedData$new(original_books_bis, ~key_first)
+      else{
+        shared_data_check_num_false_original_books()
       }
     }
   })
@@ -36,10 +38,14 @@ server <- function(input, output, session){
       if(input$num_check==TRUE){
         d_num()
       }
-      else if(input$num_check ==FALSE){
-        original_books_bis[original_books_selected()$selection(),]
+      else{
+        #original_books_bis
+        data_frame_shared_data_check_num_false_original_books()
+        #shared_data_check_num_false_original_books()
+      # original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),]
       }
     }
+    
     })
   
   #This is the data created by the checkboxgroup
@@ -56,15 +62,6 @@ server <- function(input, output, session){
   
   
   #All Data that will be given to the analysis part as main data
-  original_books_selected_used <- reactive({
-    if(length(input$book)){
-      d_books()
-    }
-    else if(!length(input$book)){
-      original_books_selected_used_av()
-    }
-  })
-  
   original_books_selected <- reactive({
     if(length(input$book)){
       d_books()
@@ -74,6 +71,16 @@ server <- function(input, output, session){
     }
   })
   
+  original_books_selected_used <- reactive({
+    if(length(input$book)){
+      d_books()
+    }
+    else if(!length(input$book)){
+      original_books_selected_used_av()
+    }
+  })
+  
+ 
   #Creating a new original_books_selected in order to print the text in the app
   original_books_selected_print <- reactive({head(noquote(original_books_selected_used()$text), 50)})
   
@@ -86,30 +93,27 @@ server <- function(input, output, session){
   #############################################################  Pre Processing Overview  ######################################################
   
   #Plotting the data in the overview of the preprocessing. A lot of if to cover all the cases. It isn't really possible by plotting the data that will be shared because of the key. I didn't manage to make it work that way so I used a ot of if..
-    output$plot_data <- renderPlotly({
-      s <- input$rows_selected
-      if(input$all==TRUE){
-        plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+  output$plot_data <- renderPlotly({
+    s <- input$rows_selected
+    if(input$all==TRUE){
+      plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+    }
+    else if(input$num_check==TRUE){
+      plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+    }
+    else if(length(input$book)){
+      plot_ly(d_books(), x = ~rowname, y = rep(1, NROW(d_books())), key = ~row.names(d_books()), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+    }
+    else{
+      if(!length(s)){
+        plot_ly(original_books_selected(), x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))
       }
-      else if(input$num_check==TRUE){
-        plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+      else if(length(s)){
+        plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
-      else if(length(input$book)){
-        plot_ly(d_books(), x = ~rowname, y = rep(1, NROW(d_books())), key = ~row.names(d_books()), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
-      }
-      # else if((input$all==FALSE)){
-      #   plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
-      # }
-      else{
-        if(!length(s)){
-          plot_ly(original_books_selected(), x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
-        }
-        else if(length(s)){
-          plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
-        }
-      }
-    })
-    #Deselect the other checkboxs when one is selected
+    }
+  })
+  #Deselect the other checkboxs when one is selected
     observeEvent(input$all, {
       if(input$all == TRUE){
         updateCheckboxInput(session, "num_check", value = FALSE)
@@ -130,7 +134,7 @@ server <- function(input, output, session){
         updateCheckboxInput(session, "num_check", value = FALSE)
       }
     })
-    
+
   #Deselecting the check boxes when selecting the plot
      observeEvent(event_data("plotly_selected", source = "select"), {
        updateCheckboxInput(session, "all", value = FALSE)
@@ -140,9 +144,13 @@ server <- function(input, output, session){
      
   #Printing the number of Lines and the maximum number of Lines 
   output$num_data <- renderUI({
-    tagList(renderText({
-      paste("The number of lines of the input file is", n, "and the maximum number of lines you can currently choose is", n-input$num_offset_data+1)})
-      )
+    tagList(
+      renderText({
+      paste("The number of lines of the input file is", n, "and the maximum number of lines you can currently choose is", n-input$num_offset_data+1)}),
+      renderPrint({original_books_tokenized()}),
+      renderPrint({original_books_bis})
+)
+    
     })
   
   output$num_data_highlighted <- renderText({
@@ -295,8 +303,7 @@ server <- function(input, output, session){
   original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected())})
   
   original_books_tokenized_inter <- reactive({arrange(original_books_tokenized()[[3]], desc(freq))})
-  
-  original_books_tokenized_freq <- reactive({original_books_tokenized_inter()%>%mutate(rowname = row_number())})
+  original_books_tokenized_freq <- reactive({original_books_tokenized_inter()%>%mutate(rowname = 1:nrow(original_books_tokenized()[[3]]))})
   
   # use the key aesthetic/argument to help uniquely identify selected observations
   key <- reactive({row.names(original_books_tokenized_freq())})
@@ -414,50 +421,11 @@ server <- function(input, output, session){
   #Choosing the data to give to the wordcloud, depending on which data is taken from plotly
   d_prime_reac <- reactive({data.frame(d_real_shared()$word, d_real_shared()$freq)})
   
-  filter_d <- reactive({
-    #Changing the data in order to match what the wordcloud takes as an input
-    d_prime_reac <- reactive({data.frame(d_real_shared()$word, d_real_shared()$freq)})
-    head(subset(d_prime_reac(), d_real_shared...freq <= input$slide_value_freq[2] & d_real_shared...freq >= 
-                  input$slide_value_freq[1]), 
-         input$slide_value_word)
-  })
+ 
    
-  ################################################################################ Filter Analysis  #########################################################
-  
-  #Updating the value of the maximum of the slider input for the number of words and for the frequency
-  m_act <- reactive({max(original_books_tokenized_freq()$freq)})
-  n_act <- reactive({NROW(original_books_tokenized_freq())})
-  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
-  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
-  
-  
-  #Creating the wordcloud and making it reactive to change in the input values
-  output$wordcloud  <- renderWordcloud2(wordcloud2(data = filter_d(),
-                                                   shape = 'star', size = 0.8, shuffle =FALSE))
-  output$test <- renderPrint({
-    # filter_d()
-    input$selected_word
-  })
   
   ####################################################################  DATA  ################################################################################
   
-  word_freq_wordcloud_selected_filter <- reactive({input$selected_word})
-  word_wordcloud_selected_filter <- reactive({gsub(":[0-9]+", "", word_freq_wordcloud_selected_filter())})
-  list_sentences_wordcloud_filter <- reactive({subset(original_books_tokenized_freq(), word == word_wordcloud_selected_filter())$sentences})
-  data_selected_sentences_wordcloud <- reactive({
-    local_data_selected_sentences_wordcloud <- c()
-    for(i in list_sentences_wordcloud_filter()){
-      local_data_selected_sentences_wordcloud <- c(local_data_selected_sentences_wordcloud , original_books_tokenized()[[1]]$sentence[i])
-    }
-    data.frame(sentence = local_data_selected_sentences_wordcloud)
-    })
-  
-  ########################################################################## DATA table analysis sentences  ########################################################
-  
-  output$sentence_table_wordcloud <- DT::renderDataTable({
-    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
-    
-  })
   
   ###########################################################################  Report ##############################################################
   
