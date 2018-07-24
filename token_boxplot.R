@@ -71,7 +71,6 @@ token.boxplot <- function(my.texte) {
       for(l in 1:n.normalization) {
         
         #l = 1
-        
         if(j==1) {
           lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", l), sep="")
           source(lien)
