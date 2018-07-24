@@ -8,6 +8,7 @@ DEBUG = TRUE
 tokenizer.sentence.1 <- function(my.texte) {
   
   #my.texte <- original_books_bis
+  
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1
@@ -26,11 +27,11 @@ tokenizer.sentence.1 <- function(my.texte) {
     
   }
   
-  #tokens1 <- tokenize_sentences(paste0(as_tibble(original_books[[1]])), lowercase = TRUE)
   if (DEBUG == TRUE) {tokens} 
   tokens <- as_tibble(tokens)
   tokens <- tokens %>% mutate(book = col_2)
   names(tokens) <- c("sentence","book")
+  
   return(tokens)
 }
 

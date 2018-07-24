@@ -1,15 +1,16 @@
 
-token.boxplot <- function(original_books_bis) {
+token.boxplot <- function(my.texte) {
 
-
+  my.texte <- original_books_bis
+  
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
   n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
-  
+  n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
+
   nb.of.sentence <- c()
   nb.of.word.occu <- c()
   nb.of.word.type <- c()
-  
-  token_word <- c()
+  nb.of.normalization <- c()
   
   #fait n.tokenizer.sentence tokenisations de senctence differntes
   for (i in 1:n.tokenizer.sentence){
@@ -17,7 +18,7 @@ token.boxplot <- function(original_books_bis) {
     #i = 3 #2,3
     lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
     source(lien)
-    tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(original_books_bis)", i)
+    tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", i)
     if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
     token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
     if (DEBUG == TRUE) { print(token_sentence) }
@@ -27,7 +28,7 @@ token.boxplot <- function(original_books_bis) {
     for (j in 1:n.tokenizer.word.occu){
       
       token_word <- c()
-      #j = 3 #3,4,5
+      #j = 5 #3,4,5
       if(i==1) {
         lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
         source(lien)
@@ -42,10 +43,7 @@ token.boxplot <- function(original_books_bis) {
         if (DEBUG == TRUE) { new_token_word }
         token_word <- dplyr::bind_rows(token_word,new_token_word) #TODO mettre bout à bout des matrice
         if (DEBUG == TRUE) { token_word }
-        #nb.of.word.occu[i]  <- sum(token_word[2])
-        #nb.of.word.type[i]  <- dim(token_word[2])[1] 
       }
-      ###TO DO NOMBREs de mots a verifier 464,193, 464,194
       nb.of.word.occu[j+(i-1)*n.tokenizer.word.occu]  <- nrow(token_word)
       
       ## TO DO a mettre 
@@ -67,11 +65,29 @@ token.boxplot <- function(original_books_bis) {
       }
       nb.of.word.type[j+(i-1)*n.tokenizer.word.occu]  <- nrow(token_word_freq)
       
-    }
     
+    
+      #normalization
+      for(l in 1:n.normalization) {
+        
+        #l = 1
+        
+        if(j==1) {
+          lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", l), sep="")
+          source(lien)
+        }
+        normalization.i <- sprintf("normalize.%d(token_word_freq)", l)
+        token_word_stem <- eval(parse(text=normalization.i))
+        nb.of.normalization[l+(j-1)*n.normalization+(i-1)*n.tokenizer.word.occu*n.normalization]  <- nrow(token_word_stem)
+        #print(c(i,j,l))
+        #print(token_word_stem)
+      }
+    
+    }
   }
-  return(c(list(nb.of.sentence),list(nb.of.word.occu),list(nb.of.word.type)))
+  
+  return(c(list(nb.of.sentence),list(nb.of.word.occu),list(nb.of.word.type),list(nb.of.normalization)))
 
 }
 
-# token.boxplot(original_books_bis)
+token.boxplot(original_books_bis)

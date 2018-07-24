@@ -1,47 +1,69 @@
-##########################NORMALIZE 2
+library(hunspell)
+#attention ici avec meme tokenization de base pour tweet
+tweet = FALSE
 
-library("tm")
+stem_hunspell <- function(my.texte) {
+  
+  # look up the term in the dictionary
+  tokens <- unlist(my.texte, recursive=FALSE)
+  stems <- hunspell_stem(tokens)[[1]]
+  #print(stems)
+  if (length(stems) == 0) { # if there are no stems, use the original term
+    stem <- my.texte
+  } else { # if there are multiple stems, use the last one
+    stem <- stems[[length(stems)]]
+  }
+  
+  stem
+  
+}
 
 normalize.2 <- function(my.texte) {
   
-  # Load the data as a corpus
-  docs <- Corpus(VectorSource(my.texte[1]))
-  if (DEBUG == TRUE) {docs}
+  my.texte <- token_word_freq
   
-  inspect(docs)
+  my_texte <- my.texte[1]
+  names(my_texte) <- "text"
   
-  toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
-  docs <- tm_map(docs, toSpace, "/")
-  docs <- tm_map(docs, toSpace, "@")
-  docs <- tm_map(docs, toSpace, "\\|")
+  #TO DO a mieux faire
+  if(tweet == TRUE)  {
+    tokens0 <- my_texte %>%
+      unnest_tokens(text, text)
+    if (DEBUG == TRUE) {tokens0} 
+  } else {
+    tokens0 <- my_texte
+  }
+  tokens1 <- text_tokens(tokens0, stemmer = stem_hunspell)
+  tokens2 <- unlist(tokens1, recursive=FALSE)
+
+  listfiles <- unique(tokens2)
+  pre_curseur <- 1
+  curseur <- 1
+  col_word <- c()
+  col_sentence <- c()
+  col_freq <- c()
+  for(word in 1:length(listfiles)) {
+    
+    #word = 13
+    freq <- 0
+    sentence <- c()
+    while(identical(listfiles[word], tokens2[curseur])) {
+      freq <- freq + token_word_freq[curseur,]$freq
+      sentence <- c(sentence, unlist(token_word_freq[curseur,]$sentences))
+      curseur <- curseur + 1
+    }
+    col_word <- c(col_word, tokens2[(curseur-1)])
+    col_sentence <- c(col_sentence, list(sentence))
+    col_freq <- c(col_freq,freq)
+    pre_curseur <- curseur
+    
+  }
   
-  # Convert the text to lower case
-  docs <- tm_map(docs, content_transformer(tolower))
-  # Remove numbers
-  docs <- tm_map(docs, removeNumbers)
-  # Remove english common stopwords
-  #docs <- tm_map(docs, removeWords, stopwords("english"))
-  # Remove your own stop word
-  # specify your stopwords as a character vector
-  #docs <- tm_map(docs, removeWords, c("blabla1", "blabla2"))
-  # Remove punctuations
-  docs <- tm_map(docs, removePunctuation)
-  # Eliminate extra white spaces
-  docs <- tm_map(docs, stripWhitespace)
-  # Text stemming
-  docs <- tm_map(docs, stemDocument)
+  if (DEBUG == TRUE) {tokens} 
+  token_word_stem <- tibble(word = col_word, sentences = col_sentence, freq = col_freq)
   
-  dtm <- TermDocumentMatrix(docs)
-  if (DEBUG == TRUE) {dtm}
+  return(token_word_stem)
   
-  m <- as.matrix(dtm)
-  v <- sort(rowSums(m),decreasing=TRUE)
-  d <- data.frame(word = names(v),freq=v)
-  
-  nb.of.words <- sum(d[2])
-  nb.of.types <- dim(d[2])[1]
-  return(c(nb.of.words, nb.of.types))
-  #12801
 }
 
-normalize.2(original_books)
+#normalize.2(token_word_freq)

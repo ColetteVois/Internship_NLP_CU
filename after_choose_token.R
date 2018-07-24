@@ -1,3 +1,4 @@
+library(stringi)
 
 after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
   
@@ -46,10 +47,17 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   }
   
   #token_word_freq <- token_word_freq %>% mutate(book = "all")
-  #token_word_freq %>% bind_tf_idf(word, book, freq)
+  #token_word_freq %>% bind_tf_idf(word, book, freq) ### ne marche pas TODO
+
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq)))
 
 }
 
 #token_info <- after.choose.token(original_books_bis, 1, 1) 
+<<<<<<< HEAD
+=======
+#token_sentence <- token_info[[1]]
+#token_word <- token_info[[2]]
+#token_word_freq <- token_info[[3]]
+>>>>>>> 19091271acd3df813b34c3dca517e99a67b71fa4

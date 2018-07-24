@@ -1,46 +1,44 @@
-###########################NORMALIZE 5
+library("tm")
 
-#attention ici avec meme tokenization de base pour tweet
-
-
-# download the list
-url <- "http://www.lexiconista.com/Datasets/lemmatization-en.zip"
-tmp <- tempfile()
-download.file(url, tmp)
-
-# extract the contents
-con <- unz(tmp, "lemmatization-en.txt", encoding = "UTF-8")
-tab <- read.delim(con, header=FALSE, stringsAsFactors = FALSE)
-names(tab) <- c("stem", "term")
-
-head(tab)
-
-stem_list <- function(term) {
-  i <- match(term, tab$term)
-  if (is.na(i)) {
-    stem <- term
-  } else {
-    stem <- tab$stem[[i]]
-  }
-  stem
+normalize.2 <- function(my.texte) {
+  
+  # Load the data as a corpus
+  docs <- Corpus(VectorSource(my.texte[1]))
+  if (DEBUG == TRUE) {docs}
+  
+  inspect(docs)
+  
+  toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+  docs <- tm_map(docs, toSpace, "/")
+  docs <- tm_map(docs, toSpace, "@")
+  docs <- tm_map(docs, toSpace, "\\|")
+  
+  # Convert the text to lower case
+  docs <- tm_map(docs, content_transformer(tolower))
+  # Remove numbers
+  docs <- tm_map(docs, removeNumbers)
+  # Remove english common stopwords
+  #docs <- tm_map(docs, removeWords, stopwords("english"))
+  # Remove your own stop word
+  # specify your stopwords as a character vector
+  #docs <- tm_map(docs, removeWords, c("blabla1", "blabla2"))
+  # Remove punctuations
+  docs <- tm_map(docs, removePunctuation)
+  # Eliminate extra white spaces
+  docs <- tm_map(docs, stripWhitespace)
+  # Text stemming
+  docs <- tm_map(docs, stemDocument)
+  
+  dtm <- TermDocumentMatrix(docs)
+  if (DEBUG == TRUE) {dtm}
+  
+  m <- as.matrix(dtm)
+  v <- sort(rowSums(m),decreasing=TRUE)
+  d <- data.frame(word = names(v),freq=v)
+  
+  nb.of.words <- sum(d[2])
+  nb.of.types <- dim(d[2])[1]
+  return(c(nb.of.words, nb.of.types))
 }
 
-normalize.5 <- function(my.texte) {
-  if(tweet == TRUE)#TO DO a mieux faire
-  {
-    tokens0 <- my.texte %>%
-      unnest_tokens(text, text)
-    if (DEBUG == TRUE) {tokens0} 
-  } else {
-    tokens0 <- my.texte
-  }
-  tokens1 <- text_tokens(tokens0, stemmer = stem_list)
-  tokens2 <- unlist(tokens1, recursive=FALSE)
-  tokens <- unique(tokens2)
-  if (DEBUG == TRUE) {tokens} 
-  nb.of.words <- length(tokens)
-  return(nb.of.words)
-  #725056
-}
-
-normalize.5(original_books)
+normalize.2(original_books)
