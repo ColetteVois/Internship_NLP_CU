@@ -21,6 +21,7 @@ library("NLP")
 library("quanteda")
 library("stringi")
 library("tibble")
+library("corpus")
 
 #Shiny App
 #UI and layout. It implements the front-end
@@ -59,7 +60,9 @@ body <- dashboardBody(
       radioButtons("token_sentence_radio_button_now", "Choose the tokenization of sentences",
                    check_choices_token_sentence_check, inline = TRUE),
       radioButtons("token_word_radio_button_now", "Choose the tokenization of words",
-                   check_choices_token_word_check, inline = TRUE)
+                   check_choices_token_word_check, inline = TRUE),
+      radioButtons("token_norma_radio_button_now", "Choose the normalization of words",
+                   check_choices_token_norma_check, inline = TRUE)
     ),
     tabItem(
       tabName = "overview_pre",
@@ -114,6 +117,8 @@ body <- dashboardBody(
                              check_choices_token_sentence_check, inline = TRUE),
           radioButtons("token_word_radio_button_later", "Choose the tokenization of words",
                              check_choices_token_word_check, inline = TRUE),
+          radioButtons("token_norma_radio_button_later", "Choose the normalization of words",
+                       check_choices_token_norma_check, inline = TRUE),
           textOutput("choice_tokenizations_reminded"),
           tags$br(),
           tags$b(uiOutput("warning_choose_before"))
@@ -138,7 +143,9 @@ body <- dashboardBody(
             uiOutput("summary_reg_zips_law")
         ),
         box(width = 4,
-            plotOutput("plot_zips_law"))
+            plotOutput("plot_zips_law")),
+        box(width = 4,
+            tableOutput("table_info_details_pre"))
       )),
     tabItem(
       tabName = "overview_ana",

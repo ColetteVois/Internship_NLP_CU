@@ -173,6 +173,7 @@ server <- function(input, output, session){
   d_boxplot_2 <- reactive({data.frame(token_word_ocu_col = unlist(d_token_boxplot()[2]))})
   d_boxplot_3 <- reactive({data.frame(token_word_type_col = unlist(d_token_boxplot()[3]))})
   d_boxplot_4 <- reactive({data.frame(token_ratio_col = unlist(d_token_boxplot()[2])/unlist(d_token_boxplot()[3]))})
+  d_boxplot_5 <- reactive({data.frame(token_normalization = unlist(d_token_boxplot()[4]))})
   
   #Doing the boxplots
   
@@ -190,7 +191,7 @@ server <- function(input, output, session){
     plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_5 <- renderPlotly({
-    plot_ly(test_d,x = rep(0, length(test)), y=~test, type = "scatter", source = "box5", mode='markers')%>%add_trace(test_d, y=~test, type = "box",  marker = list(outliercolor = "red"))
+    plot_ly(d_boxplot_5(),x = rep(0, length(d_boxplot_5()$token_normalization)), y=~token_normalization, type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5(), y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
   
   #Doing the hover descritpion
@@ -251,10 +252,19 @@ server <- function(input, output, session){
       input$token_word_radio_button_later 
     }
   })
+  
+  token_norma_radio_button <- reactive({
+    if(input$choice_token_moment == "Now"){
+      input$token_norma_radio_button_now 
+    }
+    else if(input$choice_token_moment == "Later"){
+      input$token_norma_radio_button_later
+    }
+  })
   #Warning if Now chosen
   
   output$choice_tokenizations_reminded <- renderText({
-    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), "and the word tokenization ", id_token_word_selected(),".")
+    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), "the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
   })
       
   output$warning_choose_before <- renderUI({
@@ -292,7 +302,8 @@ server <- function(input, output, session){
   source(lien)
   id_token_sentence_selected <- reactive({strtoi(token_sentence_radio_button())})
   id_token_word_selected <- reactive({strtoi(token_word_radio_button())})
-  original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected())})
+  id_token_norma_selected <- reactive({strtoi(token_norma_radio_button())})
+  original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected(),id_token_norma_selected())})
   
   original_books_tokenized_inter <- reactive({arrange(original_books_tokenized()[[3]], desc(freq))})
   
@@ -324,7 +335,7 @@ server <- function(input, output, session){
     # data_line_log_plotly <- data.frame(reg_lin_col = data_line_log_plotly)
     # plot_ly(data_heaps_law(), x =~ log(nb.of.word.occu), y =~ log(nb.of.stop.word))%>%add_trace(data_line_log_plotly, y =~ reg_lin_col, type = "scatter", mode = "line")
   
-    plot(log(nb.of.word.occu()),log(nb.of.stop.word()))
+    plot(log(nb.of.word.occu()),log(nb.of.stop.word()),main="Heaps law Log", xlab="Log of number of word occurences", ylab="Log of number of stop words")
     abline(reg_lin()) 
     })
   output$summary_reg_heaps_law <- renderUI(
@@ -333,7 +344,7 @@ server <- function(input, output, session){
     )
   )
   output$plot_heaps_law <- renderPlot({
-    plot(nb.of.word.occu(), nb.of.stop.word())
+    plot(nb.of.word.occu(), nb.of.stop.word(),main="Heaps law", xlab="Number of word occurences", ylab="Number of stop words")
     lines(nb.of.word.occu(), K()*nb.of.word.occu()^beta(), col="red")
   })
   
@@ -361,8 +372,14 @@ server <- function(input, output, session){
       geom_abline(intercept = log(lambda()), slope = inv(), color = "red") +
       geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
       scale_x_log10() +
-      scale_y_log10()
+      scale_y_log10() + ggtitle("Zipf's law") + xlab("Rank")+ ylab("Term frequency")
   })
+  
+  #Doing the table with some info about the text
+  lien <- paste(my_path,"/Intership_NLP_CU/table_info.R", sep="")
+  source(lien)
+  output$table_info_details_pre <- renderTable(table.info(original_books_tokenized()))
+  
   ######################################################################### Overview Analysis  ####################################################
   
   #Plotting the scatterplot with plotly
