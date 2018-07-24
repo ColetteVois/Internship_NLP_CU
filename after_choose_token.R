@@ -1,6 +1,6 @@
 library(stringi)
 
-after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
+after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word, choose_normalization) {
   
   # my.texte <- original_books_bis
   # choose_tokenizer_sentence <- 1
@@ -12,6 +12,9 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   source(lien)
   
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
+  source(lien)
+  
+  lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
   source(lien)
 
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)
@@ -42,14 +45,19 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
     pre_curseur <- curseur
   }
   
+
+  normalization.i <- sprintf("normalize.%d(token_word_freq)", choose_normalization)
+  token_word_stem <- eval(parse(text=normalization.i))
+  
   #token_word_freq <- token_word_freq %>% mutate(book = "all")
   #token_word_freq %>% bind_tf_idf(word, book, freq) ### ne marche pas TODO
 
-  return(c(list(token_sentence), list(token_word), list(token_word_freq)))
+  return(c(list(token_sentence), list(token_word), list(token_word_freq), list(token_word_stem)))
 
 }
 
-#token_info <- after.choose.token(original_books_bis, 1, 1) 
+token_info <- after.choose.token(original_books_bis, 1, 1,1) 
 #token_sentence <- token_info[[1]]
 #token_word <- token_info[[2]]
 #token_word_freq <- token_info[[3]]
+token_word_stem <- token_info[[4]]
