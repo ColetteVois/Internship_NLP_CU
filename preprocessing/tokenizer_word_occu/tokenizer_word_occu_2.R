@@ -56,9 +56,11 @@ Clean_Text_Block <- function(text){
 
 tokenizer.word.2 <- function(my.texte,k) {
   
+  #k = 264
   #my.texte <- token_sentence[k,]
+  
   book_name <- my.texte[2][[1]]
-  clean_speech <- Clean_Text_Block(my.texte)
+  clean_speech <- Clean_Text_Block(my.texte[[1]])
   tokens <- as_tibble(clean_speech$text)
   names(tokens) <- "word"
   tidy_books <- tokens %>% mutate(sentence = k, book = book_name)
