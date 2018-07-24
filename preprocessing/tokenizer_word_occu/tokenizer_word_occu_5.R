@@ -7,10 +7,10 @@ tokenizer.word.5 <- function(my.texte,k) {
   book_name <- my.texte[2][[1]]
   #if their is just one word tokenize_tweets do not works
   if(length(tokenize_words(paste0(my.texte[1]), lowercase = TRUE)[[1]])>1) {
-    print("if")
+    #print("if")
     tokens <- tokenize_tweets(paste0(my.texte[1]), lowercase = TRUE)
   }  else{
-    print("else")
+    #print("else")
     tokens <- tokenize_words(paste0(my.texte[1]), lowercase = TRUE)
   }
   #tokens <- tokenize_tweets(paste0(my.texte[1]), lowercase = TRUE)
