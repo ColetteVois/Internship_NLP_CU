@@ -73,7 +73,12 @@ body <- dashboardBody(
           checkboxInput("num_check", label = "Choose the data with the numeric input, else you can select it on the graph", value = FALSE),
           numericInput(inputId = "num_offset_data", label = "Choose the number of the first line", min = 1, max = n, value = 1),
           numericInput(inputId = "num_word_data", label = "Choose the number of lines follwing the offset", min = 1, max = n, value = n),
-          uiOutput("num_data")
+          tags$br(),
+          uiOutput("num_data"),
+          tags$br(),
+          tags$b(textOutput("num_data_highlighted")),
+          tags$br(),
+          uiOutput("num_data_text_display")
         ),
         box(
           checkboxGroupInput("book", "Choose one or more book(s)",
@@ -109,7 +114,9 @@ body <- dashboardBody(
                              check_choices_token_sentence_check, inline = TRUE),
           radioButtons("token_word_radio_button_later", "Choose the tokenization of words",
                              check_choices_token_word_check, inline = TRUE),
-          uiOutput("warning_choose_before")
+          textOutput("choice_tokenizations_reminded"),
+          tags$br(),
+          tags$b(uiOutput("warning_choose_before"))
         )
       )
     ),

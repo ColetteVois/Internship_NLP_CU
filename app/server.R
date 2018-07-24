@@ -113,14 +113,14 @@ server <- function(input, output, session){
         updateCheckboxGroupInput(session, "book", selected = character(0))
       }
     })
-    
+
     observeEvent(input$num_check, {
       if(input$num_check == TRUE){
         updateCheckboxInput(session, "all", value = FALSE)
         updateCheckboxGroupInput(session, "book", selected = character(0))
       }
     })
-    
+
     observeEvent(input$book, {
       if(length(input$book)){
         updateCheckboxInput(session, "all", value = FALSE)
@@ -137,21 +137,27 @@ server <- function(input, output, session){
      
   #Printing the number of Lines and the maximum number of Lines 
   output$num_data <- renderUI({
-    tagList(renderText({"The number of lines of the input file is"}),
-      renderPrint({n}),
-      renderText({"and the maximum number of lines you can currently choose is"}),
-      renderPrint({n-input$num_offset_data+1}),
-      if(input$num_word_data > n-input$num_offset_data+1){
-        renderText("You have chosen a number of lines that is too high, it will just pick every line after the chosen offset")
-      },
+    tagList(renderText({
+      paste("The number of lines of the input file is", n, "and the maximum number of lines you can currently choose is", n-input$num_offset_data+1)})
+      )
+    })
+  
+  output$num_data_highlighted <- renderText({
+    if(input$num_word_data > n-input$num_offset_data+1){
+      "You have chosen a number of lines that is too high, it will just pick every line after the chosen offset."
+    }
+  })
+  
+  output$num_data_text_display <- renderUI({
+    tagList(
       if(n_act()>=1){
         renderText({"Here are the first 50 lines of the book you selected:"})
       },
+      tags$br(),
       if(n_act()>=1){
-        renderPrint({original_books_selected_print()})
+    renderPrint({cat(original_books_selected_print(),sep="\n")})
       }
-      )
-    })
+    )})
   
   ################################################################################## Filter Pre Processing  ################################################
   
@@ -242,21 +248,20 @@ server <- function(input, output, session){
       input$token_word_radio_button_later 
     }
   })
-  
   #Warning if Now chosen
   
+  output$choice_tokenizations_reminded <- renderText({
+    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), "and the word tokenization ", id_token_word_selected(),".")
+  })
+      
   output$warning_choose_before <- renderUI({
     tagList(
-      renderPrint({id_token_word_selected()}),
-      renderPrint({id_token_sentence_selected()}),
       if(input$choice_token_moment == "Now"){
-        renderText("You have chosen to choose the tokenization at the beginning of the app. So what you will choose here will have no effect on the tokenization used for the analysis. If you want to choose here, you need to go back to the first page (Data) and choose 'Later'")
+        renderText({"You have chosen to choose the tokenization at the beginning of the app. So what you will choose here will have no effect on the tokenization used for the analysis. If you want to choose here, you need to go back to the first page (Data) and choose 'Later'"})
       },
       renderPrint({original_books_tokenized()}),
       renderPrint({d_real_shared()}),
       renderPrint({d_prime_reac()})
-      
-      
     )
   })
   
@@ -282,8 +287,8 @@ server <- function(input, output, session){
   #Data created using a function taking the koens used as arguments
   lien <- paste(my_path,"/Intership_NLP_CU/after_choose_token.R", sep="")
   source(lien)
-  id_token_sentence_selected <- reactive({strtoi(gsub("TokenizationSentence", "",token_sentence_radio_button()))})
-  id_token_word_selected <- reactive({strtoi(gsub("TokenizationWord", "",token_word_radio_button()))})
+  id_token_sentence_selected <- reactive({strtoi(token_sentence_radio_button())})
+  id_token_word_selected <- reactive({strtoi(token_word_radio_button())})
   original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected())})
   
   original_books_tokenized_inter <- reactive({arrange(original_books_tokenized()[[3]], desc(freq))})
