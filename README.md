@@ -10,7 +10,7 @@ Description: This project has two goals. The first one is to show the importance
 
 GitHub: Here is a description of how to use the GitHub repository to do what you want with it.
 
-  -If you want to install the app, you need to:
+  -If you want to install the app, you need to: \n
          -Download the GitHub repository
          -Run the install_packages.R file in R Studio
          
