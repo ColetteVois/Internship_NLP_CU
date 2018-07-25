@@ -166,7 +166,7 @@ server <- function(input, output, session){
   
   #Doing the filter page from the pre processing
   #Creating the data for the boxplots
-  lien <- paste(my_path,"/Intership_NLP_CU/token_boxplot.R", sep="")
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/token_boxplot.R", sep="")
   source(lien)
   d_token_boxplot <- reactive({token.boxplot(original_books_selected_used())})
   d_boxplot_1 <- reactive({data.frame(token_sentence_col = unlist(d_token_boxplot()[1]))})
@@ -355,7 +355,7 @@ server <- function(input, output, session){
   
   ########################################################################## DATA  ###########################################################
   #Data created using a function taking the koens used as arguments
-  lien <- paste(my_path,"/Intership_NLP_CU/after_choose_token.R", sep="")
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/after_choose_token.R", sep="")
   source(lien)
   id_token_sentence_selected <- reactive({strtoi(token_sentence_radio_button())})
   id_token_word_selected <- reactive({strtoi(token_word_radio_button())})
@@ -374,7 +374,7 @@ server <- function(input, output, session){
   
   #########################################################################  Details on demand Pre processing  ################################################
   #Heaps law
-  lien <- paste(my_path,"/Intership_NLP_CU/heaps_law.R", sep="")
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/heaps_law.R", sep="")
   source(lien)
   
   heaps_law_result <- reactive({heaps.law(original_books_selected_used(), id_token_sentence_selected(), id_token_word_selected())})
@@ -406,7 +406,7 @@ server <- function(input, output, session){
   })
   
   #Zips law
-  lien <- paste(my_path,"/Intership_NLP_CU/zips_law.R", sep="")
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/zips_law.R", sep="")
   source(lien)
   zips_law_result <- reactive({zipfs.law(original_books_tokenized_freq())})
   zips_law_data <- reactive({zips_law_result()[[1]]})
@@ -418,7 +418,7 @@ server <- function(input, output, session){
       renderPrint({zips_law_result()[[4]]})
     )
   })
-  # jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
+  # jpeg(paste(my_path, sprintf('/Intership_NLP_CU/backend_analysis/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
   # freq_by_rank %>% ggplot(aes(rank, term_frequency)) +
   #   geom_abline(intercept = reg_lin$coefficients[[1]], slope = inv, color = "red") +
   #   geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
@@ -433,7 +433,7 @@ server <- function(input, output, session){
   })
   
   #Doing the table with some info about the text
-  lien <- paste(my_path,"/Intership_NLP_CU/table_info.R", sep="")
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/table_info.R", sep="")
   source(lien)
   output$table_info_details_pre <- renderTable(table.info(original_books_tokenized()))
   

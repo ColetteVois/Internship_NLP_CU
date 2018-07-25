@@ -7,6 +7,11 @@ my_path <- "C:/Users/Projet"
 choose_load_data <- 1
 DEBUG = TRUE
 
+################################# Load the libraries and install the packages if not  #################################################
+
+lien <- paste(my_path,"/Intership_NLP_CU/install_packages.R", sep="")
+source(lien)
+
 ################################### LOAD DATA ###########################################
 
 source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choose_load_data), sep = ""))

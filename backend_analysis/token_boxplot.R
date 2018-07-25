@@ -89,4 +89,4 @@ token.boxplot <- function(my.texte) {
 
 }
 
-token.boxplot(original_books_bis)
+#token.boxplot(original_books_bis)
