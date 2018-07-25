@@ -1,4 +1,5 @@
 library(hunspell)
+library(corpus)
 #attention ici avec meme tokenization de base pour tweet
 tweet = FALSE
 

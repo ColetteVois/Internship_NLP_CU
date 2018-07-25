@@ -2,7 +2,7 @@ library(tokenizers)
 
 normalize.1 <- function(my.texte) {
   
-  my.texte <- token_word_freq
+  #my.texte <- token_word_freq
   
   tokens1 <- tokenize_word_stems(paste0(my.texte[[1]]))
   tokens2 <- unlist(tokens1, recursive=FALSE) 
@@ -38,4 +38,4 @@ normalize.1 <- function(my.texte) {
   
 }
 
-token_word_stem <- normalize.1(token_word_freq)
+#token_word_stem <- normalize.1(token_word_freq)
