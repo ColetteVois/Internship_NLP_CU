@@ -67,3 +67,8 @@ while(count_3 <= n.normalization){
 }
 
 m <- 400
+
+#########################################################  Running the shiny app ########################################################
+
+lien <- paste(my_path,"/Intership_NLP_CU/app", sep="")
+runApp(lien, launch.browser = TRUE)
