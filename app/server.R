@@ -175,23 +175,30 @@ server <- function(input, output, session){
   d_boxplot_4 <- reactive({data.frame(token_ratio_col = unlist(d_token_boxplot()[2])/unlist(d_token_boxplot()[3]))})
   d_boxplot_5 <- reactive({data.frame(token_normalization = unlist(d_token_boxplot()[4]))})
   
+  #Creating the keys for the boxplot to uniquely identify the tokenizations
+  key_1 <- reactive({row.names(d_boxplot_1())})
+  key_2 <- reactive({row.names(d_boxplot_2())})
+  key_3 <- reactive({row.names(d_boxplot_3())})
+  key_4 <- reactive({row.names(d_boxplot_4())})
+  key_5 <- reactive({row.names(d_boxplot_5())})
+  
   #Doing the boxplots
   
   output$box_1 <- renderPlotly({
-    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, type = "scatter", source = "box1", mode='markers')%>%add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
-                                                                                                                                                      #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
+    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, key  =~ key_1(), type = "scatter", source = "box1", mode='markers')%>%add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
+                                                                                                                                                  #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
   })
   output$box_2 <- renderPlotly({
-    plot_ly(d_boxplot_2(),x = rep(0, length(d_boxplot_2()$token_word_ocu_col)), y=~token_word_ocu_col, type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2(), y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_2(),x = rep(0, length(d_boxplot_2()$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2(), y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_3 <- renderPlotly({
-    plot_ly(d_boxplot_3(),x = rep(0, length(d_boxplot_3()$token_word_type_col)), y=~token_word_type_col, type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3(), y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_3(),x = rep(0, length(d_boxplot_3()$token_word_type_col)), y=~token_word_type_col, key  =~ key_3(), type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3(), y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_4 <- renderPlotly({
-    plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, key  =~ key_4(), type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_5 <- renderPlotly({
-    plot_ly(d_boxplot_5(),x = rep(0, length(d_boxplot_5()$token_normalization)), y=~token_normalization, type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5(), y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_5(),x = rep(0, length(d_boxplot_5()$token_normalization)), y=~token_normalization, key  =~ key_5(), type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5(), y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
   
   #Doing the hover descritpion
@@ -202,33 +209,83 @@ server <- function(input, output, session){
     d4 <- event_data("plotly_hover", source = "box4")
     d5 <- event_data("plotly_hover", source = "box5")
     
-    n1 <- d1$pointNumber
-    n2 <- d2$pointNumber
-    n3 <- d3$pointNumber
-    n4 <- d4$pointNumber
-    n5 <- d5$pointNumber
+    n1 <- d1$key
+    n2 <- d2$key
+    n3 <- d3$key
+    n4 <- d4$key
+    n5 <- d5$key
     
-    #The if is a little bit twisted, firstly we need to take away the points of the boxplot which are of length greater than 1 and also we need to avoid having 
-    #length = 0. Then we want to do a OR. Indeed, if we hover the point in one of the five boxplots, we want its description. If we do directly an OR, that doesn't work because we don't know all the values yet,
-    #so the condition will give NA, which an IF can't take. So we take away this by doing !is.na, an then we do the or we wanted to do in the first place. 
-    tagList(
-      renderPrint({d1}),
-      if(length(n1) == 1 | length(n2) == 1 |length(n3) == 1 |length(n4) == 1 |length(n5) == 1){
-        if(!is.na(n1==0 ||n2==0 ||n3==0||n4==0||n5==0)){
-          if(n1==0 ||n2==0 ||n3==0||n4==0||n5==0){
-            renderText("This tokenisation is based on this package. It does that and this and is better for the sentences.")
-          }
+    lien <- paste(my_path,"/Intership_NLP_CU/preprocessing/description/description_token.R", sep="")
+    source(lien)
+    
+    #May be a problem if there are several points with the same y
+    if(length(n1)==1){
+      text_descri_hover_choosen_1 <- ""
+      for(i in token_sentence_description){
+        if(as.integer(((strtoi(n1) %% n.tokenizer.sentence))) == strtoi(i[1])){
+          text_descri_hover_choosen_1 <- i[2]
         }
-        else if(!is.na(n1==1 ||n2==1||n3==1||n4==1||n5==1)){
-          if(n1==1 ||n2==1||n3==1||n4==1||n5==1){
-          renderText("This tokenisation is based on this package. It does that and this and is better for the words.")
-          }
       }
-        else if(!is.na(n1==2 ||n2==2||n3==2||n4==2||n5==2)){
-          if(n1==2 ||n2==2||n3==2||n4==2||n5==2){
-          renderText("This tokenisation is based on this package. It does that and this and is better for the books.")
-          }
+    }
+
+    if(length(n2)==1){
+      text_descri_hover_choosen_2 <- ""
+      for(i in token_word_description){
+        if((strtoi(n2) %% n.tokenizer.word.occu) == strtoi(i[1])){
+          text_descri_hover_choosen_2 <- i[2]
         }
+      }
+    }
+
+    if(length(n3)==1){
+      text_descri_hover_choosen_3 <- ""
+      for(i in token_word_description){
+        if((strtoi(n3) %% n.tokenizer.word.occu) == strtoi(i[1])){
+          text_descri_hover_choosen_3 <- i[2]
+        }
+      }
+    }
+
+    if(length(n4)==1){
+      text_descri_hover_choosen_4 <- ""
+      for(i in token_word_description){
+        if((strtoi(n4) %% n.tokenizer.word.occu) == strtoi(i[1])){
+          text_descri_hover_choosen_4 <- i[2]
+        }
+      }
+    }
+
+    if(length(n5)==1){
+      text_descri_hover_choosen_5 <- ""
+      for(i in token_norma_description){
+        if((strtoi(n5) %% n.normalization) == strtoi(i[1])){
+          text_descri_hover_choosen_5 <- i[2]
+        }
+      }
+    }
+    
+    tagList(
+      renderPrint({typeof(n3)}),
+      renderPrint({(strtoi(n5)%% n.normalization) == 2}),
+      renderPrint({d1}),
+      renderPrint({d2}),
+      renderPrint({d3}),
+      renderPrint({d4}),
+      renderPrint({d5}),
+      if(length(n1)==1){
+      renderPrint({cat(text_descri_hover_choosen_1)})
+      },
+      if(length(n2)==1){
+        renderPrint({cat(text_descri_hover_choosen_2)})
+      },
+      if(length(n3)==1){
+        renderPrint({cat(text_descri_hover_choosen_3)})
+      },
+      if(length(n4)==1){
+        renderPrint({cat(text_descri_hover_choosen_4)})
+      },
+      if(length(n5)==1){
+        renderPrint({cat(text_descri_hover_choosen_5)})
       }
     )
   })
@@ -264,7 +321,7 @@ server <- function(input, output, session){
   #Warning if Now chosen
   
   output$choice_tokenizations_reminded <- renderText({
-    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), "the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
+    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), ",the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
   })
       
   output$warning_choose_before <- renderUI({
