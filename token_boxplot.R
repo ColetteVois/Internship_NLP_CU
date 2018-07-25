@@ -15,7 +15,7 @@ token.boxplot <- function(my.texte) {
   #fait n.tokenizer.sentence tokenisations de senctence differntes
   for (i in 1:n.tokenizer.sentence){
     
-    #i = 3 #2,3
+    i = 2 #2,3
     lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
     source(lien)
     tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", i)
