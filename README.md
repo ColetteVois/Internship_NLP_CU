@@ -16,7 +16,7 @@ GitHub: Here is a description of how to use the GitHub repository to do what you
          <li>Run the install_packages.R file in R Studio</li>
          </ul>
          <br />
-  -If you want to use the app, you need to:<br />
+  -If you want to use the app, you need to: <br />
          <ul>
         <li>Open the main.R file</li>
         <li>Choose the path of the GitHub repository on your computer</li>
