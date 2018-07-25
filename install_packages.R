@@ -44,6 +44,7 @@ if(!require("knitr")){
 }
 if(!require("webshot")){
   install.packages("webshot")
+  webshot::install_phantomjs()
   library("webshot")
 }
 if(!require("shinydashboard")){
@@ -52,8 +53,8 @@ if(!require("shinydashboard")){
 }
 ###attention bug parfois quand library
 if(!require("tinytext")){
-  install.packages("tinytext")
-  library("tinytext")
+  install.packages("tinytex")
+  tinytex::install_tinytex()
 }
 if(!require("knitrProgressBar")){
   install.packages("knitrProgressBar")
