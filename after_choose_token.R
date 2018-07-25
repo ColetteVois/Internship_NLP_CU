@@ -2,9 +2,10 @@ library(stringi)
 
 after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word, choose_normalization) {
   
-  # my.texte <- original_books_bis
-  # choose_tokenizer_sentence <- 1
-  # choose_tokenizer_word <- 1
+  my.texte <- original_books_bis
+  choose_tokenizer_sentence <- 1
+  choose_tokenizer_word <- 1
+  choose_normalization <- 1
   
   if(nrow(my.texte)==0) {
     return(c(list(tribble(~sentence,~book)), list(tribble(~word,~sentence,~book)), list(tribble(~word,~sentences,~freq))))
@@ -27,7 +28,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", choose_tokenizer_word)
     
   for(k in 1:dim(token_sentence)[1]) {
-    # k = 3
+    #k = 2
     new_token_word <- eval(parse(text=tokenizer.word.i))
     token_word <- dplyr::bind_rows(token_word,new_token_word) 
   }
