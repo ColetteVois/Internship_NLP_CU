@@ -2,30 +2,93 @@ if(!require("shiny")){
   install.packages("shiny")
   library("shiny")
 }
-
-
-library(shiny)
-library(DT)
-library(plotly)
-library(dplyr)
-library(tidyverse)
-library(wordcloud2)
-library(wordcloud)
-library(tm)
-library(crosstalk)
-library(rmarkdown)
-library(knitr)
-library(webshot)
-library(shinydashboard)
-#library(tinytext)
-library(knitrProgressBar)
-library(rlist)
+if(!require("DT")){
+  install.packages("DT")
+  library("DT")
+}
+if(!require("plotly")){
+  install.packages("plotly")
+  library("plotly")
+}
+if(!require("dplyr")){
+  install.packages("dplyr")
+  library("dplyr")
+}
+if(!require("tidyverse")){
+  install.packages("tidyverse")
+  library("tidyverse")
+}
+if(!require("wordcloud2")){
+  install.packages("wordcloud2")
+  library("wordcloud2")
+}
+if(!require("wordcloud")){
+  install.packages("wordcloud")
+  library("wordcloud")
+}
+if(!require("tm")){
+  install.packages("tm")
+  library("tm")
+}
+if(!require("crosstalk")){
+  install.packages("crosstalk")
+  library("crosstalk")
+}
+if(!require("rmarkdown")){
+  install.packages("rmarkdown")
+  library("rmarkdown")
+}
+if(!require("knitr")){
+  install.packages("knitr")
+  library("knitr")
+}
+if(!require("webshot")){
+  install.packages("webshot")
+  library("webshot")
+}
+if(!require("shinydashboard")){
+  install.packages("shinydashboard")
+  library("shinydashboard")
+}
+###attention bug parfois quand library
+if(!require("tinytext")){
+  install.packages("tinytext")
+  library("tinytext")
+}
+if(!require("knitrProgressBar")){
+  install.packages("knitrProgressBar")
+  library("knitrProgressBar")
+}
+if(!require("rlist")){
+  install.packages("rlist")
+  library("rlist")
+}
 #Pour Colette
-library("pracma")
-library("openNLP")
-library("NLP")
-library("quanteda")
-library("stringi")
-library("tibble")
-library("corpus")
-
+if(!require("pracma")){
+  install.packages("pracma")
+  library("pracma")
+}
+if(!require("openNLP")){
+  install.packages("openNLP")
+  library("openNLP")
+}
+if(!require("NLP")){
+  install.packages("NLP")
+  library("NLP")
+}
+if(!require("quanteda")){
+  install.packages("quanteda")
+  library("quanteda")
+}
+if(!require("stringi")){
+  install.packages("stringi")
+  library("stringi")
+}
+if(!require("tibble")){
+  install.packages("tibble")
+  library("tibble")
+}
+if(!require("corpus")){
+  install.packages("corpus")
+  library("corpus")
+}
