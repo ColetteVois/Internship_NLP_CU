@@ -12,8 +12,8 @@ DEBUG = TRUE
 source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choose_load_data), sep = ""))
 load.data.i <- sprintf("load.data.%d()", choose_load_data)
 original_books <- eval(parse(text=load.data.i))
-original_books <- original_books %>% mutate(rowname = 1:nrow(original_books))
-original_books_bis <- original_books[1:1000,]
+original_books <- original_books %>% mutate(rowname = 1:nrow(original_books), book = "all the same")
+original_books_bis <- original_books[1:300,]
 #Removing the spaces from the column book. I had to change the type to character in order to change the column and 
 #then re change it in factor to let it as it was before.
 count = 1

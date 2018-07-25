@@ -13,7 +13,7 @@ token.boxplot <- function(my.texte) {
   nb.of.normalization <- c()
   
   #fait n.tokenizer.sentence tokenisations de senctence differntes
-  for (i in 1:n.tokenizer.sentence){
+  for (i in c(1,3)){
     
     #i = 3 #2,3
     lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
