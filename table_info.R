@@ -5,6 +5,7 @@ table.info <- function(token_info) {
   token_word <- token_info[[2]]
   token_word_freq <- token_info[[3]]
   token_word_stem <- token_info[[4]]
+  token_word_stop <- token_info[[5]]
   
   ligne <- list("number of documents", "N", length(unique(token_sentence$book)))
   names(ligne) <- c("Variables","Symboles", "Values")
@@ -26,11 +27,11 @@ table.info <- function(token_info) {
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of terme in vocabulary", " ", nrow(token_word_freq))
+  ligne <- list("number of terme in vocabulary", " ", nrow(token_word_stop))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("mean number of terme in vocabulary per document", " ", nrow(token_word_freq))
+  ligne <- list("mean number of terme in vocabulary per document", " ", nrow(token_word_stop)/length(unique(token_sentence$book)))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
