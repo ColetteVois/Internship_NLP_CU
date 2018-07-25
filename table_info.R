@@ -4,6 +4,7 @@ table.info <- function(token_info) {
   token_sentence <- token_info[[1]]
   token_word <- token_info[[2]]
   token_word_freq <- token_info[[3]]
+  token_word_stem <- token_info[[4]]
   
   ligne <- list("number of documents", "N", length(unique(token_sentence$book)))
   names(ligne) <- c("Variables","Symboles", "Values")
@@ -21,7 +22,7 @@ table.info <- function(token_info) {
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of type words after steaming", "My", nrow(token_word_freq))
+  ligne <- list("number of type words after steaming", "My", nrow(token_word_stem))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
