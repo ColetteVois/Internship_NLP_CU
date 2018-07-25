@@ -1,30 +1,29 @@
 # Intership_NLP_CU
 
-Project: Build a modular architecture to support experimentation with distributional semantic representations
+Project: Build a tool for linguists to explore linguistic data in order to show the importance of tokenization and analyze the data
 
 Domain: Computational Biology/Computational Linguistics
 
 Mentor: Cohen
 
-Description: In the 1950s, linguists began proposing what are called “distributional” models of lexical semantics.  These models use a sort of spatial metaphor for meaning, in which we can describe words as having meanings that are “close to” or “distant from” the meanings of other words.  The meanings themselves consist of a representation of the words with which that word occurs.  In the absence of an efficient way to compute those representations, the field of semantics gravitated towards representations of meaning that are more symbolic and qualitative than they are quantitative.  With the advent of large electronic collections of text and of increased computer processing power, distributional models of lexical semantics have become popular again, and they are one of the most active areas of research in natural language processing today, particularly in a form known as “word embeddings.”
+Description: This project has two goals. The first one is to show the importance of tokenization and its impact on the analysis of linguistic data. The second one is to explore the data in the both basic approaches to language, the symbolic one and the statistical one. In order to do that, we built a tool that conciles these two goals. To use this tool, use the GitHub repository as described just below.
 
-This project involves building an easy-to-use architecture to support experimentation with different approaches to building embeddings.  The goal is to be able to build embeddings based not just on words, but on multi-word expressions (e.g. results in), multi-word terms (e.g. human natural killer cells), and phrases (cell migration and proliferation).  Additionally, the goal includes building embeddings not just with respect to other words, but also with respect to specific kinds of relationships between words, such as between the subject and the object of a sentence.  Your goal will be to build a modular architecture to support experimentation with these different approaches to building distributional semantic representations.
+GitHub: Here is a description of how to use the GitHub repository to do what you want with it.
 
-Desired skills:
+  -If you want to install the app, you need to:
+         -Download the GitHub repository
+         -Run the install_packages.R file in R Studio
+         
+  -If you want to use the app, you need to:
+        -Open the main.R file
+        -Choose the path of the GitHub repository on your computer
+        -Launch the file in R Studio
+        
+  -If you want to know how to use the app, you should read the guide, which is in the guide folder.
+  
+  -For the GitHub repository users, here is a little description of the different folders:
+        -app: This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
+        front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app.
 
-R
-Basic understanding of tools for supporting reproducible research: version control, markup languages, etc.
-Software testing
-Object-oriented programming
-Experimental design
-Ability to work very independently
 
-You should expect to begin by reading about:
-
-Lexical semantics
-Experimental design in computational sciences
-Evaluation in computational sciences
-Natural language processing
-
-Miscellaneous comments:  This is a fairly complicated project, combining elements of theoretical linguistics, evaluation and experimental design in machine learning, and software architecture.  The dual goals of designing and implementing a framework to support experimentation on the one hand, and implementing some theoretically abstract components of that architecture at the same time, make this a very ambitious project for a short internship.
-
+R version:  R version 3.5.0 (2018-04-23)
