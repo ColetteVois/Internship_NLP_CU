@@ -1,7 +1,7 @@
 
 token.boxplot <- function(my.texte) {
 
-  my.texte <- original_books_bis
+  #my.texte <- original_books_bis
   
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
   n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
@@ -89,4 +89,4 @@ token.boxplot <- function(my.texte) {
 
 }
 
-token.boxplot(original_books_bis)
+#token.boxplot(original_books_bis)

@@ -20,7 +20,7 @@ stem_hunspell <- function(my.texte) {
 
 normalize.2 <- function(my.texte) {
   
-  my.texte <- token_word_freq
+  #my.texte <- token_word_freq
   
   my_texte <- my.texte[1]
   names(my_texte) <- "text"
