@@ -215,65 +215,41 @@ server <- function(input, output, session){
     n4 <- d4$key
     n5 <- d5$key
     
+    #Loading the description of the tokens and the modulo that works well with the app
     lien <- paste(my_path,"/Intership_NLP_CU/preprocessing/description/description_token.R", sep="")
+    source(lien)
+    lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/modulo_not_null.R", sep="")
     source(lien)
     
     #May be a problem if there are several points with the same y
     if(length(n1)==1){
-      text_descri_hover_choosen_1 <- ""
-      for(i in token_sentence_description){
-        if(as.integer(((strtoi(n1) %% n.tokenizer.sentence))) == strtoi(i[1])){
-          text_descri_hover_choosen_1 <- i[2]
-        }
-      }
+      text_descri_hover_choosen_1 <- token_sentence_description[[ modulo.not.null(strtoi(n1), n.tokenizer.sentence)]][2]
     }
-
     if(length(n2)==1){
-      text_descri_hover_choosen_2 <- ""
-      for(i in token_word_description){
-        if((strtoi(n2) %% n.tokenizer.word.occu) == strtoi(i[1])){
-          text_descri_hover_choosen_2 <- i[2]
-        }
-      }
+      text_descri_hover_choosen_2 <- c(token_sentence_description[[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)]][2])
     }
 
     if(length(n3)==1){
-      text_descri_hover_choosen_3 <- ""
-      for(i in token_word_description){
-        if((strtoi(n3) %% n.tokenizer.word.occu) == strtoi(i[1])){
-          text_descri_hover_choosen_3 <- i[2]
-        }
-      }
+      text_descri_hover_choosen_3 <- c(token_sentence_description[[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)]][2])
     }
 
     if(length(n4)==1){
-      text_descri_hover_choosen_4 <- ""
-      for(i in token_word_description){
-        if((strtoi(n4) %% n.tokenizer.word.occu) == strtoi(i[1])){
-          text_descri_hover_choosen_4 <- i[2]
-        }
-      }
-    }
-
-    if(length(n5)==1){
-      text_descri_hover_choosen_5 <- ""
-      for(i in token_norma_description){
-        if((strtoi(n5) %% n.normalization) == strtoi(i[1])){
-          text_descri_hover_choosen_5 <- i[2]
-        }
-      }
+      text_descri_hover_choosen_4 <- c(token_sentence_description[[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)]][2])
     }
     
+    if(length(n5)==1){
+      text_descri_hover_choosen_5 <- c(token_sentence_description[[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1]][2],token_word_description[[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1]][2],  token_norma_description[[modulo.not.null(strtoi(n5), n.normalization)]][2])
+    }
+    
+    
     tagList(
-      renderPrint({typeof(n3)}),
-      renderPrint({(strtoi(n5)%% n.normalization) == 2}),
       renderPrint({d1}),
       renderPrint({d2}),
       renderPrint({d3}),
       renderPrint({d4}),
       renderPrint({d5}),
       if(length(n1)==1){
-      renderPrint({cat(text_descri_hover_choosen_1)})
+      renderPrint({cat(text_descri_hover_choosen_1)} )
       },
       if(length(n2)==1){
         renderPrint({cat(text_descri_hover_choosen_2)})
