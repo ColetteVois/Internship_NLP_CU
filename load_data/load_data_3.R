@@ -20,6 +20,7 @@ load.data.3 <- function() {
   
   original_books <- original_books1 %>% mutate(book = rep(str_sub(listfiles,1,-5),taille_doc))
   if (DEBUG == TRUE) {print(original_books)}
+  
   return(original_books)
 }
 
