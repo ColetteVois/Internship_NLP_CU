@@ -17,43 +17,18 @@ DEBUG = TRUE
 lien <- paste(my_path,"/Intership_NLP_CU/install_packages.R", sep="")
 source(lien)
 
-################################### LOAD DATA ###########################################
-
-source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", choose_load_data), sep = ""))
-load.data.i <- sprintf("load.data.%d()", choose_load_data)
-original_books <- eval(parse(text=load.data.i))
-original_books <- original_books %>% mutate(rowname = 1:nrow(original_books), book = "all the same")
-original_books_bis <- original_books[1:110,]
-#Removing the spaces from the column book. I had to change the type to character in order to change the column and 
-#then re change it in factor to let it as it was before.
-count = 1
-original_books_bis$book <- as.character(original_books_bis$book)
-for(i in original_books_bis$book){
-  original_books_bis$book[count] <- gsub(" ", "",i)
-  count = count +1
-}
-original_books_bis$book <- as.factor(original_books_bis$book)
-
-
-n <- NROW(original_books_bis)
-
-
 ####################################   Doing the choices for the check boxes  ##########################################################
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
 n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
 n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
 n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
 
-book_unique <- unique(original_books_bis$book)
-check_choices <- c()
+
 check_choices_token_sentence_check <- c()
 check_choices_token_word_check <- c()
 check_choices_token_norma_check <- c()
 check_choices_load_data <- c()
-for(i in book_unique){
-  a_paste_local <- paste("Book", i, sep = "" )
-  check_choices <- c(check_choices, a_paste_local)
-}
+
 count_1 = 1
 while(count_1 <= n.tokenizer.sentence){
   b_paste_local <- toString(count_1)
@@ -80,6 +55,7 @@ while(count_4 <= n.type.data){
 }
 
 m <- 400
+n <- 17
 
 #########################################################  Running the shiny app ########################################################
 

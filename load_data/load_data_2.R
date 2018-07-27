@@ -1,4 +1,4 @@
-load.data.2 <- function() {
+load.data.2 <- function(lien) {
   
   # twitter <- read.csv("C:/Users/rubik/Desktop/Intership_NLP_CU/Document/Twitter-Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
   twitter <- read.csv("C:/Users/Projet/Desktop/Internship/Data/Twitter-Data/#cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)

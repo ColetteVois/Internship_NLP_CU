@@ -34,9 +34,9 @@ body <- dashboardBody(
             fileInput("inputdata", "Choose PDF File", multiple = FALSE)
             ),
         box(width = 6,
-            radioButtons("data_type_choice", "Choose which type of data you have as an input to upload",
+            radioButtons("data_type_choice", "Which data do you have as an input to upload?",
                          check_choices_load_data, inline = TRUE),
-            checkboxInput("download_data_or_pre_data", label = "If you want to download your data, check the box, otherwise it will be the analysis of  part of Jane Austen's books", value = FALSE)
+            checkboxInput("download_data_or_pre_data", label = "If checked, the data is Austen's books, else the uploaded data", value = FALSE)
             )
       ),
       fluidRow(
@@ -76,7 +76,7 @@ body <- dashboardBody(
         ),
         box(
           checkboxGroupInput("book", "Choose one or more book(s)",
-                               check_choices, inline = TRUE)
+                               c(), inline = TRUE)
           )
       )
     ),
@@ -144,7 +144,7 @@ body <- dashboardBody(
       fluidRow(
               box(width = 4,
                selectInput(inputId = 'choice', label = 'Choose a metric', 
-                           choice = c('Frequency', 'Random')),
+                           choice = c('Frequency', 'Term Frequency')),
                checkboxInput("stemming_choice", label = "Check the box if you want to use one of the normalization/stemming tokenizations that you have chosen previously", value = FALSE),
                checkboxInput("stopword_choice", label = "Check the box if you want to remove the stopwords from the text during the analysis", value = FALSE)
                ),

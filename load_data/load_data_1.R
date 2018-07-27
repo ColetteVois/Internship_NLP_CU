@@ -4,7 +4,8 @@ library(janeaustenr)
 library(stringr)
 library(tidytext)
 
-load.data.1 <- function() {
+load.data.1 <- function(lien) {
+  lien <- "1"
   original_book <- austen_books() %>%
     group_by(book) %>%
     mutate(line = row_number(),

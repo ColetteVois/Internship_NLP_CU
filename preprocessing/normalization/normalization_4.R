@@ -25,7 +25,7 @@ stem_list <- function(term) {
 
 normalize.4 <- function(my.texte) {
   
-  my.texte <- token_word_freq
+  # my.texte <- token_word_freq
   
   my_texte <- my.texte[1]
   names(my_texte) <- "text"
@@ -54,8 +54,8 @@ normalize.4 <- function(my.texte) {
     freq <- 0
     sentence <- c()
     while(identical(listfiles[word], tokens3[curseur])) {
-      freq <- freq + token_word_freq[curseur,]$freq
-      sentence <- c(sentence, unlist(token_word_freq[curseur,]$sentences))
+      freq <- freq + my.texte[curseur,]$freq
+      sentence <- c(sentence, unlist(my.texte[curseur,]$sentences))
       curseur <- curseur + 1
     }
     col_word <- c(col_word, tokens3[(curseur-1)])
@@ -72,4 +72,4 @@ normalize.4 <- function(my.texte) {
   
 }
 
-normalize.4(token_word_freq)
+# normalize.4(token_word_freq)

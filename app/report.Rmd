@@ -13,6 +13,7 @@ params:
   min_freq_wordcloud: NA
   max_freq_wordcloud: NA
   max_word_wordcloud: NA
+  key: NA
 always_allow_html: yes
 ---
 
@@ -24,6 +25,7 @@ mifw <- params$min_freq_wordcloud
 mafw <- params$max_freq_wordcloud
 mww <- params$max_word_wordcloud
 l <- length(ds$rowname)
+key <- params$key
 ```
 
 The parameters chosen in this analysis are the frequencies between `r mifw` and `r mafw`, and a maximum number of words of `r mww` for the wordcloud.
@@ -37,7 +39,7 @@ p1 <- plot_ly(d, x = ~rowname, y = ~freq, key = ~key, type = 'scatter', mode='li
 tmpFile <- tempfile(fileext = ".png")
 export(p1, file = tmpFile)
 
-p2 <- plot_ly(d, x = ~rowname, y = ~sort(random, decreasing = TRUE), key = ~key, type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Random according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)
+p2 <- plot_ly(d, x = ~rowname, y = ~tf, key = ~key, type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)
 tmpFile <- tempfile(fileext = ".png")
 export(p2, file = tmpFile)
 ```
@@ -60,7 +62,7 @@ if(l!=0){
 
 ```{R}
 if(l!=0){
-  p4 <- plot_ly(ds, x = ~rowname, y = ~sort(random, decreasing = TRUE), key = ~key_part, type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Randoms according to the selected words', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)
+  p4 <- plot_ly(ds, x = ~rowname, y = ~tf, key = ~key_part, type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequencies according to the selected words', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)
   tmpFile2 <- tempfile(fileext = ".png")
   export(p4, file = tmpFile2)
 }

@@ -2,8 +2,66 @@
 
 server <- function(input, output, session){
   
+################################### LOAD DATA ###########################################
+#Link of the observed data
+link_data_uploaded <-  reactive({input$inputdata$datapath})
+#Loading the load_data files 
+observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", strtoi(input$data_type_choice)), sep = ""))})
 
+#Creating the data for the app
+original_books <- reactive({
+  if(input$download_data_or_pre_data == TRUE){
+    load.data.1 <- sprintf('load.data.%d("ddddezcecececcrcz")', 1)
+    local_original_books <- eval(parse(text=load.data.1))
+  }
+  else if (input$download_data_or_pre_data == FALSE){
+    #According to the user's choice, changing the load_data that will be used.
+    load.data.i <- sprintf('load.data.%d(link_data_uploaded)', strtoi(input$data_type_choice))
+    
+    if(is.null(link_data_uploaded())){
+      local_original_books <- tibble(text = rep("This is not a text, choose a data!", 200))
+    }
+    else{
+      local_original_books <- eval(parse(text=load.data.i))
+    }
+    local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
+    if(is.null(local_original_books$book)) {
+      local_original_books <- local_original_books %>% mutate(book = "all the same")
+    }
+    local_original_books
+  }
+})
+
+original_books_bis <- reactive({original_books()[1:110,]})
+book_column <- reactive({original_books_bis()$book})
+
+#Removing the spaces from the column book and creating the choices for the books
+# check_choices <- reactive({
+#   count = 1
+#   local_book_column <- as.character(book_column())
+#   for(i in book_column()){
+#     local_book_column[count] <- gsub(" ", "",i)
+#     count = count +1
+#   }
+#   book_unique <- unique(local_book_column)
+#   local_check_choices <- c()
+#   for(i in book_unique){
+#     a_paste_local <- paste("Book", i, sep = "" )
+#     local_check_choices <- c(check_choices, a_paste_local)
+#   }
+#   local_check_choices
+# })
+check_choices <- reactive({c()})
+
+#Updating the radio button for the books
+observeEvent(check_choices(),{updateCheckboxGroupInput(session, "book", "Choose one or more book(s)",
+                         check_choices(), inline = TRUE )
+})
+
+  
 ################################################################  DATA Tab  ###########################################################
+
+
 lien <- paste(my_path,"/Intership_NLP_CU/description/description_type_data.R", sep="")
 source(lien)
   
@@ -12,45 +70,46 @@ output$description_type_data_possible_analyzed <- renderUI({
     for(i in load_data_type_description){
       renderText({i})
     },
-    renderText({load_data_type_description})
+    renderText({load_data_type_description}),
+    renderPrint({link_data_uploaded()})
   )
 })
   
 #################################################################  DATA  ###############################################################
   
   d_num <- reactive({
-    head(subset(original_books_bis, rowname >= input$num_offset_data), input$num_word_data)
+    head(subset(original_books_bis(), rowname >= input$num_offset_data), input$num_word_data)
   })
   
   # use the key aesthetic/argument to help uniquely identify selected observations
-  key_first <- row.names(original_books_bis)
+  key_first <- reactive({row.names(original_books_bis())})
   
   
   
   #Almost all Data that will be given to the analysis part as main data. It depends on the way to choose it (select, numeric input, checkbox). It is firstly done without the checkbox group, then just below, it is done with it.
   original_books_selected_av <- reactive({
     if(input$all == TRUE){
-      original_books_bis
+      original_books_bis()
     }
     else if(input$all == FALSE){
       if(input$num_check== TRUE){
         d_num()
       }
       else if(input$num_check == FALSE){
-        SharedData$new(original_books_bis, ~key_first)
+        SharedData$new(original_books_bis(), ~key_first())
       }
     }
   })
   original_books_selected_used_av <- reactive({
     if(input$all == TRUE){
-      original_books_bis
+      original_books_bis()
     }
     else if(input$all == FALSE){
       if(input$num_check==TRUE){
         d_num()
       }
       else if(input$num_check ==FALSE){
-        original_books_bis[original_books_selected()$selection(),]
+        original_books_bis()[original_books_selected()$selection(),]
       }
     }
     })
@@ -62,7 +121,7 @@ output$description_type_data_possible_analyzed <- renderUI({
       #num_book_input is the number of the book. gsub find the number by removing "Book" from "Booki" and then strtoi converts that to an integer to subset the data
       id_book_input <- gsub("Book", "",b_id)
       #Subesting the data d and then adding this subset to the local data with all books selected
-      local_data <- rbind(local_data, subset(original_books_bis, book == id_book_input))
+      local_data <- rbind(local_data, subset(original_books_bis(), book == id_book_input))
     }
     local_data
   })
@@ -102,7 +161,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     output$plot_data <- renderPlotly({
       s <- input$rows_selected
       if(input$all==TRUE){
-        plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+        plot_ly(original_books_bis(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       else if(input$num_check==TRUE){
         plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
@@ -111,14 +170,14 @@ output$description_type_data_possible_analyzed <- renderUI({
         plot_ly(d_books(), x = ~rowname, y = rep(1, NROW(d_books())), key = ~row.names(d_books()), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       # else if((input$all==FALSE)){
-      #   plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+      #   plot_ly(original_books_bis(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       # }
       else{
         if(!length(s)){
-          plot_ly(original_books_selected(), x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
+          plot_ly(original_books_selected(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
         }
         else if(length(s)){
-          plot_ly(original_books_bis, x = ~rowname, y = rep(1, n), key = ~key_first, type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+          plot_ly(original_books_bis(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
         }
       }
     })
@@ -176,6 +235,8 @@ output$description_type_data_possible_analyzed <- renderUI({
     )})
   
   ################################################################################## Filter Pre Processing  ################################################
+  #Creating a random data to avoid point superposition in the plots of the boxplots
+  random_data_avoid_superposition <- 
   
   #Doing the filter page from the pre processing
   #Creating the data for the boxplots
@@ -464,8 +525,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(input$choice=='Frequency'){
         plot_ly(original_books_tokenized_freq_shared(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))
       }
-      else if(input$choice=='Random'){
-        plot_ly(original_books_tokenized_freq_shared(), x = ~rowname, y = ~random, key = ~key(), type = 'scatter', mode='markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Random according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)%>% highlight("plotly_selected", 'plotly_deselect', defaultValues = s, color = I('green'))
+      else if(input$choice=='Term Frequency'){
+        plot_ly(original_books_tokenized_freq_shared(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)%>% highlight("plotly_selected", 'plotly_deselect', defaultValues = s, color = I('green'))
         
       }
     }
@@ -474,8 +535,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(input$choice=='Frequency'){
         plot_ly(original_books_selected_used(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)
       }
-      else if(input$choice=='Random'){
-        plot_ly(original_books_selected_used(), x = ~rowname, y = ~random, key = ~key(), type = 'scatter', mode='markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Random according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Random'), titlefont = 'arial', showlegend = FALSE)      
+      else if(input$choice=='Term Frequency'){
+        plot_ly(original_books_selected_used(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)      
       }
     }
   })
@@ -544,7 +605,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   ########################################################################## DATA table analysis sentences  ########################################################
   
   output$sentence_table_wordcloud <- DT::renderDataTable({
-    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
+    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20),searchHighlight = TRUE, search = list(search = word_wordcloud_selected_filter())),class = 'display')
     
   })
   
@@ -571,9 +632,9 @@ output$description_type_data_possible_analyzed <- renderUI({
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(data_complete = d, data_selected_plot = d[original_books_tokenized_freq_shared()$selection(),], 
+      params <- list(data_complete = original_books_tokenized_freq(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                      min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
-                     max_word_wordcloud = input$slide_value_word)
+                     max_word_wordcloud = input$slide_value_word,key = key())
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
@@ -594,22 +655,22 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   ###############################################################################  Message Menu  ###########################################################
   
-  output$warningMenu <- renderMenu({
-    # Code to generate each of the messageItems
-    war <- list(notificationItem(text = "Everything seems to work", icon("users")))
-    l_wc <- reactive({length(filter_d()$d_real_shared...word)})
-    if(l_wc()==1){
-      list.append(war, notificationItem(
-        text = "Only one word is selected on the wordcloud and none appears",
-        icon = icon("exclamation-triangle"),
-        status = "warning"
-      )
-      )
-    }
-    # This is equivalent to calling:
-    #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
-    dropdownMenu(type = "notifications", .list = war)
-  })
+  # output$warningMenu <- renderMenu({
+  #   # Code to generate each of the messageItems
+  #   war <- list(notificationItem(text = "Everything seems to work", icon("users")))
+  #   l_wc <- reactive({length(filter_d()$d_real_shared...word)})
+  #   if(l_wc()==1){
+  #     list.append(war, notificationItem(
+  #       text = "Only one word is selected on the wordcloud and none appears",
+  #       icon = icon("exclamation-triangle"),
+  #       status = "warning"
+  #     )
+  #     )
+  #   }
+  #   # This is equivalent to calling:
+  #   #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
+  #   dropdownMenu(type = "notifications", .list = war)
+  # })
   
 }
 return(server)

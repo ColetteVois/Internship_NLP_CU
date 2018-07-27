@@ -1,7 +1,7 @@
 library(dplyr)
 library(stringr)
 
-load.data.3 <- function() {
+load.data.3 <- function(lien) {
 
   path <- "C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/"
   listfiles <- list.files(path, pattern="*.txt")

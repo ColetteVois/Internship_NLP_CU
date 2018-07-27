@@ -2,10 +2,10 @@ library(stringi)
 
 after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word, choose_normalization) {
   
-  my.texte <- original_books_bis
-  choose_tokenizer_sentence <- 1
-  choose_tokenizer_word <- 1
-  choose_normalization <- 1
+  # my.texte <- original_books_bis
+  # choose_tokenizer_sentence <- 1
+  # choose_tokenizer_word <- 1
+  # choose_normalization <- 1
   
   if(nrow(my.texte)==0) {
     return(c(list(tribble(~sentence,~book)), list(tribble(~word,~sentence,~book)), list(tribble(~word,~sentences,~freq))))
@@ -53,7 +53,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
     pre_curseur <- curseur
   }
   
-
+  
   normalization.i <- sprintf("normalize.%d(token_word_freq)", choose_normalization)
   token_word_stem <- eval(parse(text=normalization.i))
   
@@ -62,6 +62,10 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   
   token_word_freq <- token_word_freq %>% mutate(book = "all")
   token_word_freq <- token_word_freq %>% bind_tf_idf(word, book, freq) ### ne marche pas TODO
+  token_word_stop <- token_word_stop %>% mutate(book = "all")
+  token_word_stop <- token_word_stop %>% bind_tf_idf(word, book, freq) ### ne marche pas TODO
+  token_word_stem_stop <- token_word_stem_stop %>% mutate(book = "all")
+  token_word_stem_stop <- token_word_stem_stop %>% bind_tf_idf(word, book, freq) ### ne marche pas TODO
 
   return(c(list(token_sentence), list(token_word), list(token_word_freq), list(token_word_stem), list(token_word_stop), list(token_word_stem_stop)))
 
