@@ -29,15 +29,31 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "data",
-      fileInput("inputdata", "Choose PDF File", multiple = FALSE),
-      radioButtons("choice_token_moment", "Choose if you want to choose the tokenization now or in the filter view of the pre processing table",
-                   choices = c("Now", "Later")),
-      radioButtons("token_sentence_radio_button_now", "Choose the tokenization of sentences",
+      fluidRow(
+        box(width =6 ,
+            fileInput("inputdata", "Choose PDF File", multiple = FALSE)
+            ),
+        box(width = 6,
+            radioButtons("data_type_choice", "Choose which type of data you have as an input to upload",
+                         check_choices_load_data, inline = TRUE),
+            checkboxInput("download_data_or_pre_data", label = "If you want to download your data, check the box, otherwise it will be the analysis of  part of Jane Austen's books", value = FALSE)
+            )
+      ),
+      fluidRow(
+        box(width = 6,
+        radioButtons("choice_token_moment", "Choose if you want to choose the tokenization now or in the filter view of the pre processing table",
+                         choices = c("Now", "Later")),
+        radioButtons("token_sentence_radio_button_now", "Choose the tokenization of sentences",
                    check_choices_token_sentence_check, inline = TRUE),
       radioButtons("token_word_radio_button_now", "Choose the tokenization of words",
                    check_choices_token_word_check, inline = TRUE),
       radioButtons("token_norma_radio_button_now", "Choose the normalization of words",
                    check_choices_token_norma_check, inline = TRUE)
+        ),
+      box(width = 6,
+          uiOutput("description_type_data_possible_analyzed")
+          )
+      )
     ),
     tabItem(
       tabName = "overview_pre",
@@ -126,16 +142,15 @@ body <- dashboardBody(
       tabName = "overview_ana",
       h2("Plot overview"),
       fluidRow(
-        column(width = 4,
-               box(
-                 selectInput(inputId = 'choice', label = 'Choose a metric', 
-                             choice = c('Frequency', 'Random'))               )
-        ),
-        column(width = 8,
-               box(
-                 plotlyOutput("plot_overview")
-               )
-            )
+              box(width = 4,
+               selectInput(inputId = 'choice', label = 'Choose a metric', 
+                           choice = c('Frequency', 'Random')),
+               checkboxInput("stemming_choice", label = "Check the box if you want to use one of the normalization/stemming tokenizations that you have chosen previously", value = FALSE),
+               checkboxInput("stopword_choice", label = "Check the box if you want to remove the stopwords from the text during the analysis", value = FALSE)
+               ),
+            box(width = 8,
+               plotlyOutput("plot_overview")
+             )
       ),
       fluidRow(
         column(width = 8, offset =4,

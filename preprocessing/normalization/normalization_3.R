@@ -44,7 +44,7 @@ normalize.3 <- function(my.texte) {
     
   }
   
-  if (DEBUG == TRUE) {tokens} 
+  # if (DEBUG == TRUE) {tokens} 
   token_word_stem <- tibble(word = col_word, sentences = col_sentence, freq = col_freq)
   
   return(token_word_stem)

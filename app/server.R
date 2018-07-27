@@ -2,6 +2,19 @@
 
 server <- function(input, output, session){
   
+
+################################################################  DATA Tab  ###########################################################
+lien <- paste(my_path,"/Intership_NLP_CU/description/description_type_data.R", sep="")
+source(lien)
+  
+output$description_type_data_possible_analyzed <- renderUI({
+  tagList(
+    for(i in load_data_type_description){
+      renderText({i})
+    },
+    renderText({load_data_type_description})
+  )
+})
   
 #################################################################  DATA  ###############################################################
   
@@ -176,6 +189,8 @@ server <- function(input, output, session){
   d_boxplot_5 <- reactive({data.frame(token_normalization = unlist(d_token_boxplot()[4]))})
   
   #Creating the keys for the boxplot to uniquely identify the tokenizations
+  # key_1_1 <- reactive({row.names(d_boxplot_1())[-strtoi(token_sentence_radio_button())]})
+  # key_1_2 <- reactive({row.names(d_boxplot_1())[strtoi(token_sentence_radio_button())]})
   key_1 <- reactive({row.names(d_boxplot_1())})
   key_2 <- reactive({row.names(d_boxplot_2())})
   key_3 <- reactive({row.names(d_boxplot_3())})
@@ -185,8 +200,10 @@ server <- function(input, output, session){
   #Doing the boxplots
   
   output$box_1 <- renderPlotly({
-    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, key  =~ key_1(), type = "scatter", source = "box1", mode='markers')%>%add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
-                                                                                                                                                  #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
+    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, key=~key_1(), type = "scatter", source = "box1", mode='markers', marker =list(color="blue"))%>%
+      add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
+    #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
+    # add_trace(x = 0, y=~token_sentence_col[strtoi(token_sentence_radio_button())], key  =~ key_1_2(), marker = list(color="yellow"))%>%  
   })
   output$box_2 <- renderPlotly({
     plot_ly(d_boxplot_2(),x = rep(0, length(d_boxplot_2()$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2(), y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
@@ -216,7 +233,7 @@ server <- function(input, output, session){
     n5 <- d5$key
     
     #Loading the description of the tokens and the modulo that works well with the app
-    lien <- paste(my_path,"/Intership_NLP_CU/preprocessing/description/description_token.R", sep="")
+    lien <- paste(my_path,"/Intership_NLP_CU/description/description_token.R", sep="")
     source(lien)
     lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/modulo_not_null.R", sep="")
     source(lien)
@@ -243,6 +260,10 @@ server <- function(input, output, session){
     
     
     tagList(
+      renderPrint({d_boxplot_1()[[strtoi(token_sentence_radio_button())]]}),
+      renderPrint({d_boxplot_1()[[1]][strtoi(token_sentence_radio_button())]}),
+      renderPrint({d_boxplot_1()[strtoi(token_sentence_radio_button())]}),
+      renderPrint({token_sentence_radio_button()}),
       renderPrint({d1}),
       renderPrint({d2}),
       renderPrint({d3}),
@@ -338,8 +359,25 @@ server <- function(input, output, session){
   id_token_norma_selected <- reactive({strtoi(token_norma_radio_button())})
   original_books_tokenized <- reactive({after.choose.token(original_books_selected_used(),id_token_sentence_selected(),id_token_word_selected(),id_token_norma_selected())})
   
-  original_books_tokenized_inter <- reactive({arrange(original_books_tokenized()[[3]], desc(freq))})
-  
+  #Removing the stopwords from the text if the user wants to
+  original_books_tokenized_inter <- reactive({
+    if(input$stopword_choice==TRUE){
+      if(input$stemming_choice==TRUE){
+        arrange(original_books_tokenized()[[6]], desc(freq))
+      }
+      else if(input$stemming_choice==FALSE){
+        arrange(original_books_tokenized()[[5]], desc(freq))
+      }
+    }
+    else if(input$stopword_choice==FALSE){
+      if(input$stemming_choice==TRUE){
+        arrange(original_books_tokenized()[[4]], desc(freq))
+      }
+      else if(input$stemming_choice==FALSE){
+        arrange(original_books_tokenized()[[3]], desc(freq))
+      }  
+    }
+  })
   original_books_tokenized_freq <- reactive({original_books_tokenized_inter()%>%mutate(rowname = row_number())})
   
   # use the key aesthetic/argument to help uniquely identify selected observations
@@ -414,6 +452,7 @@ server <- function(input, output, session){
   output$table_info_details_pre <- renderTable(table.info(original_books_tokenized()))
   
   ######################################################################### Overview Analysis  ####################################################
+  
   
   #Plotting the scatterplot with plotly
   output$plot_overview <- renderPlotly({
