@@ -13,5 +13,5 @@ load.data.2 <- function(lien) {
   
 }
 
-original_books <- load.data.2()
-if (DEBUG == TRUE) {print(original_books)}
+#original_books <- load.data.2()
+#if (DEBUG == TRUE) {print(original_books)}
