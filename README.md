@@ -6,7 +6,7 @@ Domain: Computational Biology/Computational Linguistics
 
 Mentor: Cohen
 
-Description: This project has two goals. The first one is to show the importance of tokenization and its impact on the analysis of linguistic data. The second one is to explore the data in the both basic approaches to language, the symbolic one and the statistical one. In order to do that, we built a tool that conciles these two goals. To use this tool, use the GitHub repository as described just below.
+Description: This project has two goals. The first one is to show the importance of tokenization and its impact on the analysis of linguistic data. The second one is to explore the data in the both basic approaches to language, the symbolic one and the statistical one. In order to do that, we built a tool that put together these two goals. To use this tool, use the GitHub repository as described just below.
 
 GitHub: Here is a description of how to use the GitHub repository to do what you want with it.<br />
 
