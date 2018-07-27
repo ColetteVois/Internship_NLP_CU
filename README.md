@@ -19,7 +19,7 @@ GitHub: Here is a description of how to use the GitHub repository to do what you
   -If you want to use the app, you need to: <br />   
          <ul>
         <li>Open the main.R file</li>
-        <li>Choose the path of the GitHub repository on your computer</li>
+        <li>Choose the path of the GitHub repository on your computer. You need to change the antislashes ( \ ) in slashes (/) in the path        you put.</li>
         <li>Launch the file in RStudio</li>
         </ul>
         <br />
