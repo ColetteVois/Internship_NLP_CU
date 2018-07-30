@@ -3,8 +3,6 @@ library(tibble)
 library(pracma)
 library(dplyr)
 
-DEBUG = TRUE
-
 tokenizer.sentence.1 <- function(my.texte) {
   
   #my.texte <- original_books_bis
@@ -33,6 +31,7 @@ tokenizer.sentence.1 <- function(my.texte) {
   names(tokens) <- c("sentence","book")
   
   return(tokens)
+  
 }
 
 #tokenizer.sentence.1(original_books)
