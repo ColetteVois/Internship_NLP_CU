@@ -8,16 +8,27 @@ output:
   html_document: 
     toc: true
 params: 
+  choice_data: NA
+  time_choice_token: NA
+  token_choosen_sentence: NA
+  token_choosen_word: NA
+  token_choosen_norma: NA
+  overview_choice_data_all: NA
+  overview_choice_data_num_check: NA
+  overview_choice_offset: NA
+  overview_choice_num_word: NA
+  overview_choice_book: NA
   data_complete: NA
   data_selected_plot: NA
   min_freq_wordcloud: NA
   max_freq_wordcloud: NA
   max_word_wordcloud: NA
   key: NA
+  selected_word_cloud: NA
 always_allow_html: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setup, cache = TRUE, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 d <- params$data_complete
 ds <- params$data_selected_plot
@@ -28,7 +39,27 @@ l <- length(ds$rowname)
 key <- params$key
 ```
 
+#Parameters
+
+Data number: `r params$choice_data`
+
+Choice of tokenization:   
+
+* `r params$time_choice_token`
+* sentence `r params$token_choosen_sentence`
+* word `r params$token_choosen_word`
+* normalization `r params$token_choosen_norma`
+                          
+Choice of data in the pre-processing overview: 
+
+* all `r params$overview_choice_data_all`
+* numeric input `r params$overview_choice_data_num_check`
+    + number word `r params$overview_choice_num_word`
+    + offset `r params$overview_choice_offset`
+* book `r params$overview_choice_book`
+
 The parameters chosen in this analysis are the frequencies between `r mifw` and `r mafw`, and a maximum number of words of `r mww` for the wordcloud.
+Selected word in the wordcloud: `r if(is.null(params$selected_word_cloud)){"None"} else{params$selected_word_cloud} `
 
 #Overview 
 

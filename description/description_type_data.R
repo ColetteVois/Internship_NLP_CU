@@ -1,6 +1,25 @@
 #This is the file where you can add the description of the type of data as an input that you can put.
+#By default, "There is no description for this method"
+#If you want to add one, go to load.data.i
 
-load_data_type_description <- c(sprintf("The data type %d is for books. You can see example of it in Jane Austen's books for instance.",1),
-                                   sprintf("The data type %d is for twitter data. You can see example of it in twitter for instance.",2),
-                                   sprintf("The data type %d is for whatever. You can see example of it in whatever you want for instance.",3)
-)
+n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
+
+
+
+load_data_type_description <- c()
+for(j in 1:n.type.data){
+  
+  temp <- paste(my_path,sprintf("/Intership_NLP_CU/load_data/load_data_%d.R", j), sep="")
+  myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))
+  
+  for(i in 1:nrow(myfiles[[1]])) {
+    if(str_detect(myfiles[[1]][i,1], "@description")) {
+      description1 <- myfiles[[1]][i,1]
+      description2 <- str_replace(description1, "#'", "")
+      description <- str_replace(description2, "@description ", "")
+    }
+  }
+  
+  load_data_type_description <- c(load_data_type_description,
+                                  paste(sprintf("This is the data type %d",j), description))
+}
