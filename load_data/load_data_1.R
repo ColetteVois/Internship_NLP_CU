@@ -17,10 +17,11 @@
 #' ## original_books <- load.data.1("")
 
 load.data.1 <- function(lien) {
+
   
   #for nothing just for use the argument lien
-  lien <- ""
-  original_book1 <- austen_books() %>%
+  print(lien)
+  original_book <- austen_books() %>%
     group_by(book) %>%
     mutate(line = row_number(),
            chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",

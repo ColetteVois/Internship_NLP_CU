@@ -47,7 +47,7 @@ tokenizer.sentence.2 <- function(my.texte) {
     while(identical(listfiles[docu], my.texte[[2]][curseur])) {
       curseur <- curseur + 1
     }
-    new_token <- tokenizer.sentence.2.bis(as_tibble(original_books[[1]][pre_curseur:curseur]))[[1]]
+    new_token <- tokenizer.sentence.2.bis(as_tibble(my.texte[[1]][pre_curseur:curseur]))[[1]]
     tokens <- c(tokens, new_token)
     col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
