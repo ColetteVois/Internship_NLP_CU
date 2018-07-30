@@ -1,6 +1,6 @@
 #' Load the data from the file which has been uploaded in the app.
-#' Usually use to load medical type data. 
 #' Put it in a tibble to use it after.
+#' @description Usually use to load medical type data. 
 #' 
 #' @param lien A character, the path to the data
 #' @return original_book A tibble with two colums. 
@@ -18,6 +18,7 @@ load.data.3 <- function(path) {
 
   print(path)
   path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
+  path <- "C:/Users/rubik/Desktop/Document/lastwords-master/last_words_final_version/"
   
   listfiles <- list.files(path, pattern="*.txt")
   temp <- paste(path, listfiles, sep="")
@@ -41,6 +42,6 @@ load.data.3 <- function(path) {
 
 #path <- "C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/"
 #path <- "C:/Users/rubik/Desktop/Document/craft-2.0/articles/txt/"
-path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
+#path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
 
-original_books <- load.data.3("C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/")
+#original_books <- load.data.3("C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/")

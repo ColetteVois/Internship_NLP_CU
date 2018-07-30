@@ -1,5 +1,5 @@
 #' Load the data from the file which has been uploaded in the app.
-#' Usually use to load twitter type data. 
+#' @description Usually use to load twitter type data. 
 #' Put it in a tibble to use it after.
 #' 
 #' @param lien A character, the path to the data

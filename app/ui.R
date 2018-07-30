@@ -145,8 +145,8 @@ body <- dashboardBody(
               box(width = 4,
                selectInput(inputId = 'choice', label = 'Choose a metric', 
                            choice = c('Frequency', 'Term Frequency')),
-               checkboxInput("stemming_choice", label = "Check the box if you want to use one of the normalization/stemming tokenizations that you have chosen previously", value = FALSE),
-               checkboxInput("stopword_choice", label = "Check the box if you want to remove the stopwords from the text during the analysis", value = FALSE)
+               checkboxInput("stemming_choice", label = "Normalization/Stemming", value = FALSE),
+               checkboxInput("stopword_choice", label = "Stopwords", value = FALSE)
                ),
             box(width = 8,
                plotlyOutput("plot_overview")
