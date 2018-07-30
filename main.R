@@ -6,16 +6,16 @@
 #Then you should put "C:/Users/Projet" as my_path.
 
 #my_path <- "C:/Users/Projet/Intership_NLP_CU"
-my_path <- "C:/Users/Projet"
+my_path <- "C:/Users/rubik/Desktop"
 
 #choose which data you want to load
-choose_load_data <- 1
+choose_load_data <- 3
 DEBUG = TRUE
 
 ################################# Load the libraries and install the packages if not  #################################################
 
-lien <- paste(my_path,"/Intership_NLP_CU/install_packages.R", sep="")
-source(lien)
+#lien <- paste(my_path,"/Intership_NLP_CU/install_packages.R", sep="")
+#source(lien)
 
 ####################################   Doing the choices for the check boxes  ##########################################################
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
