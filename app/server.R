@@ -10,11 +10,6 @@ observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_
 
 #Creating the data for the app
 original_books <- reactive({
-  if(input$download_data_or_pre_data == TRUE){
-    load.data.1 <- sprintf('load.data.%d("ddddezcecececcrcz")', 1)
-    local_original_books <- eval(parse(text=load.data.1))
-  }
-  else if (input$download_data_or_pre_data == FALSE){
     #According to the user's choice, changing the load_data that will be used.
     load.data.i <- sprintf('load.data.%d(link_data_uploaded())', strtoi(input$data_type_choice))
     
@@ -25,14 +20,14 @@ original_books <- reactive({
       local_original_books <- eval(parse(text=load.data.i))
     }
     local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
+    
     if(is.null(local_original_books$book)) {
-      local_original_books <- local_original_books %>% mutate(book = "all the same")
+      local_original_books <- local_original_books %>% mutate(book = "allthesame")
     }
     local_original_books
-  }
 })
 
-original_books_bis <- reactive({original_books()[1:110,]})
+original_books_bis <- reactive({original_books()[1:100,]})
 book_column <- reactive({original_books_bis()$book})
 
 #Removing the spaces from the column book and creating the choices for the books
@@ -41,7 +36,7 @@ check_choices <- reactive({
   count = 1
   local_book_column <- as.character(book_unique)
   for(i in book_unique){
-    local_book_column[count] <- gsub(" ", "",i)
+    local_book_column[count] <-i
     count = count +1
   }
   local_check_choices <- c()
@@ -51,7 +46,7 @@ check_choices <- reactive({
   }
   local_check_choices
 })
-# check_choices <- reactive({c()})
+
 
 #Updating the radio button for the books
 observeEvent(check_choices(),{updateCheckboxGroupInput(session, "book", "Choose one or more book(s)",
@@ -634,9 +629,13 @@ output$description_type_data_possible_analyzed <- renderUI({
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(data_complete = original_books_tokenized_freq(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
-                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
-                     max_word_wordcloud = input$slide_value_word,key = key())
+      params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
+                    token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
+                    overview_choice_data_all = input$all, overview_choice_data_num_check = input$num_check,overview_choice_offset =input$num_offset_data,
+                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_complete = original_books_tokenized_freq(),
+                    data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
+                    min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
+                    max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter())
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

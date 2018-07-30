@@ -35,8 +35,7 @@ body <- dashboardBody(
             ),
         box(width = 6,
             radioButtons("data_type_choice", "Which data do you have as an input to upload?",
-                         check_choices_load_data, inline = TRUE),
-            checkboxInput("download_data_or_pre_data", label = "If checked, the data is Austen's books, else the uploaded data", value = FALSE)
+                         check_choices_load_data, inline = TRUE)
             )
       ),
       fluidRow(
@@ -64,6 +63,8 @@ body <- dashboardBody(
         ),
         box(
           checkboxInput("all", label = "Select all the data", value = TRUE),
+          checkboxGroupInput("book", "Choose one or more book(s)",
+                             c(), inline = TRUE),
           checkboxInput("num_check", label = "Choose the data with the numeric input, else you can select it on the graph", value = FALSE),
           numericInput(inputId = "num_offset_data", label = "Choose the number of the first line", min = 1, max = n, value = 1),
           numericInput(inputId = "num_word_data", label = "Choose the number of lines follwing the offset", min = 1, max = n, value = n),
@@ -73,11 +74,7 @@ body <- dashboardBody(
           tags$b(textOutput("num_data_highlighted")),
           tags$br(),
           uiOutput("num_data_text_display")
-        ),
-        box(
-          checkboxGroupInput("book", "Choose one or more book(s)",
-                               c(), inline = TRUE)
-          )
+        )
       )
     ),
     tabItem(
