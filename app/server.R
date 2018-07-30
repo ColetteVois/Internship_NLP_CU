@@ -16,7 +16,7 @@ original_books <- reactive({
   }
   else if (input$download_data_or_pre_data == FALSE){
     #According to the user's choice, changing the load_data that will be used.
-    load.data.i <- sprintf('load.data.%d(link_data_uploaded)', strtoi(input$data_type_choice))
+    load.data.i <- sprintf('load.data.%d(link_data_uploaded())', strtoi(input$data_type_choice))
     
     if(is.null(link_data_uploaded())){
       local_original_books <- tibble(text = rep("This is not a text, choose a data!", 200))
@@ -36,22 +36,22 @@ original_books_bis <- reactive({original_books()[1:110,]})
 book_column <- reactive({original_books_bis()$book})
 
 #Removing the spaces from the column book and creating the choices for the books
-# check_choices <- reactive({
-#   count = 1
-#   local_book_column <- as.character(book_column())
-#   for(i in book_column()){
-#     local_book_column[count] <- gsub(" ", "",i)
-#     count = count +1
-#   }
-#   book_unique <- unique(local_book_column)
-#   local_check_choices <- c()
-#   for(i in book_unique){
-#     a_paste_local <- paste("Book", i, sep = "" )
-#     local_check_choices <- c(check_choices, a_paste_local)
-#   }
-#   local_check_choices
-# })
-check_choices <- reactive({c()})
+check_choices <- reactive({
+  book_unique <- unique(book_column())
+  count = 1
+  local_book_column <- as.character(book_unique)
+  for(i in book_unique){
+    local_book_column[count] <- gsub(" ", "",i)
+    count = count +1
+  }
+  local_check_choices <- c()
+  for(i in book_unique){
+    a_paste_local <- paste("Book", i, sep = "" )
+    local_check_choices <- c(local_check_choices, a_paste_local)
+  }
+  local_check_choices
+})
+# check_choices <- reactive({c()})
 
 #Updating the radio button for the books
 observeEvent(check_choices(),{updateCheckboxGroupInput(session, "book", "Choose one or more book(s)",
@@ -71,7 +71,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       renderText({i})
     },
     renderText({load_data_type_description}),
-    renderPrint({link_data_uploaded()})
+    renderPrint({link_data_uploaded()}),
+    renderPrint({book_column()})
   )
 })
   
@@ -161,7 +162,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     output$plot_data <- renderPlotly({
       s <- input$rows_selected
       if(input$all==TRUE){
-        plot_ly(original_books_bis(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+        plot_ly(original_books_bis(), x = ~rowname, y = rep(1, NROW(original_books_bis())), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',  color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
       }
       else if(input$num_check==TRUE){
         plot_ly(d_num(), x = ~rowname, y = rep(1, NROW(d_num())), key = ~row.names(d_num()), type = 'scatter',source = "select", mode='lines+markers', color = ~book )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
@@ -174,10 +175,10 @@ output$description_type_data_possible_analyzed <- renderUI({
       # }
       else{
         if(!length(s)){
-          plot_ly(original_books_selected(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
+          plot_ly(original_books_selected(), x = ~rowname, y = rep(1, NROW(original_books_bis())), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")%>% highlight("plotly_selected", 'plotly_deselect',  defaultValues = s,color = I('green'))      
         }
         else if(length(s)){
-          plot_ly(original_books_bis(), x = ~rowname, y = rep(1, n), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
+          plot_ly(original_books_bis(), x = ~rowname, y = rep(1, NROW(original_books_bis())), key = ~key_first(), type = 'scatter',source = "select", mode='lines+markers',color = ~book  )%>%layout(title = 'Data plot', xaxis = list(title ='Line'), titlefont = 'arial', dragmode = "select")
         }
       }
     })
@@ -204,21 +205,26 @@ output$description_type_data_possible_analyzed <- renderUI({
     })
     
   #Deselecting the check boxes when selecting the plot
-     observeEvent(event_data("plotly_selected", source = "select"), {
+    observeEvent(event_data("plotly_selected", source = "select"), {
        updateCheckboxInput(session, "all", value = FALSE)
        updateCheckboxInput(session, "num_check", value = FALSE)
        updateCheckboxGroupInput(session, "book", selected = character(0))
      })
      
+  #Updating the initial values of the numeric input
+  observeEvent(NROW(original_books_bis()),{
+    updateNumericInput(session, inputId = "num_offset_data", label = "Choose the number of the first line", min = 1, max = NROW(original_books_bis()), value = 1)
+    updateNumericInput(session, inputId = "num_word_data", label = "Choose the number of lines follwing the offset", min = 1, max = NROW(original_books_bis()), value = NROW(original_books_bis()))
+  })  
   #Printing the number of Lines and the maximum number of Lines 
   output$num_data <- renderUI({
     tagList(renderText({
-      paste("The number of lines of the input file is", n, "and the maximum number of lines you can currently choose is", n-input$num_offset_data+1)})
+      paste("The number of lines of the input file is", NROW(original_books_bis()), "and the maximum number of lines you can currently choose is", NROW(original_books_bis())-input$num_offset_data+1)})
       )
     })
   
   output$num_data_highlighted <- renderText({
-    if(input$num_word_data > n-input$num_offset_data+1){
+    if(input$num_word_data > NROW(original_books_bis())-input$num_offset_data+1){
       "You have chosen a number of lines that is too high, it will just pick every line after the chosen offset."
     }
   })
@@ -321,10 +327,6 @@ output$description_type_data_possible_analyzed <- renderUI({
     
     
     tagList(
-      renderPrint({d_boxplot_1()[[strtoi(token_sentence_radio_button())]]}),
-      renderPrint({d_boxplot_1()[[1]][strtoi(token_sentence_radio_button())]}),
-      renderPrint({d_boxplot_1()[strtoi(token_sentence_radio_button())]}),
-      renderPrint({token_sentence_radio_button()}),
       renderPrint({d1}),
       renderPrint({d2}),
       renderPrint({d3}),
