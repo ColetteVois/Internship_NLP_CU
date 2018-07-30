@@ -1,10 +1,26 @@
-library(tm)
-library(NLP)
-library(openNLP)
-library(tibble)
+#' @description Divides the text into its different sentences. Using "Maxent_Sent_Token_Annotator()" function from "openNLP" library with language = "en" argument.
+#' 
+#' @param original_books_bis A tibble with two colums. 
+#' original_book$text is the lines of the text. 
+#' original_book$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the lines belong
+#' @return token_sentence A tibble with two colums. 
+#' token_sentence$sentence is each sentence of the text. 
+#' token_sentence$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the sentence belong
+#' 
+#' @import tm, NLP, openNLP, tibble, dplyr
+#' #' @examples
+#' ## library(tm)
+#' ## library(NLP)
+#' ## library(openNLP)
+#' ## library(tibble)
+#' ## library(dplyr)
+#' ## token_sentence <- tokenizer.sentence.2(original_books_bis)
 
 
 tokenizer.sentence.2.bis <- function(text, lang = "en") {
+  
   #text = as_tibble(original_books[[1]][pre_curseur:curseur])
   #lang = "en"
   
@@ -24,9 +40,6 @@ tokenizer.sentence.2.bis <- function(text, lang = "en") {
   sentences <- as_tibble(sentences)
   names(sentences) <- "sentence"
   
-  #nb.of.words <- length(sentences)
-  #print(nb.of.words)
-  
   # return sentences
   return(sentences)
 
@@ -39,7 +52,7 @@ tokenizer.sentence.2 <- function(my.texte) {
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1
-  tokens <- c()
+  token_sentence <- c()
   col_2 <- c()
   for(docu in 1:length(listfiles)) {
     #docu = 2
@@ -48,17 +61,16 @@ tokenizer.sentence.2 <- function(my.texte) {
       curseur <- curseur + 1
     }
     new_token <- tokenizer.sentence.2.bis(as_tibble(my.texte[[1]][pre_curseur:curseur]))[[1]]
-    tokens <- c(tokens, new_token)
+    token_sentence <- c(token_sentence, new_token)
     col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
-    
   }
  
-  tokens <- as_tibble(tokens)
-  tokens <- tokens %>% mutate(book = col_2)
-  names(tokens) <- c("sentence","book")
+  token_sentence <- as_tibble(token_sentence)
+  token_sentence <- token_sentence %>% mutate(book = col_2)
+  names(token_sentence) <- c("sentence","book")
   
-  return(tokens)
+  return(token_sentence)
 }
 
-#tokenizer.sentence.2(original_books)
+#tokenizer.sentence.2(original_books_bis)

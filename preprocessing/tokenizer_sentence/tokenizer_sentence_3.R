@@ -1,9 +1,27 @@
-library("quanteda")
+#' @description Divides the text into its different sentences. Using "tokens()" function from "quanteda" library with what = "sentence", remove_numbers = FALSE, remove_punct = FALSE, remove_symbols = FALSE, remove_separators = TRUE,remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,ngrams = 1L, skip = 0L, concatenator = "_",verbose = quanteda_options("verbose"), include_docvars = TRUE arguments.
+#' 
+#' @param original_books_bis A tibble with two colums. 
+#' original_book$text is the lines of the text. 
+#' original_book$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the lines belong
+#' @return token_sentence A tibble with two colums. 
+#' token_sentence$sentence is each sentence of the text. 
+#' token_sentence$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the sentence belong
+#' 
+#' @import quanteda
+#' #' @examples
+#' ## library("quanteda")
+#' ## library(dplyr)
+#' ## token_sentence <- tokenizer.sentence.3(original_books_bis)
+
+
 
 tokenizer.sentence.3.bis <- function(my.texte) {
   
   #my.texte <- original_books[[1]][pre_curseur:curseur]
   #token <- unlist(original_books, recursive=FALSE)
+  
   sentence <- tokens(my.texte, what = "sentence", remove_numbers = FALSE, remove_punct = FALSE,
                      remove_symbols = FALSE, remove_separators = TRUE,
                      remove_twitter = FALSE, remove_hyphens = FALSE, remove_url = FALSE,
@@ -11,15 +29,14 @@ tokenizer.sentence.3.bis <- function(my.texte) {
                      verbose = quanteda_options("verbose"), include_docvars = TRUE)
   sentences <- as_tibble(unlist(sentence))
   names(sentences) <- "sentence"
-  #nb.of.words <-   length(sentence)
-  #print(nb.of.words)
-  return(sentences)
 
+  return(sentences)
 }
 
 tokenizer.sentence.3 <- function(my.texte) {
   
   #my.texte <- original_books
+  
   listfiles <- unique(my.texte[[2]])
   pre_curseur <- 1
   curseur <- 1
@@ -35,15 +52,13 @@ tokenizer.sentence.3 <- function(my.texte) {
     tokens <- c(tokens, new_token)
     col_2 <- c(col_2, rep(toString(listfiles[docu]), length(new_token)))
     pre_curseur <- curseur
-    
   }
   
   tokens <- as_tibble(tokens)
   tokens <- tokens %>% mutate(book = col_2)
   names(tokens) <- c("sentence","book")
+  
   return(tokens)
 }
 
-
-
-#tokenizer.sentence.3(original_books[1])
+#tokenizer.sentence.3(original_books_bis)
