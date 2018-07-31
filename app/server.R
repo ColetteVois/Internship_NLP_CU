@@ -298,45 +298,78 @@ output$description_type_data_possible_analyzed <- renderUI({
     
     #May be a problem if there are several points with the same y
     if(length(n1)==1){
-      text_descri_hover_choosen_1 <- token_sentence_description[[ modulo.not.null(strtoi(n1), n.tokenizer.sentence)]][2]
+      text_descri_hover_choosen_1 <- token_sentence_description[ modulo.not.null(strtoi(n1), n.tokenizer.sentence)]
     }
     if(length(n2)==1){
-      text_descri_hover_choosen_2 <- c(token_sentence_description[[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_2 <- c(token_sentence_description[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)])
     }
 
     if(length(n3)==1){
-      text_descri_hover_choosen_3 <- c(token_sentence_description[[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_3 <- c(token_sentence_description[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)])
     }
 
     if(length(n4)==1){
-      text_descri_hover_choosen_4 <- c(token_sentence_description[[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_4 <- c(token_sentence_description[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)])
     }
-    
+
     if(length(n5)==1){
-      text_descri_hover_choosen_5 <- c(token_sentence_description[[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1]][2],token_word_description[[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1]][2],  token_norma_description[[modulo.not.null(strtoi(n5), n.normalization)]][2])
+      text_descri_hover_choosen_5 <- c(token_sentence_description[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1],token_word_description[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1],  token_norma_description[modulo.not.null(strtoi(n5), n.normalization)])
     }
-    
     
     tagList(
-      renderPrint({d1}),
-      renderPrint({d2}),
-      renderPrint({d3}),
-      renderPrint({d4}),
-      renderPrint({d5}),
       if(length(n1)==1){
-      renderPrint({cat(text_descri_hover_choosen_1)} )
+        renderText({paste("Sentence tokenization: ",modulo.not.null(strtoi(n1), n.tokenizer.sentence))})
+      },
+      tags$br(),
+      if(length(n1)==1){
+        renderText({text_descri_hover_choosen_1} )
+      },
+      
+      if(length(n2)==1){
+        renderText({paste("Sentence tokenization: ",((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1)})
       },
       if(length(n2)==1){
-        renderPrint({cat(text_descri_hover_choosen_2)})
+        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n2), n.tokenizer.word.occu))})
+      },
+      tags$br(),
+      if(length(n2)==1){
+        renderText({text_descri_hover_choosen_2})
+      },
+      
+      if(length(n3)==1){
+        renderText({paste("Sentence tokenization: ",((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1)})
       },
       if(length(n3)==1){
-        renderPrint({cat(text_descri_hover_choosen_3)})
+        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n3), n.tokenizer.word.occu))})
+      },
+      tags$br(),
+      if(length(n3)==1){
+        renderText({text_descri_hover_choosen_3})
+      },
+      
+      if(length(n4)==1){
+        renderText({paste("Sentence tokenization: ",((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1)})
       },
       if(length(n4)==1){
-        renderPrint({cat(text_descri_hover_choosen_4)})
+        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n4), n.tokenizer.word.occu))})
+      },
+      tags$br(),
+      if(length(n4)==1){
+        renderText({text_descri_hover_choosen_4})
+      },
+      
+      if(length(n5)==1){
+        renderText({paste("Sentence tokenization: ",((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1)})
       },
       if(length(n5)==1){
-        renderPrint({cat(text_descri_hover_choosen_5)})
+        renderText({paste("Word tokenization: ",(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1)})
+      },
+      if(length(n5)==1){
+        renderText({paste("Normalization tokenization: ", modulo.not.null(strtoi(n5), n.normalization))})
+      },
+      tags$br(),
+      if(length(n5)==1){
+        renderText({text_descri_hover_choosen_5})
       }
     )
   })
@@ -372,7 +405,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Warning if Now chosen
   
   output$choice_tokenizations_reminded <- renderText({
-    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), ",the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
+    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), ", the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
   })
       
   output$warning_choose_before <- renderUI({
