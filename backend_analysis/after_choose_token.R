@@ -72,7 +72,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
 }
 
 
-token_info <- after.choose.token(original_books_bis, 1, 1, 1) 
+#token_info <- after.choose.token(original_books_bis, 1, 1, 1) 
 
 #token_sentence <- token_info[[1]]
 #token_word <- token_info[[2]]

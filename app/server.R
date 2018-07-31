@@ -63,7 +63,8 @@ source(lien)
 output$description_type_data_possible_analyzed <- renderUI({
   tagList(
     renderPrint({cat(noquote(load_data_type_description),sep="\n")}),
-    renderPrint({link_data_uploaded()})
+    renderPrint({link_data_uploaded()}),
+    renderPrint({original_books_selected_used_av()})
   )
 })
   
@@ -427,10 +428,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     tagList(
       if(input$choice_token_moment == "Now"){
         renderText({"You have chosen to choose the tokenization at the beginning of the app. So what you will choose here will have no effect on the tokenization used for the analysis. If you want to choose here, you need to go back to the first page (Data) and choose 'Later'"})
-      },
-      renderPrint({original_books_tokenized()}),
-      renderPrint({d_real_shared()}),
-      renderPrint({d_prime_reac()})
+      }
     )
   })
   
@@ -569,7 +567,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       }
       else if(input$choice=='Term Frequency'){
         plot_ly(original_books_tokenized_freq_shared(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)%>% highlight("plotly_selected", 'plotly_deselect', defaultValues = s, color = I('green'))
-        
       }
     }
     #If there are row selected, you can't higlight the plot because it is already highlighted 
@@ -677,8 +674,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
                     overview_choice_data_all = input$all, overview_choice_data_num_check = input$num_check,overview_choice_offset =input$num_offset_data,
-                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_boxplot = d_token_boxplot(), 
-                    data_complete = original_books_tokenized_freq(), 
+                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book, data_selected_lines = original_books_selected_used(),
+                    data_boxplot = d_token_boxplot(), data_complete = original_books_tokenized_freq(), 
                     occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
                     table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
