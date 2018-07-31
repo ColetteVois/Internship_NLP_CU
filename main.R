@@ -5,8 +5,8 @@
 #For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU/app"
 #Then you should put "C:/Users/Projet" as my_path.
 
-#my_path <- "C:/Users/Projet/Intership_NLP_CU"
-my_path <- "C:/Users/rubik/Desktop"
+my_path <- "C:/Users/Projet/Intership_NLP_CU"
+# my_path <- "C:/Users/rubik/Desktop"
 
 #choose which data you want to load
 choose_load_data <- 3

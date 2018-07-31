@@ -128,10 +128,10 @@ body <- dashboardBody(
         ),
       fluidRow(
         box(width = 4,
-            uiOutput("summary_reg_zips_law")
+            uiOutput("summary_reg_zipfs_law")
         ),
         box(width = 4,
-            plotOutput("plot_zips_law")),
+            plotOutput("plot_zipfs_law")),
         box(width = 4,
             tableOutput("table_info_details_pre"))
       )),
