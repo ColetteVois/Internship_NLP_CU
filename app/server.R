@@ -298,78 +298,93 @@ output$description_type_data_possible_analyzed <- renderUI({
     
     #May be a problem if there are several points with the same y
     if(length(n1)==1){
-      text_descri_hover_choosen_1 <- token_sentence_description[ modulo.not.null(strtoi(n1), n.tokenizer.sentence)]
+      text_descri_hover_choosen_1 <- token_sentence_description[modulo.not.null(strtoi(n1), n.tokenizer.sentence)]
     }
     if(length(n2)==1){
-      text_descri_hover_choosen_2 <- c(token_sentence_description[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)])
+      text_descri_hover_choosen_2 <- paste(token_sentence_description[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1],token_word_description[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)],sep ='\n')
     }
 
     if(length(n3)==1){
-      text_descri_hover_choosen_3 <- c(token_sentence_description[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)])
+      text_descri_hover_choosen_3 <- paste(token_sentence_description[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)],sep ='\n')
     }
 
     if(length(n4)==1){
-      text_descri_hover_choosen_4 <- c(token_sentence_description[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)])
+      text_descri_hover_choosen_4 <- paste(token_sentence_description[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1],  token_word_description[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)],sep ='\n')
     }
 
     if(length(n5)==1){
-      text_descri_hover_choosen_5 <- c(token_sentence_description[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1],token_word_description[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1],  token_norma_description[modulo.not.null(strtoi(n5), n.normalization)])
+      text_descri_hover_choosen_5 <- paste(token_sentence_description[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1],token_word_description[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1],  token_norma_description[modulo.not.null(strtoi(n5), n.normalization)],sep ='\n')
     }
     
     tagList(
       if(length(n1)==1){
-        renderText({paste("Sentence tokenization: ",modulo.not.null(strtoi(n1), n.tokenizer.sentence))})
+        renderText({paste("Nb sentences : ",d1$y)})
+      },
+      if(length(n1)==1){
+        renderText({paste("Sentence : ",modulo.not.null(strtoi(n1), n.tokenizer.sentence))})
       },
       tags$br(),
       if(length(n1)==1){
-        renderText({text_descri_hover_choosen_1} )
+        renderPrint({cat(text_descri_hover_choosen_1)})
       },
       
       if(length(n2)==1){
-        renderText({paste("Sentence tokenization: ",((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1)})
+        renderText({paste("Nb words : ",d2$y)})
       },
       if(length(n2)==1){
-        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n2), n.tokenizer.word.occu))})
+        renderText({paste("Sentence : ",((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1)})
+      },
+      if(length(n2)==1){
+        renderText({paste("Word : ",modulo.not.null(strtoi(n2), n.tokenizer.word.occu))})
       },
       tags$br(),
       if(length(n2)==1){
-        renderText({text_descri_hover_choosen_2})
+        renderPrint({cat(text_descri_hover_choosen_2)})
       },
       
       if(length(n3)==1){
-        renderText({paste("Sentence tokenization: ",((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1)})
+        renderText({paste("Nb words : ",d3$y)})
       },
       if(length(n3)==1){
-        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n3), n.tokenizer.word.occu))})
+        renderText({paste("Sentence : ",((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1)})
+      },
+      if(length(n3)==1){
+        renderText({paste("Word : ",modulo.not.null(strtoi(n3), n.tokenizer.word.occu))})
       },
       tags$br(),
       if(length(n3)==1){
-        renderText({text_descri_hover_choosen_3})
+        renderPrint({cat(text_descri_hover_choosen_3)})
       },
       
       if(length(n4)==1){
-        renderText({paste("Sentence tokenization: ",((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1)})
+        renderText({paste("Ratio : ",d4$y)})
       },
       if(length(n4)==1){
-        renderText({paste("Word tokenization: ",modulo.not.null(strtoi(n4), n.tokenizer.word.occu))})
+        renderText({paste("Sentence : ",((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1)})
+      },
+      if(length(n4)==1){
+        renderText({paste("Word : ",modulo.not.null(strtoi(n4), n.tokenizer.word.occu))})
       },
       tags$br(),
       if(length(n4)==1){
-        renderText({text_descri_hover_choosen_4})
+        renderPrint({cat(text_descri_hover_choosen_4)})
       },
       
       if(length(n5)==1){
-        renderText({paste("Sentence tokenization: ",((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1)})
+        renderText({paste("Nb words : ",d5$y)})
       },
       if(length(n5)==1){
-        renderText({paste("Word tokenization: ",(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1)})
+        renderText({paste("Sentence : ",((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1)})
       },
       if(length(n5)==1){
-        renderText({paste("Normalization tokenization: ", modulo.not.null(strtoi(n5), n.normalization))})
+        renderText({paste("Word : ",(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1)})
+      },
+      if(length(n5)==1){
+        renderText({paste("Normalization : ", modulo.not.null(strtoi(n5), n.normalization))})
       },
       tags$br(),
       if(length(n5)==1){
-        renderText({text_descri_hover_choosen_5})
+        renderPrint({cat(text_descri_hover_choosen_5)})
       }
     )
   })
