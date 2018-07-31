@@ -62,12 +62,8 @@ source(lien)
   
 output$description_type_data_possible_analyzed <- renderUI({
   tagList(
-    for(i in load_data_type_description){
-      renderText({i})
-    },
-    renderText({load_data_type_description}),
-    renderPrint({link_data_uploaded()}),
-    renderPrint({book_column()})
+    renderPrint({cat(noquote(load_data_type_description),sep="\n")}),
+    renderPrint({link_data_uploaded()})
   )
 })
   
@@ -477,17 +473,17 @@ output$description_type_data_possible_analyzed <- renderUI({
     lines(nb.of.word.occu(), K()*nb.of.word.occu()^beta(), col="red")
   })
   
-  #Zips law
-  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/zips_law.R", sep="")
+  #zipfs law
+  lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/zipfs_law.R", sep="")
   source(lien)
-  zips_law_result <- reactive({zipfs.law(original_books_tokenized_freq())})
-  zips_law_data <- reactive({zips_law_result()[[1]]})
-  lambda <- reactive({zips_law_result()[[2]]}) 
-  inv <-reactive({zips_law_result()[[3]]})
+  zipfs_law_result <- reactive({zipfs.law(original_books_tokenized_freq())})
+  zipfs_law_data <- reactive({zipfs_law_result()[[1]]})
+  lambda <- reactive({zipfs_law_result()[[2]]}) 
+  inv <-reactive({zipfs_law_result()[[3]]})
   
-  output$summary_reg_zips_law <- renderUI({
+  output$summary_reg_zipfs_law <- renderUI({
     tagList(
-      renderPrint({zips_law_result()[[4]]})
+      renderPrint({zipfs_law_result()[[4]]})
     )
   })
   # jpeg(paste(my_path, sprintf('/Intership_NLP_CU/backend_analysis/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
@@ -496,8 +492,8 @@ output$description_type_data_possible_analyzed <- renderUI({
   #   geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
   #   scale_x_log10() +
   #   scale_y_log10()
-  output$plot_zips_law <- renderPlot({
-    zips_law_data() %>% ggplot(aes(rank, term_frequency)) +
+  output$plot_zipfs_law <- renderPlot({
+    zipfs_law_data() %>% ggplot(aes(rank, term_frequency)) +
       geom_abline(intercept = log(lambda()), slope = inv(), color = "red") +
       geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
       scale_x_log10() +
@@ -632,17 +628,20 @@ output$description_type_data_possible_analyzed <- renderUI({
       params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
                     overview_choice_data_all = input$all, overview_choice_data_num_check = input$num_check,overview_choice_offset =input$num_offset_data,
-                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_complete = original_books_tokenized_freq(),
+                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_boxplot = d_token_boxplot(), 
+                    data_complete = original_books_tokenized_freq(), 
+                    occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
                     data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
-                    max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter())
+                    max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter(),
+                    sentences_selected_cloud = data_selected_sentences_wordcloud())
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
       # from the code in this app).
       rmarkdown::render(tempReport,switch(
         input$format,
-        PDF = pdf_document(toc=TRUE), HTML = html_document(toc=TRUE), Word = word_document(toc=TRUE)
+        PDF = pdf_document(toc=TRUE, toc_depth= 4), HTML = html_document(toc=TRUE, toc_depth= 4), Word = word_document(toc=TRUE, toc_depth= 4)
       ), output_file = file,
       params = params,
       envir = new.env(parent = globalenv())

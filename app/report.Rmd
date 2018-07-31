@@ -3,10 +3,13 @@ title: "Report"
 output:
   pdf_document: 
     toc: true
+    toc_depth: 4
   word_document: 
     toc: true
+    toc_depth: 4
   html_document: 
     toc: true
+    toc_depth: 4
 params: 
   choice_data: NA
   time_choice_token: NA
@@ -18,6 +21,11 @@ params:
   overview_choice_offset: NA
   overview_choice_num_word: NA
   overview_choice_book: NA
+  data_boxplot: NA
+  occurence_word: NA
+  occurence_stop_word: NA
+  regression_lin: NA
+  result_zipfs_law_passed: NA
   data_complete: NA
   data_selected_plot: NA
   min_freq_wordcloud: NA
@@ -25,11 +33,16 @@ params:
   max_word_wordcloud: NA
   key: NA
   selected_word_cloud: NA
+  sentences_selected_cloud: NA
 always_allow_html: yes
 ---
 
 ```{r setup, cache = TRUE, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+d_token_boxplot <- params$data_boxplot
+K <- exp(params$regression_lin$coefficients[[1]])
+beta <- params$regression_lin$coefficients[[2]]
+zipfs_law_result <- params$result_zipfs_law_passed
 d <- params$data_complete
 ds <- params$data_selected_plot
 mifw <- params$min_freq_wordcloud
@@ -61,7 +74,89 @@ Choice of data in the pre-processing overview:
 The parameters chosen in this analysis are the frequencies between `r mifw` and `r mafw`, and a maximum number of words of `r mww` for the wordcloud.
 Selected word in the wordcloud: `r if(is.null(params$selected_word_cloud)){"None"} else{params$selected_word_cloud} `
 
-#Overview 
+#Pre-processing
+##Filter
+
+```{r}
+d_boxplot_1 <-  data.frame(token_sentence_col = unlist( d_token_boxplot[1]))
+d_boxplot_2 <-  data.frame(token_word_ocu_col = unlist( d_token_boxplot[2]))
+d_boxplot_3 <-  data.frame(token_word_type_col = unlist( d_token_boxplot[3]))
+d_boxplot_4 <-  data.frame(token_ratio_col = unlist( d_token_boxplot[2])/unlist( d_token_boxplot[3]))
+d_boxplot_5 <-  data.frame(token_normalization = unlist( d_token_boxplot[4]))
+  
+#Creating the keys for the boxplot to uniquely identify the tokenizations
+# key_1_1 <-  row.names(d_boxplot_1)[-strtoi(token_sentence_radio_button())]})
+# key_1_2 <-  row.names(d_boxplot_1)[strtoi(token_sentence_radio_button())]})
+key_1 <-  row.names(d_boxplot_1)
+key_2 <-  row.names(d_boxplot_2)
+key_3 <-  row.names(d_boxplot_3)
+key_4 <-  row.names(d_boxplot_4)
+key_5 <-  row.names(d_boxplot_5)
+  
+#Doing the boxplots
+  
+p1_box <- plot_ly(d_boxplot_1,x = rep(0, length(d_boxplot_1$token_sentence_col)), y=~token_sentence_col, key=~key_1, type = "scatter", source = "box1", mode='markers', marker =list(color="blue"))%>%
+      add_trace(d_boxplot_1, y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
+    #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
+    # add_trace(x = 0, y=~token_sentence_col[strtoi(token_sentence_radio_button())], key  =~ key_1_2(), marker = list(color="yellow"))%>%  
+
+tmpFile <- tempfile(fileext = ".png")
+export(p1_box, file = tmpFile)
+
+p2_box <- plot_ly(d_boxplot_2,x = rep(0, length(d_boxplot_2$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2, type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2, y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
+
+tmpFile <- tempfile(fileext = ".png")
+export(p2_box, file = tmpFile)
+
+p3_box <- plot_ly(d_boxplot_3,x = rep(0, length(d_boxplot_3$token_word_type_col)), y=~token_word_type_col, key  =~ key_3, type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3, y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
+
+tmpFile <- tempfile(fileext = ".png")
+export(p3_box, file = tmpFile)
+
+p4_box <- plot_ly(d_boxplot_4,x = rep(0, length(d_boxplot_4$token_ratio_col)), y=~token_ratio_col, key  =~ key_4, type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4, y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
+
+tmpFile <- tempfile(fileext = ".png")
+export(p4_box, file = tmpFile)
+
+p5_box <- plot_ly(d_boxplot_5,x = rep(0, length(d_boxplot_5$token_normalization)), y=~token_normalization, key  =~ key_5, type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5, y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
+
+tmpFile <- tempfile(fileext = ".png")
+export(p5_box, file = tmpFile)
+```
+
+##Details on demand
+###Heaps law
+
+This is Heaps law:
+
+```{r}
+plot(log(params$occurence_word),log(params$occurence_stop_word),main="Heaps law Log", xlab="Log of number of word occurences", ylab="Log of number of stop words")
+abline(params$regression_lin)
+
+summary(params$regression_lin)
+
+plot(params$occurence_word, params$occurence_stop_word,main="Heaps law", xlab="Number of word occurences", ylab="Number of stop words")
+lines(params$occurence_word, K*params$occurence_word^beta, col="red")
+```
+
+###Zipf's law
+
+This is Zipf's law:
+
+```{r}
+zipfs_law_result[[4]]
+zipfs_law_result[[1]] %>% ggplot(aes(rank, term_frequency)) +
+      geom_abline(intercept = log(zipfs_law_result[[2]]), slope = zipfs_law_result[[3]], color = "red") +
+      geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
+      scale_x_log10() +
+      scale_y_log10() + ggtitle("Zipf's law") + xlab("Rank")+ ylab("Term frequency")
+
+# tmpFile <- tempfile(fileext = ".png")
+# export(p_zipfs_res, file = tmpFile)
+```
+
+#Analysis
+##Overview 
 
 You can see just below the different plots of the overview: 
 
@@ -75,9 +170,9 @@ tmpFile <- tempfile(fileext = ".png")
 export(p2, file = tmpFile)
 ```
 
-#Filter
+##Filter
 
-##Plots
+###Plots
 
 You can see here the different plots of the overview after selection of the interesting points:
 
@@ -99,7 +194,7 @@ if(l!=0){
 }
 ```
 
-##Table
+###Table
 
 Here is the table with the selected points from the overview:
 
@@ -109,7 +204,7 @@ kable(ds, caption ="Table of the data selected in the plot")
 }
 ```
 
-##Wordcloud
+###Wordcloud
 
 You can see just below the wordcloud with the interesting points :
 
@@ -130,4 +225,10 @@ if(l){
 #w <- wordcloud2(data = dswf, shape = 'star', size = 0.8, shuffle =FALSE)
 #tmpFile <- tempfile(fileext = ".png")
 #export(w, file = tmpFile)
+```
+
+##Details on demand
+
+```{r}
+kable(params$sentences_selected_cloud, caption = "Sentences associated with the selected word of the cloud")   
 ```
