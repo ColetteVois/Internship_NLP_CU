@@ -13,7 +13,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
 
   token_word <- c()
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", choose_tokenizer_word), sep="")
+  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
   source(lien)
   
   lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")

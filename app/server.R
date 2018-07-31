@@ -305,19 +305,19 @@ output$description_type_data_possible_analyzed <- renderUI({
       text_descri_hover_choosen_1 <- token_sentence_description[[ modulo.not.null(strtoi(n1), n.tokenizer.sentence)]][2]
     }
     if(length(n2)==1){
-      text_descri_hover_choosen_2 <- c(token_sentence_description[[((strtoi(n2)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n2), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_2 <- c(token_sentence_description[[((strtoi(n2)-1) %/% n.tokenizer.word)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n2), n.tokenizer.word)]][2])
     }
 
     if(length(n3)==1){
-      text_descri_hover_choosen_3 <- c(token_sentence_description[[((strtoi(n3)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n3), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_3 <- c(token_sentence_description[[((strtoi(n3)-1) %/% n.tokenizer.word)+1]][2],  token_word_description[[ modulo.not.null(strtoi(n3), n.tokenizer.word)]][2])
     }
 
     if(length(n4)==1){
-      text_descri_hover_choosen_4 <- c(token_sentence_description[[((strtoi(n4)-1) %/% n.tokenizer.word.occu)+1]][2],  token_word_description[[modulo.not.null(strtoi(n4), n.tokenizer.word.occu)]][2])
+      text_descri_hover_choosen_4 <- c(token_sentence_description[[((strtoi(n4)-1) %/% n.tokenizer.word)+1]][2],  token_word_description[[modulo.not.null(strtoi(n4), n.tokenizer.word)]][2])
     }
     
     if(length(n5)==1){
-      text_descri_hover_choosen_5 <- c(token_sentence_description[[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1]][2],token_word_description[[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1]][2],  token_norma_description[[modulo.not.null(strtoi(n5), n.normalization)]][2])
+      text_descri_hover_choosen_5 <- c(token_sentence_description[[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word))+1]][2],token_word_description[[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word)+1]][2],  token_norma_description[[modulo.not.null(strtoi(n5), n.normalization)]][2])
     }
     
     
