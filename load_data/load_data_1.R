@@ -21,13 +21,13 @@ load.data.1 <- function(lien) {
   
   #for nothing just for use the argument lien
   print(lien)
-  original_book <- austen_books() %>%
+  original_book1 <- austen_books() %>%
     group_by(book) %>%
     mutate(line = row_number(),
            chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                                    ignore_case = TRUE)))) %>%
     ungroup()
-  original_book1<- original_book1[,c(1,2)]
+  original_book<- original_book1[,c(1,2)]
   
   return(original_book)
   

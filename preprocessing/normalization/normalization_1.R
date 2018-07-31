@@ -1,4 +1,19 @@
-library(tokenizers)
+#' @description Divides the text into its different words. Using "unnest_tokens()" function from "tidytext".
+#' 
+#' @param token_sentence[k,] A tibble with two colums and just one row. 
+#' token_sentence$sentence is the k th sentence of the text. 
+#' token_sentence$book is the part (e.g. chapter, different book...) 
+#' of the full text to which this sentence belongs
+#' @param k A integer, the number of the sentence in the text
+#' @return token_word A tibble with two colums
+#' token_word$word is each word of the sentence k, in the same order as in the sentence
+#' token_word$sentence is the number of the sentence each wod belongs
+#' token_word$book is the name of the book each word belongs
+#' 
+#' @import tokenizers
+#' @examples
+#' ## library(tokenizers)
+#' ## token_word_stem <- normalize.1(token_word_freq)
 
 normalize.1 <- function(my.texte) {
   

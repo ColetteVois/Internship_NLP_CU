@@ -97,3 +97,8 @@ if(!require("base")){
   install.packages("base")
   library("base")
 }
+if(!require("janeaustenr")){
+  install.packages("janeaustenr")
+  library("janeaustenr")
+}
+
