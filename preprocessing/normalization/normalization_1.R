@@ -15,7 +15,6 @@ normalize.1 <- function(my.texte) {
   col_sentence <- c()
   col_freq <- c()
   for(word in 1:length(listfiles)) {
-    
     #word = 27
     freq <- 0
     sentence <- c()
@@ -29,13 +28,11 @@ normalize.1 <- function(my.texte) {
     col_freq <- c(col_freq,freq)
     pre_curseur <- curseur
     col_word
-    
   }
   
   token_word_stem <- tibble(word = col_word, sentences = col_sentence, freq = col_freq)
 
   return(token_word_stem)
-  
 }
 
 #token_word_stem <- normalize.1(token_word_freq)

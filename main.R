@@ -19,7 +19,7 @@ source(lien)
 
 ####################################   Doing the choices for the check boxes  ##########################################################
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
+n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
 n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
 n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
 
@@ -36,7 +36,7 @@ while(count_1 <= n.tokenizer.sentence){
   count_1 =count_1 +1
 }
 count_2 = 1
-while(count_2 <= n.tokenizer.word.occu){
+while(count_2 <= n.tokenizer.word){
   c_paste_local <- toString(count_2)
   check_choices_token_word_check <- c(check_choices_token_word_check, c_paste_local)
   count_2 =count_2 +1

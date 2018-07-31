@@ -48,4 +48,4 @@ tokenizer.sentence.1 <- function(my.texte) {
   
 }
 
-#tokenizer.sentence.1(original_books)
+#token_sentence <- tokenizer.sentence.1(original_books)

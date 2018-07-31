@@ -1,5 +1,20 @@
-#install.packages("stringr", dependencies = TRUE)
-library(stringr)
+#' @description Divides the text into its different words. Using "stringr" package.
+#' 
+#' @param token_sentence[k,] A tibble with two colums and just one row. 
+#' token_sentence$sentence is the k th sentence of the text. 
+#' token_sentence$book is the part (e.g. chapter, different book...) 
+#' of the full text to which this sentence belongs
+#' @param k A integer, the number of the sentence in the text
+#' @return token_word A tibble with two colums
+#' token_word$word is each word of the sentence k, in the same order as in the sentence
+#' token_word$sentence is the number of the sentence each wod belongs
+#' token_word$book is the name of the book each word belongs
+#' 
+#' @import stringr (install.packages("stringr", dependencies = TRUE)), dplyr
+#' @examples
+#' ## library(stringr)
+#' ## library(dplyr)
+#' ## token_word <- tokenizer.word.2(token_sentence[k,], k)
 
 Clean_String <- function(string){
   
@@ -17,12 +32,13 @@ Clean_String <- function(string){
   if(length(indexes) > 0){
     temp <- temp[-indexes]
   } 
-  return(temp)
   
+  return(temp)
 }
 
 # function to clean text
 Clean_Text_Block <- function(text){
+  
   # Get rid of blank lines
   indexes <- which(text == "")
   if (length(indexes) > 0) {
@@ -63,9 +79,9 @@ tokenizer.word.2 <- function(my.texte,k) {
   clean_speech <- Clean_Text_Block(my.texte[[1]])
   tokens <- as_tibble(clean_speech$text)
   names(tokens) <- "word"
-  tidy_books <- tokens %>% mutate(sentence = k, book = book_name)
-  return(tidy_books)
+  token_word <- tokens %>% mutate(sentence = k, book = book_name)
   
+  return(token_word)
 }
 
-#tokenizer.word.2(original_books,k)
+#token_word <- tokenizer.word.2(token_sentence[k,], k)

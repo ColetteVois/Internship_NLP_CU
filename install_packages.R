@@ -52,10 +52,10 @@ if(!require("shinydashboard")){
   library("shinydashboard")
 }
 ###attention bug parfois quand library
-if(!require("tinytext")){
-  install.packages("tinytex")
-  tinytex::install_tinytex()
-}
+#if(!require("tinytext")){
+#  install.packages("tinytex")
+#  tinytex::install_tinytex()
+#}
 if(!require("knitrProgressBar")){
   install.packages("knitrProgressBar")
   library("knitrProgressBar")

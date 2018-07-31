@@ -4,7 +4,7 @@ token.boxplot <- function(my.texte) {
   #my.texte <- original_books_bis
   
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-  n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
+  n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
   n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
 
   nb.of.sentence <- c()
@@ -26,12 +26,12 @@ token.boxplot <- function(my.texte) {
       nb.of.sentence[i] <- dim(token_sentence)[1]
       if (DEBUG == TRUE) { print(nb.of.sentence) }
     
-      for (j in 1:n.tokenizer.word.occu){
+      for (j in 1:n.tokenizer.word){
       
         token_word <- c()
         #j = 5 #3,4,5
         if(i==1) {
-          lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
+          lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
           source(lien)
         }
         tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", j)
@@ -45,7 +45,7 @@ token.boxplot <- function(my.texte) {
           token_word <- dplyr::bind_rows(token_word,new_token_word) #TODO mettre bout à bout des matrice
           if (DEBUG == TRUE) { token_word }
         }
-        nb.of.word.occu[j+(i-1)*n.tokenizer.word.occu]  <- nrow(token_word)
+        nb.of.word.occu[j+(i-1)*n.tokenizer.word]  <- nrow(token_word)
       
         ## TO DO a mettre 
         token_word_sort <- token_word %>% arrange(word)
@@ -64,13 +64,13 @@ token.boxplot <- function(my.texte) {
           pre_curseur <- curseur
           token_word_freq
         }
-        nb.of.word.type[j+(i-1)*n.tokenizer.word.occu]  <- nrow(token_word_freq)
+        nb.of.word.type[j+(i-1)*n.tokenizer.word]  <- nrow(token_word_freq)
       
     
     
         #normalization
         for(l in 1:n.normalization) {
-          inc = 1/(n.tokenizer.sentence*n.tokenizer.word.occu*n.normalization)
+          inc = 1/(n.tokenizer.sentence*n.tokenizer.word*n.normalization)
           incProgress(amount = inc)
           #l = 1
           if(j==1) {
@@ -79,7 +79,7 @@ token.boxplot <- function(my.texte) {
           }
           normalization.i <- sprintf("normalize.%d(token_word_freq)", l)
           token_word_stem <- eval(parse(text=normalization.i))
-          nb.of.normalization[l+(j-1)*n.normalization+(i-1)*n.tokenizer.word.occu*n.normalization]  <- nrow(token_word_stem)
+          nb.of.normalization[l+(j-1)*n.normalization+(i-1)*n.tokenizer.word*n.normalization]  <- nrow(token_word_stem)
           #print(c(i,j,l))
           #print(token_word_stem)
         }
