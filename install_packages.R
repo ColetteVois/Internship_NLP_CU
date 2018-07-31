@@ -97,7 +97,3 @@ if(!require("base")){
   install.packages("base")
   library("base")
 }
-if(!require("plyr")){
-  install.packages("plyr")
-  library("plyr")
-}
