@@ -26,6 +26,7 @@ params:
   occurence_stop_word: NA
   regression_lin: NA
   result_zipfs_law_passed: NA
+  table_info_laws: NA
   data_complete: NA
   data_selected_plot: NA
   min_freq_wordcloud: NA
@@ -154,6 +155,13 @@ zipfs_law_result[[1]] %>% ggplot(aes(rank, term_frequency)) +
 # tmpFile <- tempfile(fileext = ".png")
 # export(p_zipfs_res, file = tmpFile)
 ```
+
+###Summary table
+
+```{r}
+kable(params$table_info_laws, caption = "Summary table")
+```
+
 
 #Analysis
 ##Overview 

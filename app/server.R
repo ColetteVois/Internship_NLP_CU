@@ -503,7 +503,8 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Doing the table with some info about the text
   lien <- paste(my_path,"/Intership_NLP_CU/backend_analysis/table_info.R", sep="")
   source(lien)
-  output$table_info_details_pre <- renderTable(table.info(original_books_tokenized()))
+  table_info_result <- reactive({table.info(original_books_tokenized())})
+  output$table_info_details_pre <- renderTable(table_info_result())
   
   ######################################################################### Overview Analysis  ####################################################
   
@@ -631,7 +632,7 @@ output$description_type_data_possible_analyzed <- renderUI({
                     overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_boxplot = d_token_boxplot(), 
                     data_complete = original_books_tokenized_freq(), 
                     occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
-                    data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
+                    table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
                     max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter(),
                     sentences_selected_cloud = data_selected_sentences_wordcloud())
