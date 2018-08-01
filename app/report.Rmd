@@ -39,7 +39,7 @@ params:
 always_allow_html: yes
 ---
 
-```{r setup, cache = TRUE, include=FALSE}
+```{r setup, cache = TRUE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 data_lines <- params$data_selected_lines
 d_token_boxplot <- params$data_boxplot
@@ -113,7 +113,7 @@ Analysis:
 #Pre-processing
 ##Filter
 
-```{r}
+```{r warning=FALSE}
 d_boxplot_1 <-  data.frame(token_sentence_col = unlist( d_token_boxplot[1]))
 d_boxplot_2 <-  data.frame(token_word_ocu_col = unlist( d_token_boxplot[2]))
 d_boxplot_3 <-  data.frame(token_word_type_col = unlist( d_token_boxplot[3]))

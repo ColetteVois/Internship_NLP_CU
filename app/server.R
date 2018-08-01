@@ -258,7 +258,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.05})
   random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.05})
   
-  #Doing the boxplots
+  #Doing the boxplots and trying to suppress the warnings of the boxplots in the report
   
   output$box_1 <- renderPlotly({
     plot_ly(d_boxplot_1(),x = random_data_avoid_superposition_1(), y=~token_sentence_col, key=~key_1(), type = "scatter", mode='markers', source = "box1", marker =list(color="blue"))%>%
@@ -282,6 +282,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     plot_ly(d_boxplot_5(),x = random_data_avoid_superposition_3(), y=~token_normalization, key  =~ key_5(), type = "scatter", mode='markers', source = "box5", marker =list(color="blue"))%>%
       add_trace(d_boxplot_5(), x=0, y=~token_normalization, type = "box", marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
+  
   
   #Doing the hover descritpion
   output$description_token <- renderUI({
