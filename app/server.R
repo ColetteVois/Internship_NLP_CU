@@ -232,8 +232,6 @@ output$description_type_data_possible_analyzed <- renderUI({
     )})
   
   ################################################################################## Filter Pre Processing  ################################################
-  #Creating a random data to avoid point superposition in the plots of the boxplots
-  random_data_avoid_superposition <- 
   
   #Doing the filter page from the pre processing
   #Creating the data for the boxplots
@@ -255,25 +253,34 @@ output$description_type_data_possible_analyzed <- renderUI({
   key_4 <- reactive({row.names(d_boxplot_4())})
   key_5 <- reactive({row.names(d_boxplot_5())})
   
+  #Creating a random data to avoid point superposition in the plots of the boxplots
+  random_data_avoid_superposition_1 <- reactive({rnorm(length(d_boxplot_1()$token_sentence_col))*0.1})
+  random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.1})
+  random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.1})
+  
   #Doing the boxplots
   
   output$box_1 <- renderPlotly({
-    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, key=~key_1(), type = "scatter", source = "box1", mode='markers', marker =list(color="blue"))%>%
-      add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_1(),x = random_data_avoid_superposition_1(), y=~token_sentence_col, key=~key_1(), type = "scatter", mode='markers', source = "box1", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_1(), x=0, y=~token_sentence_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
     #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
     # add_trace(x = 0, y=~token_sentence_col[strtoi(token_sentence_radio_button())], key  =~ key_1_2(), marker = list(color="yellow"))%>%  
   })
   output$box_2 <- renderPlotly({
-    plot_ly(d_boxplot_2(),x = rep(0, length(d_boxplot_2()$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2(), y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_2(),x = random_data_avoid_superposition_2(), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter",  mode='markers', source = "box2", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_2(), x = 0, y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_3 <- renderPlotly({
-    plot_ly(d_boxplot_3(),x = rep(0, length(d_boxplot_3()$token_word_type_col)), y=~token_word_type_col, key  =~ key_3(), type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3(), y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_3(),x = random_data_avoid_superposition_2(), y=~token_word_type_col, key  =~ key_3(), type = "scatter", mode='markers',source = "box3", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_3(),x=0, y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_4 <- renderPlotly({
-    plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, key  =~ key_4(), type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_4(),x = random_data_avoid_superposition_2(), y=~token_ratio_col, key  =~ key_4(), type = "scatter",  mode='markers',source = "box4", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_4(), x=0, y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_5 <- renderPlotly({
-    plot_ly(d_boxplot_5(),x = rep(0, length(d_boxplot_5()$token_normalization)), y=~token_normalization, key  =~ key_5(), type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5(), y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_5(),x = random_data_avoid_superposition_3(), y=~token_normalization, key  =~ key_5(), type = "scatter", mode='markers', source = "box5", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_5(), x=0, y=~token_normalization, type = "box", marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
   
   #Doing the hover descritpion
@@ -427,10 +434,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     tagList(
       if(input$choice_token_moment == "Now"){
         renderText({"You have chosen to choose the tokenization at the beginning of the app. So what you will choose here will have no effect on the tokenization used for the analysis. If you want to choose here, you need to go back to the first page (Data) and choose 'Later'"})
-      },
-      renderPrint({original_books_tokenized()}),
-      renderPrint({d_real_shared()}),
-      renderPrint({d_prime_reac()})
+      }
     )
   })
   
@@ -569,7 +573,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       }
       else if(input$choice=='Term Frequency'){
         plot_ly(original_books_tokenized_freq_shared(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)%>% highlight("plotly_selected", 'plotly_deselect', defaultValues = s, color = I('green'))
-        
       }
     }
     #If there are row selected, you can't higlight the plot because it is already highlighted 
@@ -677,8 +680,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
                     overview_choice_data_all = input$all, overview_choice_data_num_check = input$num_check,overview_choice_offset =input$num_offset_data,
-                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book,data_boxplot = d_token_boxplot(), 
-                    data_complete = original_books_tokenized_freq(), 
+                    overview_choice_num_word=input$num_word_data, overview_choice_book = input$book, data_selected_lines = original_books_selected_used(),
+                    data_boxplot = d_token_boxplot(), data_complete = original_books_tokenized_freq(), 
                     occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
                     table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],

@@ -1,6 +1,6 @@
-#This is the file where you can add the description of the type of data as an input that you can put.
-#By default, "There is no description for this method"
-#If you want to add one, go to load.data.i
+#This is the file where the descriptions of the input data are created.
+#By default, "There is no description available for this method"
+#If you want to add one, go to load.data.i and add one to description
 
 n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
 

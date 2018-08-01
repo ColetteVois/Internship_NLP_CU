@@ -1,23 +1,9 @@
-#This is the file where you can add the tokenization description
-
-token_sentence_description <- list(c(1,sprintf("This sentence tokenisation %d is based on this package. It does that and this and is better for the sentences.",1)),
-                                   c(2, sprintf("This sentence tokenisation %d is based on this package. It does that and this and is better for the sentences. But sometimes it doesn't work.",2)),
-                                  c(3, sprintf("This sentence tokenisation %d is based on this package. It does that and this and is better for the sentences. But sometimes it doesn't work.",3))
-                                  )
-token_word_description <- list(c(1, sprintf("This word tokenisation %d is based on this package. It does that and this and is better for the words.",1)),
-                               c(2, sprintf("This word tokenisation %d is based on this package. It does that and this and is better for the words.",2)),
-                               c(3, sprintf("This word tokenisation %d is based on this package. It does that and this and is better for the words.",3)),
-                               c(4, sprintf("This word tokenisation %d is based on this package. It does that and this and is better for the words.",4)),
-                               c(5, sprintf("This word tokenisation %d is based on this package. It does that and this and is better for the words.",5))
-                                )
-token_norma_description <- list(c(1, sprintf("This normalization normalization tokenisation %d is based on this package. It does that and this and is better for the normalization.",1)),
-                                c(2, sprintf("This normalization tokenisation %d is based on this package. It does that and this and is better for the normalization.",2)),
-                                c(3, sprintf("This normalization tokenisation %d is based on this package. It does that and this and is better for the normalization.",3)),
-                                c(4, sprintf("This tokenisation %d is based on this package. It does that and this and is better for the normalization.",4))
-                                )
+#This is the file where you the tokenization descriptions are created to be used
+#By default, "There is no description available for this method"
+#If you want to add one, go to tokenizer.sentence.i, tokenizer.word.i or normalization.i and add one to description
 
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word_occu/", sep=""))) - 1
+n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep=""))) - 1
 n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
 
 token_sentence_description <- c()
@@ -45,7 +31,7 @@ for(j in 1:n.tokenizer.sentence){
 #Description of the word tokenization
 for(j in 1:n.tokenizer.word.occu){
 
-  temp <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word_occu/tokenizer_word_occu_%d.R", j), sep="")
+  temp <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
   myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))
   description <- "There is no description available for this word tokenization. "
   for(i in 1:nrow(myfiles[[1]])) {

@@ -21,6 +21,7 @@ params:
   overview_choice_offset: NA
   overview_choice_num_word: NA
   overview_choice_book: NA
+  data_selected_lines: NA
   data_boxplot: NA
   occurence_word: NA
   occurence_stop_word: NA
@@ -40,6 +41,7 @@ always_allow_html: yes
 
 ```{r setup, cache = TRUE, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+data_lines <- params$data_selected_lines
 d_token_boxplot <- params$data_boxplot
 K <- exp(params$regression_lin$coefficients[[1]])
 beta <- params$regression_lin$coefficients[[2]]
@@ -55,6 +57,32 @@ key <- params$key
 
 #Parameters
 
+```{r}
+if(length(params$overview_choice_book)==0){
+  books_selected <- "No book selected"
+} else{
+  books_selected <- params$overview_choice_book
+}
+if(length(params$selected_word_cloud)==0){
+  selected_cloud_word <- "No word selected in the wordcloud"
+} else{
+    selected_cloud_word <- params$selected_word_cloud
+} 
+
+if(params$overview_choice_data_all==FALSE & params$overview_choice_data_num_check == FALSE & length(params$overview_choice_book)==0){
+  result_selection <- paste("From line ", data_lines$rowname[1], "to line ", data_lines$rowname[length(data_lines$rowname)])
+} else{
+  result_selection <- "No data has been selected by hand"
+
+}
+
+if(NROW(ds)==0){
+  result_selection_analysis <- "No data has been selected"
+} else{
+  result_selection_analysis <- paste("From line ", ds$rowname[1], "to line ", ds$rowname[length(ds$rowname)])
+}
+```
+
 Data number: `r params$choice_data`
 
 Choice of tokenization:   
@@ -66,14 +94,21 @@ Choice of tokenization:
                           
 Choice of data in the pre-processing overview: 
 
-* all `r params$overview_choice_data_all`
-* numeric input `r params$overview_choice_data_num_check`
+* all: `r params$overview_choice_data_all`
+* numeric input: `r params$overview_choice_data_num_check`
     + number word `r params$overview_choice_num_word`
     + offset `r params$overview_choice_offset`
-* book `r params$overview_choice_book`
+* book: `r books_selected`
+* by hand: `r result_selection`
 
-The parameters chosen in this analysis are the frequencies between `r mifw` and `r mafw`, and a maximum number of words of `r mww` for the wordcloud.
-Selected word in the wordcloud: `r if(is.null(params$selected_word_cloud)){"None"} else{params$selected_word_cloud} `
+Analysis:
+
+* Data selected: `r result_selection_analysis`
+* Wordcloud frequencies:
+    + minimum `r mifw`
+    + maximum `r mafw`
+* Wordcloud maximum number of words: `r mww`
+* Selected word in the wordcloud: `r selected_cloud_word`
 
 #Pre-processing
 ##Filter

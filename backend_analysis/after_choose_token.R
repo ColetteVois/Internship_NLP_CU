@@ -114,7 +114,6 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   return(c(list(token_sentence), list(token_word), list(token_word_freq), list(token_word_stem), list(token_word_stop), list(token_word_stem_stop)))
 }
 
-
 # token_info <- after.choose.token(original_books_bis, 1, 1, 1)
 # 
 # token_sentence <- token_info[[1]]
@@ -122,3 +121,4 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
 # token_word_freq <- token_info[[3]]
 # token_word_stem <- token_info[[4]]
 # token_word_stop <- token_info[[5]]
+
