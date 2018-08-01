@@ -1,3 +1,16 @@
+#' @description Create a table to summarize the significative numbers about tokenizations. 
+#'  
+#' @param original_books_bis A tibble with two columns. 
+#' original_book$text is the lines of the text which has been selected. 
+#' original_book$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the lines belong
+#' @return nb.of.sentence A list of integer, number of sentences applied for differents tokenizations
+#' @return nb.of.word.occu A list of integer, number of word occurences applied for differents tokenizations
+#' @return nb.of.word.type A list of integer, number of word type applied for differents tokenizations
+#' @return nb.of.normalization A list of integer, number of words normalize applied for differents tokenizations
+#' 
+#' @examples
+#' token.boxplot(original_books_bis)
 
 token.boxplot <- function(my.texte) {
 
@@ -5,14 +18,14 @@ token.boxplot <- function(my.texte) {
   
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
   n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
-  n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
+  n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) 
 
   nb.of.sentence <- c()
   nb.of.word.occu <- c()
   nb.of.word.type <- c()
   nb.of.normalization <- c()
   
-  #fait n.tokenizer.sentence tokenisations de senctence differntes
+  #do n.tokenizer.sentence tokenisations de senctence differntes
   withProgress( expr = {
     for (i in 1:n.tokenizer.sentence){
       
@@ -65,8 +78,6 @@ token.boxplot <- function(my.texte) {
           token_word_freq
         }
         nb.of.word.type[j+(i-1)*n.tokenizer.word]  <- nrow(token_word_freq)
-      
-    
     
         #normalization
         for(l in 1:n.normalization) {
@@ -80,8 +91,6 @@ token.boxplot <- function(my.texte) {
           normalization.i <- sprintf("normalize.%d(token_word_freq)", l)
           token_word_stem <- eval(parse(text=normalization.i))
           nb.of.normalization[l+(j-1)*n.normalization+(i-1)*n.tokenizer.word*n.normalization]  <- nrow(token_word_stem)
-          #print(c(i,j,l))
-          #print(token_word_stem)
         }
     
       }
@@ -91,7 +100,6 @@ token.boxplot <- function(my.texte) {
   )
   
   return(c(list(nb.of.sentence),list(nb.of.word.occu),list(nb.of.word.type),list(nb.of.normalization)))
-
 }
 
 #token.boxplot(original_books_bis)

@@ -1,10 +1,10 @@
 #' @description Divides the text into its different sentences. Using "tokenize_sentences()" function from "tokenizers" library.
 #' 
-#' @param original_books_bis A tibble with two colums. 
+#' @param original_books_bis A tibble with two columns. 
 #' original_book$text is the lines of the text. 
 #' original_book$book is the part (e.g. chapter, different book...) 
 #' of the full text to which the lines belong
-#' @return token_sentence A tibble with two colums. 
+#' @return token_sentence A tibble with two columns. 
 #' token_sentence$sentence is each sentence of the text. 
 #' token_sentence$book is the part (e.g. chapter, different book...) 
 #' of the full text to which the sentence belong
@@ -28,7 +28,6 @@ tokenizer.sentence.1 <- function(my.texte) {
   token_sentence <- c()
   col_2 <- c()
   for(docu in 1:length(listfiles)) {
-
     #docu = 1
     while(identical(listfiles[docu], my.texte[[2]][curseur])) {
       curseur <- curseur + 1
@@ -45,7 +44,6 @@ tokenizer.sentence.1 <- function(my.texte) {
   names(token_sentence) <- c("sentence","book")
   
   return(token_sentence)
-  
 }
 
 #token_sentence <- tokenizer.sentence.1(original_books)

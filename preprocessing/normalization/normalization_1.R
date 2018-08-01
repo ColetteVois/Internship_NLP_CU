@@ -1,14 +1,14 @@
-#' @description Divides the text into its different words. Using "unnest_tokens()" function from "tidytext".
+#' @description Normalize the words of the text. Using "tokenize_word_stems()" function from "tokenizers" package.
 #' 
-#' @param token_sentence[k,] A tibble with two colums and just one row. 
-#' token_sentence$sentence is the k th sentence of the text. 
-#' token_sentence$book is the part (e.g. chapter, different book...) 
-#' of the full text to which this sentence belongs
-#' @param k A integer, the number of the sentence in the text
-#' @return token_word A tibble with two colums
-#' token_word$word is each word of the sentence k, in the same order as in the sentence
-#' token_word$sentence is the number of the sentence each wod belongs
-#' token_word$book is the name of the book each word belongs
+#' @param token_word_freq A tibble with four colums. 
+#' token_sentence$word are the words of the text in alphabetical order occuring just one. 
+#' token_sentence$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
+#' token_sentence$freq is the frequence each word appears in the text.
+#' token_sentence$tf is the terme frequency of each word.
+#' @return token_word_stem A tibble with four colums. 
+#' token_word_stem$word are the normalize form of words of the text in alphabetical order occuring just ones. 
+#' token_word_stem$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each normalize word appear.
+#' token_word_stem$freq is the frequence each normalize word appears in the text.
 #' 
 #' @import tokenizers
 #' @examples

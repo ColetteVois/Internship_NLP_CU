@@ -101,4 +101,8 @@ if(!require("janeaustenr")){
   install.packages("janeaustenr")
   library("janeaustenr")
 }
+if(!require("hunspell")){
+  install.packages("hunspell")
+  library("hunspell")
+}
 

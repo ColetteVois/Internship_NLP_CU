@@ -1,6 +1,19 @@
-library("corpus")
-tweet = FALSE
-#attention ici avec meme tokenization de base pour tweet
+#' @description Normalize the words of the text. Using "text_tokens()" function from "corpus" package with stemmer = "en" argument.
+#' 
+#' @param token_word_freq A tibble with four colums. 
+#' token_sentence$word are the words of the text in alphabetical order occuring just one. 
+#' token_sentence$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
+#' token_sentence$freq is the frequence each word appears in the text.
+#' token_sentence$tf is the terme frequency of each word.
+#' @return token_word_stem A tibble with four colums. 
+#' token_word_stem$word are the normalize form of words of the text in alphabetical order occuring just ones. 
+#' token_word_stem$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each normalize word appear.
+#' token_word_stem$freq is the frequence each normalize word appears in the text.
+#' 
+#' @import corpus
+#' @examples
+#' ## library(corpus)
+#' ## token_word_stem <- normalize.3(token_word_freq)
 
 normalize.3 <- function(my.texte) {
   
@@ -8,19 +21,12 @@ normalize.3 <- function(my.texte) {
   
   my_texte <- my.texte[1]
   names(my_texte) <- "text"
-  
-  #TO DO a mieux faire
-  if(tweet == TRUE)  {
-    tokens0 <- my.texte %>%
-      unnest_tokens(text, text)
-    if (DEBUG == TRUE) {tokens0} 
-  } else {
-    tokens0 <- my_texte
-  }
-  tokens1 <- text_tokens(tokens0, stemmer = "en")
+
+  tokens1 <- text_tokens(my_texte, stemmer = "en")
   tokens2 <- unlist(tokens1, recursive=FALSE)
   tokens3 <- sort(tokens2)
   
+  #add colums sentences and freq
   listfiles <- unique(tokens3)
   pre_curseur <- 1
   curseur <- 1
@@ -28,7 +34,6 @@ normalize.3 <- function(my.texte) {
   col_sentence <- c()
   col_freq <- c()
   for(word in 1:length(listfiles)) {
-    
     #word = 13
     freq <- 0
     sentence <- c()
@@ -41,14 +46,11 @@ normalize.3 <- function(my.texte) {
     col_sentence <- c(col_sentence, list(sentence))
     col_freq <- c(col_freq,freq)
     pre_curseur <- curseur
-    
   }
   
-  # if (DEBUG == TRUE) {tokens} 
   token_word_stem <- tibble(word = col_word, sentences = col_sentence, freq = col_freq)
   
   return(token_word_stem)
-
 }
 
-#normalize.3(token_word_freq)
+# token_word_stem <- normalize.3(token_word_freq)

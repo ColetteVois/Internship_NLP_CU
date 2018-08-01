@@ -20,7 +20,7 @@ source(lien)
 ####################################   Doing the choices for the check boxes  ##########################################################
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
 n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
-n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
+n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) 
 n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
 
 
