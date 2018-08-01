@@ -254,9 +254,9 @@ output$description_type_data_possible_analyzed <- renderUI({
   key_5 <- reactive({row.names(d_boxplot_5())})
   
   #Creating a random data to avoid point superposition in the plots of the boxplots
-  random_data_avoid_superposition_1 <- reactive({rnorm(length(d_boxplot_1()$token_sentence_col))*0.1})
-  random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.1})
-  random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.1})
+  random_data_avoid_superposition_1 <- reactive({rnorm(length(d_boxplot_1()$token_sentence_col))*0.05})
+  random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.05})
+  random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.05})
   
   #Doing the boxplots
   

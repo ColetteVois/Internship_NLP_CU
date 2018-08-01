@@ -105,4 +105,11 @@ if(!require("hunspell")){
   install.packages("hunspell")
   library("hunspell")
 }
-
+if(!require("tokenizers")){
+  install.packages("tokenizers")
+  library("tokenizers")
+}
+if(!require("tidytext")){
+  install.packages("tidytext")
+  library("tidytext")
+}
