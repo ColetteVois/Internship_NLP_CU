@@ -2,9 +2,9 @@
 #By default, "There is no description available for this method"
 #If you want to add one, go to tokenizer.sentence.i, tokenizer.word.i or normalization.i and add one to description
 
-n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep=""))) - 1
-n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) - 1
+n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/", sep = "")))
+n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_word/", sep=""))) - 1
+n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/normalization/", sep=""))) - 1
 
 token_sentence_description <- c()
 token_word_description <- c()
@@ -13,7 +13,7 @@ token_norma_description <- c()
 #Description of the sentence tokenization
 for(j in 1:n.tokenizer.sentence){
 
- temp <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", j), sep="")
+ temp <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", j), sep="")
  myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))
  description <- "There is no description available for this sentence tokenization. "
  for(i in 1:nrow(myfiles[[1]])) {
@@ -31,7 +31,7 @@ for(j in 1:n.tokenizer.sentence){
 #Description of the word tokenization
 for(j in 1:n.tokenizer.word.occu){
 
-  temp <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
+  temp <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
   myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))
   description <- "There is no description available for this word tokenization. "
   for(i in 1:nrow(myfiles[[1]])) {
@@ -49,7 +49,7 @@ for(j in 1:n.tokenizer.word.occu){
 #Description of the normalization tokenization
 for(j in 1:n.normalization){
 
-  temp <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", j), sep="")
+  temp <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/normalization/normalization_%d.R", j), sep="")
   myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))
   description <- "There is no description available for this normalization tokenization. "
   for(i in 1:nrow(myfiles[[1]])) {

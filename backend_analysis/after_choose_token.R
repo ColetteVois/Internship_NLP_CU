@@ -29,6 +29,10 @@
 #' token_word_stop$word are the normalize form of words of the text in alphabetical order occuring just ones minus the most current words.
 #' token_word_stop$sentences  is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
 #' token_word_stop$freq is the frequence each word appears in the text.
+#' @return token_word_stem_stop A tibble with three columns.
+#' token_word_stem_stop$word are the normalize form of words of the text in alphabetical order occuring just ones minus the most current words.
+#' token_word_stem_stop$sentences  is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
+#' token_word_stem_stop$freq is the frequence each word appears in the text.
 #' 
 #' @import stringi
 #' @examples
@@ -39,6 +43,7 @@
 #' ## token_word_freq <- token_info[[3]]
 #' ## token_word_stem <- token_info[[4]]
 #' ## token_word_stop <- token_info[[5]]
+#' ## token_word_stem_stop <- token_info[[6]]
 
 after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word, choose_normalization) {
   
@@ -54,16 +59,16 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
 
   token_word <- c()
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
+  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
   source(lien)
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
+  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
   source(lien)
   
-  lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
+  lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
   source(lien)
   
-  lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/stop_word/stop_word_%d.R", choose_normalization), sep="")
+  lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/stop_word/stop_word_%d.R", choose_normalization), sep="")
   source(lien)
 
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)
@@ -107,18 +112,23 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   token_word_stop <- token_word_stop %>% bind_tf_idf(word, book, freq) 
   token_word_stem_stop <- token_word_stem_stop %>% mutate(book = "all")
   token_word_stem_stop <- token_word_stem_stop %>% bind_tf_idf(word, book, freq) 
+  token_word_stem <- token_word_stem %>% mutate(book = "all")
+  token_word_stem <- token_word_stem %>% bind_tf_idf(word, book, freq) 
 
   # take off useless columns
   token_word_freq <- token_word_freq[ , - c(4,6,7)]
+  token_word_stem <- token_word_stem[ , - c(4,6,7)]
+  token_word_stop <- token_word_stop[ , - c(4,6,7)]
+  token_word_stem_stop <- token_word_stem_stop[ , - c(4,6,7)]
   
   return(c(list(token_sentence), list(token_word), list(token_word_freq), list(token_word_stem), list(token_word_stop), list(token_word_stem_stop)))
 }
 
-# token_info <- after.choose.token(original_books_bis, 1, 1, 1)
-# 
-# token_sentence <- token_info[[1]]
-# token_word <- token_info[[2]]
-# token_word_freq <- token_info[[3]]
-# token_word_stem <- token_info[[4]]
-# token_word_stop <- token_info[[5]]
+token_info <- after.choose.token(original_books_bis, 1, 1, 1)
 
+token_sentence <- token_info[[1]]
+token_word <- token_info[[2]]
+token_word_freq <- token_info[[3]]
+token_word_stem <- token_info[[4]]
+token_word_stop <- token_info[[5]]
+token_word_stem_stop <- token_info[[6]]

@@ -2,7 +2,7 @@
 
 #Write your path to go to your file. 
 #This path should be the path before the folder you just downloaded on GitHub.
-#For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU/app"
+#For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU-master/app"
 #Then you should put "C:/Users/Projet" as my_path.
 
 my_path <- "C:/Users/Projet"
@@ -14,14 +14,14 @@ DEBUG = TRUE
 
 ################################# Load the libraries and install the packages if not  #################################################
 
-lien <- paste(my_path,"/Intership_NLP_CU/install_packages.R", sep="")
+lien <- paste(my_path,"/Intership_NLP_CU-master/install_packages.R", sep="")
 source(lien)
 
 ####################################   Doing the choices for the check boxes  ##########################################################
-n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
-n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) 
-n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU/load_data/", sep="")))
+n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/", sep = "")))
+n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_word/", sep="")))
+n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/normalization/", sep=""))) 
+n.type.data <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/load_data/", sep="")))
 
 
 check_choices_token_sentence_check <- c()
@@ -59,5 +59,5 @@ n <- 20
 
 #########################################################  Running the shiny app ########################################################
 
-lien <- paste(my_path,"/Intership_NLP_CU/app", sep="")
+lien <- paste(my_path,"/Intership_NLP_CU-master/app", sep="")
 runApp(lien, launch.browser = TRUE)

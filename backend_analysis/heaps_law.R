@@ -22,13 +22,13 @@ heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word
   
   book.length <- nrow(my.texte)
     
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
+  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
   source(lien)
   
-  lien <- paste(my_path, "/Intership_NLP_CU/preprocessing/stop_word/stop_word_1.R", sep="")
+  lien <- paste(my_path, "/Intership_NLP_CU-master/preprocessing/stop_word/stop_word_1.R", sep="")
   source(lien)
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
+  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
   source(lien)
   
   nb.of.word.occu <- c()

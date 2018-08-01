@@ -16,9 +16,9 @@ token.boxplot <- function(my.texte) {
 
   #my.texte <- original_books_bis
   
-  n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_sentence/", sep = "")))
-  n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/tokenizer_word/", sep="")))
-  n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU/preprocessing/normalization/", sep=""))) 
+  n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/", sep = "")))
+  n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_word/", sep="")))
+  n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/normalization/", sep=""))) 
 
   nb.of.sentence <- c()
   nb.of.word.occu <- c()
@@ -30,7 +30,7 @@ token.boxplot <- function(my.texte) {
     for (i in 1:n.tokenizer.sentence){
       
       #i = 2 #2,3
-      lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
+      lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
       source(lien)
       tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", i)
       # if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
@@ -44,7 +44,7 @@ token.boxplot <- function(my.texte) {
         token_word <- c()
         #j = 5 #3,4,5
         if(i==1) {
-          lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
+          lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
           source(lien)
         }
         tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", j)
@@ -85,7 +85,7 @@ token.boxplot <- function(my.texte) {
           incProgress(amount = inc)
           #l = 1
           if(j==1) {
-            lien <- paste(my_path,sprintf("/Intership_NLP_CU/preprocessing/normalization/normalization_%d.R", l), sep="")
+            lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/normalization/normalization_%d.R", l), sep="")
             source(lien)
           }
           normalization.i <- sprintf("normalize.%d(token_word_freq)", l)
