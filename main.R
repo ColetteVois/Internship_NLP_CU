@@ -6,7 +6,7 @@
 #Then you should put "C:/Users/Projet" as my_path.
 
 my_path <- "C:/Users/Projet"
-# my_path <- "C:/Users/rubik/Desktop"
+my_path <- "C:/Users/rubik/Desktop"
 
 #choose which data you want to load
 choose_load_data <- 3
