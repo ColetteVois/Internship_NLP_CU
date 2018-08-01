@@ -4,16 +4,35 @@ server <- function(input, output, session){
   
 ################################### LOAD DATA ###########################################
 #Link of the observed data
-link_data_uploaded <-  reactive({input$inputdata$datapath})
+link_file_data_uploaded <-  reactive({input$inputdata$datapath})
 #Loading the load_data files 
 observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_NLP_CU-master/load_data/load_data_%d.R", strtoi(input$data_type_choice)), sep = ""))})
+
+#Creating text to how the options
+output$or_a_data_text <- renderText("Or a folder")
+
+#Getting the data from the folder
+root = c(wd='C:/')
+shinyDirChoose(input, "inputfolderfile",roots=root)
+link_folder_data_uploaded <- reactive({parseDirPath(roots=root, input$inputfolderfile)})
+
+#Getting the link of the uploaded data
+link_data_uploaded <- reactive({
+  if(is.null(link_file_data_uploaded())){
+    link_folder_data_uploaded()
+  }
+  else{
+    link_file_data_uploaded()
+  }
+})
+
 
 #Creating the data for the app
 original_books <- reactive({
     #According to the user's choice, changing the load_data that will be used.
     load.data.i <- sprintf('load.data.%d(link_data_uploaded())', strtoi(input$data_type_choice))
     
-    if(is.null(link_data_uploaded())){
+    if(is.null(link_data_uploaded()) | length(link_data_uploaded())==0){
       local_original_books <- tibble(text = rep("This is not a text, choose a data!", 200))
     }
     else{
@@ -63,7 +82,11 @@ source(lien)
 output$description_type_data_possible_analyzed <- renderUI({
   tagList(
     renderPrint({cat(noquote(load_data_type_description),sep="\n")}),
-    renderPrint({link_data_uploaded()})
+    renderPrint({link_folder_data_uploaded()}),
+    renderText({"File/Folder location:"}),
+    renderPrint({link_data_uploaded()}),
+    renderText({"File/Folder name:"}),
+    renderPrint({input$inputdata$name})
   )
 })
   
@@ -258,7 +281,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.05})
   random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.05})
   
-  #Doing the boxplots and trying to suppress the warnings of the boxplots in the report
+  #Doing the boxplots
   
   output$box_1 <- renderPlotly({
     plot_ly(d_boxplot_1(),x = random_data_avoid_superposition_1(), y=~token_sentence_col, key=~key_1(), type = "scatter", mode='markers', source = "box1", marker =list(color="blue"))%>%

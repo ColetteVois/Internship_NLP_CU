@@ -113,3 +113,7 @@ if(!require("tidytext")){
   install.packages("tidytext")
   library("tidytext")
 }
+if(!require("shinyFiles")){
+  install.packages("shinyFiles")
+  library("shinyFiles")
+}

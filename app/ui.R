@@ -31,7 +31,9 @@ body <- dashboardBody(
       tabName = "data",
       fluidRow(
         box(width =6 ,
-            fileInput("inputdata", "Choose PDF File", multiple = FALSE)
+            fileInput("inputdata", "Choose a data file", multiple = TRUE),
+            tags$b(textOutput("or_a_data_text")),
+            shinyDirButton("inputfolderfile", label = "Choose a folder", title = "Folder choices")
             ),
         box(width = 6,
             radioButtons("data_type_choice", "Which data do you have as an input to upload?",
