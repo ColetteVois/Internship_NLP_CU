@@ -11,7 +11,7 @@ observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_
 #Creating text to how the options
 output$or_a_data_text <- renderText("Or a folder")
 
-#Getting the data from the folder
+#Getting the data from the folder but works only for windows yet
 root = c(wd='C:/')
 shinyDirChoose(input, "inputfolderfile",roots=root)
 link_folder_data_uploaded <- reactive({parseDirPath(roots=root, input$inputfolderfile)})
@@ -347,6 +347,23 @@ output$description_type_data_possible_analyzed <- renderUI({
       text_descri_hover_choosen_5 <- paste(token_sentence_description[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1],token_word_description[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1],  token_norma_description[modulo.not.null(strtoi(n5), n.normalization)],sep ='\n')
     }
     
+    #Creating the data that will appear on the app
+    data_hover_appear <- reactiveValues(messages=NULL)
+    observeEvent(d1, {
+      if(length(n1)==1){
+        data_hover_appear$messages <- c(paste("Nb sentences : ",d1$y),paste("Sentence : ",modulo.not.null(strtoi(n1), n.tokenizer.sentence)),cat(text_descri_hover_choosen_1))
+      }
+    })
+    local_hover_data <- NULL
+    last_hover_data <- reactive({
+      if(is.null(d1)==FALSE){
+        local_hover_data <- d1
+        d1
+      }
+      else{
+        local_hover_data
+      }
+    })
     tagList(
       if(length(n1)==1){
         renderText({paste("Nb sentences : ",d1$y)})
@@ -416,7 +433,11 @@ output$description_type_data_possible_analyzed <- renderUI({
       tags$br(),
       if(length(n5)==1){
         renderPrint({cat(text_descri_hover_choosen_5)})
-      }
+      },
+      renderPrint({last_hover_data()})
+      # if((length(n1)==1|length(n2)==1|length(n3)==1|length(n4)==1|length(n5)==1)==FALSE){
+      #   renderPrint({last_hover_data()})
+      # }
     )
   })
   
