@@ -56,7 +56,7 @@ tokenizer.sentence.2 <- function(my.texte) {
   col_2 <- c()
   for(docu in 1:length(listfiles)) {
     #docu = 2
-    print(docu)
+    # print(docu)
     while(identical(listfiles[docu], my.texte[[2]][curseur])) {
       curseur <- curseur + 1
     }

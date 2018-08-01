@@ -20,11 +20,11 @@ token.boxplot <- function(my.texte) {
       lien <- paste(my_path, sprintf("/Intership_NLP_CU/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
       source(lien)
       tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", i)
-      if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
+      # if (DEBUG == TRUE) { print(tokenizer.sentence.i) }
       token_sentence <- eval(parse(text=tokenizer.sentence.i))#[[1]][1]
-      if (DEBUG == TRUE) { print(token_sentence) }
+      # if (DEBUG == TRUE) { print(token_sentence) }
       nb.of.sentence[i] <- dim(token_sentence)[1]
-      if (DEBUG == TRUE) { print(nb.of.sentence) }
+      # if (DEBUG == TRUE) { print(nb.of.sentence) }
     
       for (j in 1:n.tokenizer.word){
       
@@ -35,15 +35,15 @@ token.boxplot <- function(my.texte) {
           source(lien)
         }
         tokenizer.word.i <- sprintf("tokenizer.word.%d(token_sentence[k,],k)", j)
-        if (DEBUG == TRUE) { print(tokenizer.word.i) }
+        # if (DEBUG == TRUE) { print(tokenizer.word.i) }
       
         for(k in 1:nb.of.sentence[i]) {
           #k = 2  #2,3,4...15773
-          if (DEBUG == TRUE) { token_sentence[k,] }
+          # if (DEBUG == TRUE) { token_sentence[k,] }
           new_token_word <- eval(parse(text=tokenizer.word.i))
-          if (DEBUG == TRUE) { new_token_word }
+          # if (DEBUG == TRUE) { new_token_word }
           token_word <- dplyr::bind_rows(token_word,new_token_word) #TODO mettre bout à bout des matrice
-          if (DEBUG == TRUE) { token_word }
+          # if (DEBUG == TRUE) { token_word }
         }
         nb.of.word.occu[j+(i-1)*n.tokenizer.word]  <- nrow(token_word)
       

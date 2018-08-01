@@ -63,8 +63,7 @@ source(lien)
 output$description_type_data_possible_analyzed <- renderUI({
   tagList(
     renderPrint({cat(noquote(load_data_type_description),sep="\n")}),
-    renderPrint({link_data_uploaded()}),
-    renderPrint({original_books_selected_used_av()})
+    renderPrint({link_data_uploaded()})
   )
 })
   
@@ -233,8 +232,6 @@ output$description_type_data_possible_analyzed <- renderUI({
     )})
   
   ################################################################################## Filter Pre Processing  ################################################
-  #Creating a random data to avoid point superposition in the plots of the boxplots
-  random_data_avoid_superposition <- 
   
   #Doing the filter page from the pre processing
   #Creating the data for the boxplots
@@ -256,25 +253,34 @@ output$description_type_data_possible_analyzed <- renderUI({
   key_4 <- reactive({row.names(d_boxplot_4())})
   key_5 <- reactive({row.names(d_boxplot_5())})
   
+  #Creating a random data to avoid point superposition in the plots of the boxplots
+  random_data_avoid_superposition_1 <- reactive({rnorm(length(d_boxplot_1()$token_sentence_col))*0.1})
+  random_data_avoid_superposition_2 <- reactive({rnorm(length(d_boxplot_2()$token_word_ocu_col))*0.1})
+  random_data_avoid_superposition_3 <- reactive({rnorm(length(d_boxplot_5()$token_normalization))*0.1})
+  
   #Doing the boxplots
   
   output$box_1 <- renderPlotly({
-    plot_ly(d_boxplot_1(),x = rep(0, length(d_boxplot_1()$token_sentence_col)), y=~token_sentence_col, key=~key_1(), type = "scatter", source = "box1", mode='markers', marker =list(color="blue"))%>%
-      add_trace(d_boxplot_1(), y=~token_sentence_col, type = "box")%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_1(),x = random_data_avoid_superposition_1(), y=~token_sentence_col, key=~key_1(), type = "scatter", mode='markers', source = "box1", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_1(), x=0, y=~token_sentence_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the sentence tokenization', yaxis =list(title ='Number of sentences'), titlefont = 'arial', showlegend = FALSE)
     #hoverinfo = 'text', text =~paste("Maximum:", fivenum(test_d)[5], "Q3:", fivenum(test_d)[4]), marker = list(outliercolor = "red"))
     # add_trace(x = 0, y=~token_sentence_col[strtoi(token_sentence_radio_button())], key  =~ key_1_2(), marker = list(color="yellow"))%>%  
   })
   output$box_2 <- renderPlotly({
-    plot_ly(d_boxplot_2(),x = rep(0, length(d_boxplot_2()$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2(), y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_2(),x = random_data_avoid_superposition_2(), y=~token_word_ocu_col, key  =~ key_2(), type = "scatter",  mode='markers', source = "box2", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_2(), x = 0, y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_3 <- renderPlotly({
-    plot_ly(d_boxplot_3(),x = rep(0, length(d_boxplot_3()$token_word_type_col)), y=~token_word_type_col, key  =~ key_3(), type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3(), y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_3(),x = random_data_avoid_superposition_2(), y=~token_word_type_col, key  =~ key_3(), type = "scatter", mode='markers',source = "box3", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_3(),x=0, y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_4 <- renderPlotly({
-    plot_ly(d_boxplot_4(),x = rep(0, length(d_boxplot_4()$token_ratio_col)), y=~token_ratio_col, key  =~ key_4(), type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4(), y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_4(),x = random_data_avoid_superposition_2(), y=~token_ratio_col, key  =~ key_4(), type = "scatter",  mode='markers',source = "box4", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_4(), x=0, y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
   })
   output$box_5 <- renderPlotly({
-    plot_ly(d_boxplot_5(),x = rep(0, length(d_boxplot_5()$token_normalization)), y=~token_normalization, key  =~ key_5(), type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5(), y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
+    plot_ly(d_boxplot_5(),x = random_data_avoid_superposition_3(), y=~token_normalization, key  =~ key_5(), type = "scatter", mode='markers', source = "box5", marker =list(color="blue"))%>%
+      add_trace(d_boxplot_5(), x=0, y=~token_normalization, type = "box", marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
   
   #Doing the hover descritpion
