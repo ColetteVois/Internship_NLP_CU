@@ -40,13 +40,13 @@ body <- dashboardBody(
       ),
       fluidRow(
         box(width = 6,
-        radioButtons("choice_token_moment", "Choose if you want to choose the tokenization now or in the filter view of the pre processing table",
+        radioButtons("choice_token_moment", "Choose the tokenization now or in the filter view of the pre processing table",
                          choices = c("Now", "Later")),
-        radioButtons("token_sentence_radio_button_now", "Choose the tokenization of sentences",
+        radioButtons("token_sentence_radio_button_now", "Tokenization of sentences",
                    check_choices_token_sentence_check, inline = TRUE),
-      radioButtons("token_word_radio_button_now", "Choose the tokenization of words",
+      radioButtons("token_word_radio_button_now", "Tokenization of words",
                    check_choices_token_word_check, inline = TRUE),
-      radioButtons("token_norma_radio_button_now", "Choose the normalization of words",
+      radioButtons("token_norma_radio_button_now", "Normalization of words",
                    check_choices_token_norma_check, inline = TRUE)
         ),
       box(width = 6,
@@ -101,11 +101,11 @@ body <- dashboardBody(
           )),
       fluidRow(
         box(
-          radioButtons("token_sentence_radio_button_later", "Choose the tokenization of sentences",
+          radioButtons("token_sentence_radio_button_later", "Tokenization of sentences",
                              check_choices_token_sentence_check, inline = TRUE),
-          radioButtons("token_word_radio_button_later", "Choose the tokenization of words",
+          radioButtons("token_word_radio_button_later", "Tokenization of words",
                              check_choices_token_word_check, inline = TRUE),
-          radioButtons("token_norma_radio_button_later", "Choose the normalization of words",
+          radioButtons("token_norma_radio_button_later", "Normalization of words",
                        check_choices_token_norma_check, inline = TRUE),
           textOutput("choice_tokenizations_reminded"),
           tags$br(),
