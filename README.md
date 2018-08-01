@@ -34,4 +34,4 @@ GitHub: Here is a description of how to use the GitHub repository to do what you
         </ul>
 
 R version:  R version 3.5.0 (2018-04-23) <br />
-PS: Currently, you can't load data on the app, it will be soon update so that you can. For the moment, we advise you use the data set number 1, Jane Austen's books, which is automatically downloaded when using the app. If you want to try other data before you can do it on the app, send us a message and we will figure it out.
+PS: If you want to add data and it doesn't work with the current choice, go to the user's guide to see how to add your data.
