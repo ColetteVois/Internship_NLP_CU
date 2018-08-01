@@ -1,4 +1,18 @@
-library(tibble)
+#' @description Applied Heaps Law to the text.
+#' 
+#' @param original_books_bis A tibble with two columns. 
+#' original_book$text is the lines of the text which has been selected. 
+#' original_book$book is the part (e.g. chapter, different book...) 
+#' of the full text to which the lines belong
+#' @param choose_tokenizer_sentence A integer, the number of the token_sentence function
+#' @param choose_tokenizer_word A integer, the number of the token_word function
+#' @return nb.of.word.occu A list of integer, number of words occurences for differents parts of the text
+#' @return nb.of.stop.word A list of integer, number of words with stopword applied for differents parts of the text
+#' 
+#' @import tibble
+#' @examples
+#' ## library(tibble)
+#' ## heaps.law(original_books_bis, 1, 1)
 
 heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word) {
 
@@ -20,6 +34,7 @@ heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word
   nb.of.word.occu <- c()
   nb.of.stop.word <- c()
   
+  # for changing the number of point you want
   accura <- 2
   
   withProgress( expr ={
@@ -51,26 +66,6 @@ heaps.law <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word
   },
 message = "Creating plots"
   )
+  
   return(c(list(nb.of.word.occu), list(nb.of.stop.word)))
 }
-
-
-# a = heaps.law(original_books_bis, 1, 1)
-# nb.of.word.occu = a[[1]]
-# nb.of.stop.word = a[[2]]
-# 
-# #24, 25,26
-# #jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/log_heaps_law_data_%d.jpg',choose_load_data),sep =""))
-# plot(log(nb.of.word.occu),log(nb.of.stop.word))
-# reg_lin <- lm(log(nb.of.stop.word) ~ log(nb.of.word.occu))
-# abline(reg_lin)
-# #dev.off()
-# 
-# K <- exp(reg_lin$coefficients[[1]]) #normalement entre 30 et 100
-# beta <- reg_lin$coefficients[[2]]   #environ 0.5
-# summary(reg_lin)
-# 
-# #jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/heaps_law_data_%d.jpg',choose_load_data),sep =""))
-# plot(nb.of.word.occu, nb.of.stop.word)
-# lines(nb.of.word.occu, K*nb.of.word.occu^beta, col="red")
-# #dev.off()

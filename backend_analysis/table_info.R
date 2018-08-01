@@ -1,13 +1,10 @@
-#' Add together two numbers.
+#' @description Create a table to summarize the significative numbers about tokenizations. 
+#'  
+#' @param token_info A list of tibble, see the output of after_choose_token.
+#' @return table_info A tible with the number of documents, occurences of words, type of words...
 #' 
-#' @param x A number.
-#' @param y A number.
-#' @return The sum of \code{x} and \code{y}.
 #' @examples
-#' add(1, 1)
-#' add(10, 1)
-
-
+#' table.info(token_info)
 
 table.info <- function(token_info) {
   

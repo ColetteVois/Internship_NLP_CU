@@ -1,3 +1,18 @@
+#' @description Applied Zipfs Law to the text.
+#' 
+#' @param token_word_freq A tibble with four colums. 
+#' token_sentence$word are the words of the text in alphabetical order occuring just one. 
+#' token_sentence$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
+#' token_sentence$freq is the frequence each word appears in the text.
+#' token_sentence$tf is the terme frequency of each word.
+#' @return freq_by_rank
+#' @return lambda
+#' @return inv
+#' @return summary(reg_lin)
+#' 
+#' @examples
+#' ## heaps.law(original_books_bis, 1, 1)
+
 
 zipfs.law <- function(my.texte) {
   
@@ -8,10 +23,8 @@ zipfs.law <- function(my.texte) {
   
   freq_by_rank <- my.texte %>% mutate(rank = row_number(), term_frequency = freq/total)
   
-  
   #on ne prend que la partie du milieu car c est la plus lineaire  
-
-  rank_subset <- freq_by_rank %>% filter(rank> 0.1*nb.mot, rank < 0.9*nb.mot) # entre 10% et 90% peut être changer ?
+  rank_subset <- freq_by_rank %>% filter(rank> 0.1*nb.mot, rank < 0.9*nb.mot) # entre 10% et 90%
   reg_lin <- lm(log10(rank_subset$term_frequency) ~ log10(rank_subset$rank))
   
   lambda <- exp(reg_lin$coefficients[[1]])
@@ -19,16 +32,6 @@ zipfs.law <- function(my.texte) {
   summary(reg_lin)
   
   return(c(list(freq_by_rank), list(lambda), list(inv), list(summary(reg_lin))))
-
-  # 
-  # jpeg(paste(my_path, sprintf('/Intership_NLP_CU/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
-  # freq_by_rank %>% ggplot(aes(rank, term_frequency)) +
-  #   geom_abline(intercept = reg_lin$coefficients[[1]], slope = inv, color = "red") +
-  #   geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
-  #   scale_x_log10() +
-  #   scale_y_log10()
-  # dev.off()
-  
 }
 
 #zipfs.law(token_word_freq)

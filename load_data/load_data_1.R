@@ -17,7 +17,6 @@
 #' ## original_books <- load.data.1("")
 
 load.data.1 <- function(lien) {
-
   
   #for nothing just for use the argument lien
   print(lien)
@@ -27,7 +26,7 @@ load.data.1 <- function(lien) {
            chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                                    ignore_case = TRUE)))) %>%
     ungroup()
-  original_book<- original_book1[,c(1,2)]
+  original_book <- original_book1[,c(1,2)]
   
   return(original_book)
   
