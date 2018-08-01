@@ -65,8 +65,6 @@ body <- dashboardBody(
         ),
         box(
           checkboxInput("all", label = "Select all the data", value = TRUE),
-          checkboxGroupInput("book", "Choose one or more book(s)",
-                             c(), inline = TRUE),
           checkboxInput("num_check", label = "Choose the data with the numeric input, else you can select it on the graph", value = FALSE),
           numericInput(inputId = "num_offset_data", label = "Choose the number of the first line", min = 1, max = n, value = 1),
           numericInput(inputId = "num_word_data", label = "Choose the number of lines follwing the offset", min = 1, max = n, value = n),
@@ -75,6 +73,13 @@ body <- dashboardBody(
           tags$br(),
           tags$b(textOutput("num_data_highlighted")),
           tags$br(),
+          checkboxGroupInput("book", "Choose one or more book(s)",
+                             c(), inline = TRUE),
+          tags$br()
+        )
+      ),
+      fluidRow(
+        box(
           uiOutput("num_data_text_display")
         )
       )
