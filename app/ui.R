@@ -41,7 +41,7 @@ body <- dashboardBody(
       fluidRow(
         box(width = 6,
         radioButtons("choice_token_moment", "Choose the tokenization now or in the filter view of the pre processing table",
-                         choices = c("Now", "Later")),
+                         choices = c("Now", "Later"), selected = "Later"),
         radioButtons("token_sentence_radio_button_now", "Tokenization of sentences",
                    check_choices_token_sentence_check, inline = TRUE),
       radioButtons("token_word_radio_button_now", "Tokenization of words",
