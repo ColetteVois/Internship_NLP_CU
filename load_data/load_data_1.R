@@ -28,6 +28,6 @@ load.data.1 <- function(lien) {
     ungroup()
   original_book <- original_book1[,c(1,2)]
   
-  return(original_book)
+  return(original_book[11000:13000,])
   
 }

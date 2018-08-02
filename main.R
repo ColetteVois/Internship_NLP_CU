@@ -8,8 +8,7 @@
 my_path <- "C:/Users/Projet"
 # my_path <- "C:/Users/rubik/Desktop"
 
-#choose which data you want to load
-choose_load_data <- 3
+#For us to debug the programm
 DEBUG = TRUE
 
 ################################# Load the libraries and install the packages if not  #################################################

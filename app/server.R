@@ -29,6 +29,7 @@ link_data_uploaded <- reactive({
 
 
 #Creating the data for the app
+
 original_books <- reactive({
     #According to the user's choice, changing the load_data that will be used.
   if(input$choice_data_1 == TRUE){
@@ -42,7 +43,13 @@ original_books <- reactive({
       local_original_books <- tibble(text = rep("This is not a text, choose a data!", 200))
     }
     else{
-      local_original_books <- eval(parse(text=load.data.i))
+      if(strtoi(input$data_type_choice)==1){
+        local_original_books <- eval(parse(text=load.data.i))
+      }
+      else{
+        local_original_books <- eval(parse(text=load.data.i))
+        
+      }
     }
   }
     local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
