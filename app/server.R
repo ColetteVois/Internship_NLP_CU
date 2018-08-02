@@ -233,7 +233,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Printing the number of Lines and the maximum number of Lines 
   output$num_data <- renderUI({
     tagList(renderText({
-      paste("The number of lines of the input file is", NROW(original_books_bis()), "and the maximum number of lines you can currently choose is", NROW(original_books_bis())-input$num_offset_data+1)})
+      paste("The number of lines of the input file is", NROW(original_books_bis()), "and the maximum number of lines you can currently choose is", NROW(original_books_bis())-input$num_offset_data+1, ".")})
       )
     })
   
@@ -309,11 +309,11 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   #Doing the hover descritpion
   output$description_token <- renderUI({
-    d1 <- event_data("plotly_hover", source = "box1")
-    d2 <- event_data("plotly_hover", source = "box2")
-    d3 <- event_data("plotly_hover", source = "box3")
-    d4 <- event_data("plotly_hover", source = "box4")
-    d5 <- event_data("plotly_hover", source = "box5")
+    d1 <- event_data("plotly_click", source = "box1")
+    d2 <- event_data("plotly_click", source = "box2")
+    d3 <- event_data("plotly_click", source = "box3")
+    d4 <- event_data("plotly_click", source = "box4")
+    d5 <- event_data("plotly_click", source = "box5")
     
     n1 <- d1$key
     n2 <- d2$key
@@ -327,7 +327,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/modulo_not_null.R", sep="")
     source(lien)
     
-    #May be a problem if there are several points with the same y
+    
     if(length(n1)==1){
       text_descri_hover_choosen_1 <- token_sentence_description[modulo.not.null(strtoi(n1), n.tokenizer.sentence)]
     }
@@ -347,24 +347,13 @@ output$description_type_data_possible_analyzed <- renderUI({
       text_descri_hover_choosen_5 <- paste(token_sentence_description[((strtoi(n5)-1) %/% (n.normalization*n.tokenizer.word.occu))+1],token_word_description[(((strtoi(n5)-1) %/% n.normalization) %% n.tokenizer.word.occu)+1],  token_norma_description[modulo.not.null(strtoi(n5), n.normalization)],sep ='\n')
     }
     
+    
+    
     #Creating the data that will appear on the app
-    data_hover_appear <- reactiveValues(messages=NULL)
-    observeEvent(d1, {
-      if(length(n1)==1){
-        data_hover_appear$messages <- c(paste("Nb sentences : ",d1$y),paste("Sentence : ",modulo.not.null(strtoi(n1), n.tokenizer.sentence)),cat(text_descri_hover_choosen_1))
-      }
-    })
-    local_hover_data <- NULL
-    last_hover_data <- reactive({
-      if(is.null(d1)==FALSE){
-        local_hover_data <- d1
-        d1
-      }
-      else{
-        local_hover_data
-      }
-    })
+    
     tagList(
+      tags$b(renderText({"Boxplot 1:"})),
+      tags$br(),
       if(length(n1)==1){
         renderText({paste("Nb sentences : ",d1$y)})
       },
@@ -375,7 +364,10 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(length(n1)==1){
         renderPrint({cat(text_descri_hover_choosen_1)})
       },
+      tags$br(),
       
+      tags$b(renderText({"Boxplot 2:"})),
+      tags$br(),
       if(length(n2)==1){
         renderText({paste("Nb words : ",d2$y)})
       },
@@ -389,7 +381,10 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(length(n2)==1){
         renderPrint({cat(text_descri_hover_choosen_2)})
       },
+      tags$br(),
       
+      tags$b(renderText({"Boxplot 3:"})),
+      tags$br(),
       if(length(n3)==1){
         renderText({paste("Nb words : ",d3$y)})
       },
@@ -403,7 +398,10 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(length(n3)==1){
         renderPrint({cat(text_descri_hover_choosen_3)})
       },
+      tags$br(),
       
+      tags$b(renderText({"Boxplot 4:"})),
+      tags$br(),
       if(length(n4)==1){
         renderText({paste("Ratio : ",d4$y)})
       },
@@ -417,7 +415,10 @@ output$description_type_data_possible_analyzed <- renderUI({
       if(length(n4)==1){
         renderPrint({cat(text_descri_hover_choosen_4)})
       },
+      tags$br(),
       
+      tags$b(renderText({"Boxplot 5:"})),
+      tags$br(),
       if(length(n5)==1){
         renderText({paste("Nb words : ",d5$y)})
       },
@@ -433,11 +434,7 @@ output$description_type_data_possible_analyzed <- renderUI({
       tags$br(),
       if(length(n5)==1){
         renderPrint({cat(text_descri_hover_choosen_5)})
-      },
-      renderPrint({last_hover_data()})
-      # if((length(n1)==1|length(n2)==1|length(n3)==1|length(n4)==1|length(n5)==1)==FALSE){
-      #   renderPrint({last_hover_data()})
-      # }
+      }
     )
   })
   
