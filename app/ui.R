@@ -41,7 +41,7 @@ body <- dashboardBody(
             checkboxInput("choice_data_1", label = "Choose data 1", value = FALSE)
         ),
         box(width = 6,
-            radioButtons("data_type_choice", "Which data do you have as an input to upload?",
+            radioButtons("data_type_choice", "Which load data do you want?",
                          check_choices_load_data, inline = TRUE)
             )
       ),

@@ -53,7 +53,7 @@ original_books <- reactive({
     local_original_books
 })
 
-original_books_bis <- reactive({original_books()[1:100,]})
+original_books_bis <- reactive({original_books()})
 book_column <- reactive({original_books_bis()$book})
 
 #Removing the spaces from the column book and creating the choices for the books
