@@ -31,10 +31,12 @@ body <- dashboardBody(
       tabName = "data",
       fluidRow(
         box(width =6 ,
-            fileInput("inputdata", "Choose a data file", multiple = TRUE),
+            fileInput("inputdata", "Choose a data file", multiple = FALSE),
             tags$b(textOutput("or_a_data_text")),
-            shinyDirButton("inputfolderfile", label = "Choose a folder", title = "Folder choices")
-            ),
+            shinyDirButton("inputfolderfile", label = "Choose a folder", title = "Folder choices"),
+            tags$b(textOutput("or_data_1_text")),
+            checkboxInput("choice_data_1", label = "Choose data 1", value = FALSE)
+        ),
         box(width = 6,
             radioButtons("data_type_choice", "Which data do you have as an input to upload?",
                          check_choices_load_data, inline = TRUE)

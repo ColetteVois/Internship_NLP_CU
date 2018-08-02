@@ -3,7 +3,7 @@
 #If you want to add one, go to tokenizer.sentence.i, tokenizer.word.i or normalization.i and add one to description
 
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word.occu <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_word/", sep=""))) - 1
+n.tokenizer.word <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/tokenizer_word/", sep=""))) - 1
 n.normalization <- length(list.files(paste(my_path,"/Intership_NLP_CU-master/preprocessing/normalization/", sep=""))) - 1
 
 token_sentence_description <- c()
@@ -29,7 +29,7 @@ for(j in 1:n.tokenizer.sentence){
 }
 
 #Description of the word tokenization
-for(j in 1:n.tokenizer.word.occu){
+for(j in 1:n.tokenizer.word){
 
   temp <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
   myfiles <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))

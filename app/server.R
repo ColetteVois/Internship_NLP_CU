@@ -8,8 +8,9 @@ link_file_data_uploaded <-  reactive({input$inputdata$datapath})
 #Loading the load_data files 
 observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_NLP_CU-master/load_data/load_data_%d.R", strtoi(input$data_type_choice)), sep = ""))})
 
-#Creating text to how the options
+#Creating text to show the options
 output$or_a_data_text <- renderText("Or a folder")
+output$or_data_1_text <- renderText("Or Austen's books")
 
 #Getting the data from the folder but works only for windows yet
 root = c(wd='C:/')
@@ -30,6 +31,11 @@ link_data_uploaded <- reactive({
 #Creating the data for the app
 original_books <- reactive({
     #According to the user's choice, changing the load_data that will be used.
+  if(input$choice_data_1 == TRUE){
+    load.data.1 <- 'load.data.1(link_data_uploaded())'
+    local_original_books <- eval(parse(text=load.data.1))
+  }  
+  else if(input$choice_data_1 == FALSE){
     load.data.i <- sprintf('load.data.%d(link_data_uploaded())', strtoi(input$data_type_choice))
     
     if(is.null(link_data_uploaded()) | length(link_data_uploaded())==0){
@@ -38,6 +44,7 @@ original_books <- reactive({
     else{
       local_original_books <- eval(parse(text=load.data.i))
     }
+  }
     local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
     
     if(is.null(local_original_books$book)) {
@@ -46,7 +53,7 @@ original_books <- reactive({
     local_original_books
 })
 
-original_books_bis <- reactive({original_books()[1:100,]})
+original_books_bis <- reactive({original_books()})
 book_column <- reactive({original_books_bis()$book})
 
 #Removing the spaces from the column book and creating the choices for the books
@@ -82,7 +89,6 @@ source(lien)
 output$description_type_data_possible_analyzed <- renderUI({
   tagList(
     renderPrint({cat(noquote(load_data_type_description),sep="\n")}),
-    renderPrint({link_folder_data_uploaded()}),
     renderText({"File/Folder location:"}),
     renderPrint({link_data_uploaded()}),
     renderText({"File/Folder name:"}),
@@ -560,6 +566,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     })
   output$summary_reg_heaps_law <- renderUI(
     tagList(
+      tags$b(renderText({"Summary of the Heaps Law regression"})),
       renderPrint({summary(reg_lin())})
     )
   )
@@ -578,6 +585,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   output$summary_reg_zipfs_law <- renderUI({
     tagList(
+      tags$b(renderText({"Summary of the Zipf's Law regression"})),
       renderPrint({zipfs_law_result()[[4]]})
     )
   })
