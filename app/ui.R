@@ -34,6 +34,9 @@ body <- dashboardBody(
             fileInput("inputdata", "Choose a data file", multiple = FALSE),
             tags$b(textOutput("or_a_data_text")),
             shinyDirButton("inputfolderfile", label = "Choose a folder", title = "Folder choices"),
+            tags$br(),
+            tags$br(),
+            tags$br(),
             tags$b(textOutput("or_data_1_text")),
             checkboxInput("choice_data_1", label = "Choose data 1", value = FALSE)
         ),
