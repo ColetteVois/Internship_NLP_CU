@@ -29,6 +29,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "data",
+      h1("Data"),
       fluidRow(
         box(width =6 ,
             fileInput("inputdata", "Choose a data file", multiple = FALSE),
@@ -91,6 +92,7 @@ body <- dashboardBody(
     ),
     tabItem(
       tabName = "filter_pre",
+      h1("Filter pre-processing"),
       fluidRow(
                box(width = 4,
                  plotlyOutput("box_1")
@@ -127,6 +129,7 @@ body <- dashboardBody(
     ),
     tabItem(
       tabName = "details_pre",
+      h1("Details pre-processing"),
       fluidRow(
         box(width = 4,
             plotOutput("plot_log_heaps_law")
@@ -174,6 +177,7 @@ body <- dashboardBody(
       fluidRow(
         column(width = 8,
                box(
+                 tags$b(uiOutput("title_wordcloud")),
                  wordcloud2Output("wordcloud"),
                  #This HTML script implements the click option for the wordcloud
                  tags$script(HTML(
@@ -195,11 +199,16 @@ body <- dashboardBody(
     ),
     tabItem(
       tabName = "wcontext_ana",
+      h1("Details on demand"),
       fluidRow(
                box(
-                 uiOutput("test_data_table_wordcloud"),
                  DT::dataTableOutput("sentence_table_wordcloud")
                )),
+      fluidRow(
+        box(
+          uiOutput("title_wordcloud2")
+          
+        )),
       fluidRow(
         box(
           wordcloud2Output("wordcloud2_sentences")
