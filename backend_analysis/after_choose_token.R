@@ -99,7 +99,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   }
   
   
-  normalization.i <- sprintf("normalize.%d(token_word_freq)", choose_normalization)
+  normalization.i <- sprintf("normalization.%d(token_word_freq)", choose_normalization)
   token_word_stem <- eval(parse(text=normalization.i))
   
   token_word_stop <- stop.word.1(token_word_freq)

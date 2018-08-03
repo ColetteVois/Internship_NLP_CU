@@ -13,9 +13,9 @@
 #' @import corpus
 #' @examples
 #' ## library(corpus)
-#' ## token_word_stem <- normalize.3(token_word_freq)
+#' ## token_word_stem <- normalization.3(token_word_freq)
 
-normalize.3 <- function(my.texte) {
+normalization.3 <- function(my.texte) {
   
   # my.texte <- token_word_freq
   
@@ -53,4 +53,4 @@ normalize.3 <- function(my.texte) {
   return(token_word_stem)
 }
 
-# token_word_stem <- normalize.3(token_word_freq)
+# token_word_stem <- normalization.3(token_word_freq)

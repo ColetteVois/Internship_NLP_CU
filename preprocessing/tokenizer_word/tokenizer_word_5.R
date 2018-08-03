@@ -4,7 +4,7 @@
 #' token_sentence$sentence is the k th sentence of the text. 
 #' token_sentence$book is the part (e.g. chapter, different book...) 
 #' of the full text to which this sentence belongs
-#' @param k A integer, the number of the sentence in the text
+#' @param k An integer, the number of the sentence in the text
 #' @return token_word A tibble with three columns
 #' token_word$word is each word of the sentence k, in the same order as in the sentence
 #' token_word$sentence is the number of the sentence each wod belongs

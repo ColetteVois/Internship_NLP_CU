@@ -14,7 +14,7 @@
 #' @examples
 #' ## library(hunspell)
 #' ## library(corpus)
-#' ## token_word_stem <- normalize.2(token_word_freq)
+#' ## token_word_stem <- normalization.2(token_word_freq)
 
 stem_hunspell <- function(my.texte) {
   
@@ -30,7 +30,7 @@ stem_hunspell <- function(my.texte) {
   return(stem)
 }
 
-normalize.2 <- function(my.texte) {
+normalization.2 <- function(my.texte) {
   
   #my.texte <- token_word_freq
   
@@ -68,4 +68,4 @@ normalize.2 <- function(my.texte) {
   return(token_word_stem)
 }
 
-# token_word_stem <- normalize.2(token_word_freq)
+# token_word_stem <- normalization.2(token_word_freq)

@@ -13,7 +13,7 @@
 #' @import corpus
 #' @examples
 #' ## library(corpus)
-#' ## token_word_stem <- normalize.4(token_word_freq)
+#' ## token_word_stem <- normalization.4(token_word_freq)
 
 # download the list
 url <- "http://www.lexiconista.com/Datasets/lemmatization-en.zip"
@@ -37,7 +37,7 @@ stem_list <- function(term) {
   return(stem)
 }
 
-normalize.4 <- function(my.texte) {
+normalization.4 <- function(my.texte) {
   
   # my.texte <- token_word_freq
   
@@ -74,4 +74,4 @@ normalize.4 <- function(my.texte) {
   return(token_word_stem)
 }
 
-# token_word_stem <- normalize.4(token_word_freq)
+# token_word_stem <- normalization.4(token_word_freq)

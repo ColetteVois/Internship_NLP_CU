@@ -88,7 +88,7 @@ token.boxplot <- function(my.texte) {
             lien <- paste(my_path,sprintf("/preprocessing/normalization/normalization_%d.R", l), sep="")
             source(lien)
           }
-          normalization.i <- sprintf("normalize.%d(token_word_freq)", l)
+          normalization.i <- sprintf("normalization.%d(token_word_freq)", l)
           token_word_stem <- eval(parse(text=normalization.i))
           nb.of.normalization[l+(j-1)*n.normalization+(i-1)*n.tokenizer.word*n.normalization]  <- nrow(token_word_stem)
         }
