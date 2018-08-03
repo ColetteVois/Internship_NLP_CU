@@ -683,6 +683,14 @@ output$description_type_data_possible_analyzed <- renderUI({
   observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
   observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
   
+  #Creating the title for the word cloud
+  
+  output$title_wordcloud <- renderUI({
+    tagList(
+      renderText("Wordcloud of the selected words from the previous plot")
+    )
+  })
+  
   
   #Creating the wordcloud and making it reactive to change in the input values
   output$wordcloud  <- renderWordcloud2(wordcloud2(data = filter_d(),
@@ -718,16 +726,20 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   data_wordcloud_freq_tokenized <- reactive({wordcloud.data.func(original_books_tokenized()[[2]], list_sentences_wordcloud_filter()[[1]], word_wordcloud_selected_filter())})
    
-  #Creating the wordcloudwith the sentences
+  #Creating the title for the wordcloud
+  
+  output$title_wordcloud2 <- renderUI({
+    tagList(
+      renderText("fkjfjofrnjnjo"),
+      renderPrint(paste("Wordcloud of the words in the same sentences of ",word_wordcloud_selected_filter()))
+    )
+  })
+  #Creating the wordcloud with the sentences
   
   output$wordcloud2_sentences  <- renderWordcloud2(wordcloud2(data = data_wordcloud_freq_tokenized() ,
                                                   shape = 'star', size = 0.8, shuffle =FALSE))
   
-  output$test_data_table_wordcloud <- renderUI({
-    tagList(
-
-    )
-  })
+  
   ###########################################################################  Report ##############################################################
   
   progress <- reactive({
