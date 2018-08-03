@@ -21,5 +21,4 @@ load.data.2 <- function(path) {
   original_books <- as_data_frame(twitter)    #dplyr::bind_rows(twitter,twitter2))
 
   return(original_books)
-  
 }
