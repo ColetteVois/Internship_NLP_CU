@@ -59,16 +59,16 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
 
   token_word <- c()
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
+  lien <- paste(my_path, sprintf("/preprocessing/tokenizer_word/tokenizer_word_%d.R", choose_tokenizer_word), sep="")
   source(lien)
   
-  lien <- paste(my_path, sprintf("/Intership_NLP_CU-master/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
+  lien <- paste(my_path, sprintf("/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", choose_tokenizer_sentence), sep = "")
   source(lien)
   
-  lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
+  lien <- paste(my_path,sprintf("/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
   source(lien)
   
-  lien <- paste(my_path,sprintf("/Intership_NLP_CU-master/preprocessing/stop_word/stop_word_%d.R", choose_normalization), sep="")
+  lien <- paste(my_path,sprintf("/preprocessing/stop_word/stop_word_%d.R", choose_normalization), sep="")
   source(lien)
 
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)

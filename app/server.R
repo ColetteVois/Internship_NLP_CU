@@ -6,7 +6,7 @@ server <- function(input, output, session){
 #Link of the observed data
 link_file_data_uploaded <-  reactive({input$inputdata$datapath})
 #Loading the load_data files 
-observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/Intership_NLP_CU-master/load_data/load_data_%d.R", strtoi(input$data_type_choice)), sep = ""))})
+observeEvent(input$data_type_choice, {source(paste(my_path, sprintf("/load_data/load_data_%d.R", strtoi(input$data_type_choice)), sep = ""))})
 
 #Creating text to show the options
 output$or_a_data_text <- renderText("Or a folder")
@@ -90,7 +90,7 @@ observeEvent(check_choices(),{updateCheckboxGroupInput(session, "book", "Choose 
 ################################################################  DATA Tab  ###########################################################
 
 
-lien <- paste(my_path,"/Intership_NLP_CU-master/description/description_type_data.R", sep="")
+lien <- paste(my_path,"/description/description_type_data.R", sep="")
 source(lien)
   
 output$description_type_data_possible_analyzed <- renderUI({
@@ -271,7 +271,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   #Doing the filter page from the pre processing
   #Creating the data for the boxplots
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/token_boxplot.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/token_boxplot.R", sep="")
   source(lien)
   d_token_boxplot <- reactive({token.boxplot(original_books_selected_used())})
   d_boxplot_1 <- reactive({data.frame(token_sentence_col = unlist(d_token_boxplot()[1]))})
@@ -335,9 +335,9 @@ output$description_type_data_possible_analyzed <- renderUI({
     n5 <- d5$key
     
     #Loading the description of the tokens and the modulo that works well with the app
-    lien <- paste(my_path,"/Intership_NLP_CU-master/description/description_token.R", sep="")
+    lien <- paste(my_path,"/description/description_token.R", sep="")
     source(lien)
-    lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/modulo_not_null.R", sep="")
+    lien <- paste(my_path,"/backend_analysis/modulo_not_null.R", sep="")
     source(lien)
     
     
@@ -514,7 +514,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   ########################################################################## DATA  ###########################################################
   #Data created using a function taking the koens used as arguments
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/after_choose_token.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/after_choose_token.R", sep="")
   source(lien)
   id_token_sentence_selected <- reactive({strtoi(token_sentence_radio_button())})
   id_token_word_selected <- reactive({strtoi(token_word_radio_button())})
@@ -550,7 +550,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   #########################################################################  Details on demand Pre processing  ################################################
   #Heaps law
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/heaps_law.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/heaps_law.R", sep="")
   source(lien)
   
   heaps_law_result <- reactive({heaps.law(original_books_selected_used(), id_token_sentence_selected(), id_token_word_selected())})
@@ -583,7 +583,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   })
   
   #zipfs law
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/zipfs_law.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/zipfs_law.R", sep="")
   source(lien)
   zipfs_law_result <- reactive({zipfs.law(original_books_tokenized_freq())})
   zipfs_law_data <- reactive({zipfs_law_result()[[1]]})
@@ -596,7 +596,7 @@ output$description_type_data_possible_analyzed <- renderUI({
       renderPrint({zipfs_law_result()[[4]]})
     )
   })
-  # jpeg(paste(my_path, sprintf('/Intership_NLP_CU-master/backend_analysis/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
+  # jpeg(paste(my_path, sprintf('/backend_analysis/boxplot/zipfs_law_data_%d.jpg',choose_load_data),sep =""))
   # freq_by_rank %>% ggplot(aes(rank, term_frequency)) +
   #   geom_abline(intercept = reg_lin$coefficients[[1]], slope = inv, color = "red") +
   #   geom_line(size = 1.1, alpha = 0.8, show.legend= FALSE) +
@@ -611,7 +611,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   })
   
   #Doing the table with some info about the text
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/table_info.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/table_info.R", sep="")
   source(lien)
   table_info_result <- reactive({table.info(original_books_tokenized())})
   output$table_info_details_pre <- renderTable(table_info_result())
