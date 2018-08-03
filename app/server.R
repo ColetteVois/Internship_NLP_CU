@@ -702,7 +702,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     for(i in list_sentences_wordcloud_filter()){
       local_data_selected_sentences_wordcloud <- c(local_data_selected_sentences_wordcloud , original_books_tokenized()[[1]]$sentence[i])
     }
-    data.frame(sentence = local_data_selected_sentences_wordcloud)
+    data.frame(sentence = unlist(local_data_selected_sentences_wordcloud))
     })
   
   ########################################################################## DATA table analysis sentences  ########################################################
@@ -712,6 +712,22 @@ output$description_type_data_possible_analyzed <- renderUI({
     
   })
   
+  #Data fot the wordcloud
+  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/wordcloud_data_func.R", sep="")
+  source(lien)
+  
+  data_wordcloud_freq_tokenized <- reactive({wordcloud.data.func(original_books_tokenized()[[2]], list_sentences_wordcloud_filter()[[1]], word_wordcloud_selected_filter())})
+   
+  #Creating the wordcloudwith the sentences
+  
+  output$wordcloud2_sentences  <- renderWordcloud2(wordcloud2(data = data_wordcloud_freq_tokenized() ,
+                                                  shape = 'star', size = 0.8, shuffle =FALSE))
+  
+  output$test_data_table_wordcloud <- renderUI({
+    tagList(
+
+    )
+  })
   ###########################################################################  Report ##############################################################
   
   progress <- reactive({
