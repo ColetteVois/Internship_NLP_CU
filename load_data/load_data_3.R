@@ -17,9 +17,11 @@
 load.data.3 <- function(path) {
 
   print(path)
-  path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
-  path <- "C:/Users/rubik/Desktop/Document/lastwords-master/last_words_final_version/"
+  # path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
+  # path <- "C:/Users/rubik/Desktop/Document/lastwords-master/last_words_final_version/"
   
+  path <- gsub("//","/", path, fixed=TRUE)
+  path <- paste0(path, "/")
   listfiles <- list.files(path, pattern="*.txt")
   temp <- paste(path, listfiles, sep="")
   myfiles1 <- lapply(temp, read.csv, sep="\n", fill = TRUE , header = FALSE,  col.names = "text", stringsAsFactors = FALSE)#fill = TRUE,header = FALSE,stringsAsFactors = FALSE)#, col.names = rep("text",length(listfiles)+1))

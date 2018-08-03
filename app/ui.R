@@ -196,10 +196,15 @@ body <- dashboardBody(
     tabItem(
       tabName = "wcontext_ana",
       fluidRow(
-        column(width = 8, offset =4,
                box(
+                 uiOutput("test_data_table_wordcloud"),
                  DT::dataTableOutput("sentence_table_wordcloud")
-               )))
+               )),
+      fluidRow(
+        box(
+          wordcloud2Output("wordcloud2_sentences")
+        )
+      )
   )
  
 )
