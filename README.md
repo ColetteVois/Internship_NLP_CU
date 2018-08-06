@@ -20,7 +20,7 @@ GitHub: Here is a description of how to use the GitHub repository to do what you
          <ul>
         <li>Open the main.R file</li>
         <li>Choose the path of the GitHub repository on your computer. You need to change the antislashes ( \ ) in slashes (/) in the path you put.
-          This path should be the path before the folder you just downloaded on GitHub. For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU/app", then you should put "C:/Users/Projet" as my_path.
+          This path should be the path before the folder you just downloaded on GitHub. For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU/app", then you should put "C:/Users/Projet/Intership_NLP_CU" as my_path.
   </li>
         <li>Launch the file in RStudio. In order to do so, select all the code in the file, by clicking four time on the code or doing ctrl+A, and then do the command ctrl+enter to launch it.</li>
         </ul>
