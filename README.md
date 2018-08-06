@@ -29,7 +29,7 @@ GitHub: Here is a description of how to use the GitHub repository to do what you
   
   -For the GitHub repository users, here is a little description of the different folders:<br />
         <ul>
-        <li>app: This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
+        <li>[app](https://github.com/ColetteVois/Intership_NLP_CU/tree/master/app): This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
         front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app</li>
         </ul>
 
