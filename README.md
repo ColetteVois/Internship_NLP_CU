@@ -1,6 +1,6 @@
 # Internship_NLP_CU
 
-**Projec :** Build a tool for linguists to explore linguistic data in order to show the importance of tokenization and analyze the data
+**Project :** Build a tool for linguists to explore linguistic data in order to show the importance of tokenization and analyze the data
 
 **Domain :** Computational Biology/Computational Linguistics
 
@@ -15,10 +15,12 @@
 **R version :**  R version 3.5.0 (2018-04-23) <br />
 
 ### Installation
+
          <ul>
          <li>Download the GitHub repository</li>
          <li>Run the [install_packages.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/install_packages.R) file in RStudio</li>
          </ul>
+         
 ### Launch the application
 
   -If you want to use the app, you need to: 
@@ -37,7 +39,9 @@
   If you want to add data and it doesn't work with the current choice, go to the user's [guide](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/guide/guide_word.docx) to see how to add your data.
   
 ### Small description of the repository
+
         <ul>
         <li>[app](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/app): This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
         front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app</li>
         </ul>
+        
