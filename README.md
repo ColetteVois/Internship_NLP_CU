@@ -1,36 +1,34 @@
 # Internship_NLP_CU
 
-_Project_: Build a tool for linguists to explore linguistic data in order to show the importance of tokenization and analyze the data
+**Projec** : Build a tool for linguists to explore linguistic data in order to show the importance of tokenization and analyze the data
 
-_Domain_: Computational Biology/Computational Linguistics
+**Domain** : Computational Biology/Computational Linguistics
 
-_Mentor_: Kevin Cohen
+**Mentor** : Kevin Cohen
 
-Description: This project has two goals. The first one is to show the importance of tokenization and its impact on the analysis of linguistic data. The second one is to explore the data in the both basic approaches to language, the symbolic one and the statistical one. In order to do that, we built a tool that put together these two goals. To use this tool, use the GitHub repository as described just below.
+**Description** : This project has two goals. The first one is to show the importance of tokenization and its impact on the analysis of linguistic data. The second one is to explore the data in the both basic approaches to language, the symbolic one and the statistical one. In order to do that, we built a tool that put together these two goals. To use this tool, use the GitHub repository as described just below.
 
 ## GitHub
 Here is a description of how to use the GitHub repository to do what you want with it.<br />
 
-### Installing
+### Installation
 
   -If you want to install the app, you need to: <br />
          <ul>
          <li>Download the GitHub repository</li>
          <li>Run the [install_packages.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/install_packages.R) file in RStudio</li>
          </ul>
-         <br />
 ### Use the app
 
-  -If you want to use the app, you need to: <br />   
+  -If you want to use the app, you need to: 
          <ul>
         <li>Open the [main.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/main.R) file</li>
         <li>Choose the path of the GitHub repository on your computer. You need to change the antislashes ( \ ) in slashes (/) in the path you put.
-          This path should be the path before the folder you just downloaded on GitHub. For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Internship_NLP_CU/app", then you should put "C:/Users/Projet/Internship_NLP_CU" as my_path.
-  </li>
-        <li>Launch the file in RStudio. In order to do so, select all the code in the file, by clicking four time on the code or doing `ctrl`+`A`, and then do the command `ctrl`+`enter` to launch it.</li>
+          This path should be the path before the folder you just downloaded on GitHub. For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Internship_NLP_CU/app", then you should put "C:/Users/Projet/Internship_NLP_CU" as my_path.  </li>
+        <li>Launch the file in RStudio. In order to do so, select all the code in the file, by clicking four time on the code or doing `ctrl` + `A` , and then do the command `ctrl` + `enter` to launch it.</li>
         </ul>
         <br />
-  -If you want to know how to use the app, you should read the guide, which is in the guide folder.<br />
+  -If you want to know how to use the app, you should read the [guide](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/guide/guide_word.docx).<br />
   
 ### Small description 
 
@@ -41,4 +39,4 @@ Here is a description of how to use the GitHub repository to do what you want wi
         </ul>
 
 R version:  R version 3.5.0 (2018-04-23) <br />
-PS: If you want to add data and it doesn't work with the current choice, go to the user's guide to see how to add your data.
+PS: If you want to add data and it doesn't work with the current choice, go to the user's [guide](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/guide/guide_word.docx) to see how to add your data.
