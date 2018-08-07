@@ -36,6 +36,7 @@ params:
   key: NA
   selected_word_cloud: NA
   sentences_selected_cloud: NA
+  data_last_wordcloud: NA
 always_allow_html: yes
 ---
 
@@ -53,6 +54,7 @@ mafw <- params$max_freq_wordcloud
 mww <- params$max_word_wordcloud
 l <- length(ds$rowname)
 key <- params$key
+d_last_wd <- params$data_last_wordcloud
 ```
 
 #Parameters
@@ -271,7 +273,24 @@ if(l){
 ```
 
 ##Details on demand
+###Table
 
 ```{r}
 kable(params$sentences_selected_cloud, caption = "Sentences associated with the selected word of the cloud")   
+```
+
+###Wordcloud
+
+Wordcloud of the words in the same sentence as `r params$selected_word_cloud`
+
+```{r}
+bp.cols<- c("light blue","cornflowerblue", "coral2", brewer.pal(8,"Dark2"))
+if(l){
+  library(wordcloud)
+  #This is where we do the wordcloud, adding some colors and some other features.
+  wordcloud(d_last_wd$word, d_last_wd$freq, random.order=FALSE,rot.per=0.40,use.r.layout=FALSE, random.color=TRUE,colors=bp.cols)
+}
+#w <- wordcloud2(data = dswf, shape = 'star', size = 0.8, shuffle =FALSE)
+#tmpFile <- tempfile(fileext = ".png")
+#export(w, file = tmpFile)
 ```

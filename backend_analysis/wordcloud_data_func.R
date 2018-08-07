@@ -1,15 +1,16 @@
 wordcloud.data.func <- function(my.texte_tokenized_word_sentence, list_sentences, word_selected){
-  local_list <- c()
+  withProgress(expr={local_list <- c()
   for(i in 1:NROW(my.texte_tokenized_word_sentence)){
+    inc = 1/(NROW(my.texte_tokenized_word_sentence))
+    incProgress(inc)
     for(j in list_sentences){
-    
       if(identical(my.texte_tokenized_word_sentence$sentence[i], strtoi(j)) & !(identical(my.texte_tokenized_word_sentence$word[i],word_selected))){
         local_list <- c(local_list, my.texte_tokenized_word_sentence[1]$word[i])
       }
     }
   }
   local_list <- data.frame(word=local_list)
-
+  }, message= "cr")
 
     #Sort data_tokenized_word by alphabetical order
     token_word_sort <- local_list %>% arrange(word)

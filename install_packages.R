@@ -117,3 +117,4 @@ if(!require("shinyFiles")){
   install.packages("shinyFiles")
   library("shinyFiles")
 }
+library(ECharts2Shiny)

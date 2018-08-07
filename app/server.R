@@ -365,6 +365,7 @@ output$description_type_data_possible_analyzed <- renderUI({
     #Creating the data that will appear on the app
     
     tagList(
+      renderPrint({d2}),
       renderPrint({d3}),
       tags$b(renderText({"Boxplot 1:"})),
       tags$br(),
@@ -389,7 +390,7 @@ output$description_type_data_possible_analyzed <- renderUI({
         renderText({paste("Sentence : ",((strtoi(n2)-1) %/% n.tokenizer.word)+1)})
       },
       if(length(n2)==1){
-        renderText({paste("Word : ",modulo.not.null(strtoi(n2), n.tokenizer.word))})
+        renderText({paste("Word : ",((strtoi(n2)-1) %% n.tokenizer.word)+1)})
       },
       tags$br(),
       if(length(n2)==1){
@@ -646,10 +647,15 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   #Plotting the Data Table
   output$table_overview <- DT::renderDataTable({
+    #Changing a little bit the data to avoid having a huge lsit of sentences that don't appear well on screen
+    original_books_tokenized_freq_without_list_sentences <- lapply(original_books_tokenized_freq()$sentences, function(x) length(x))
+    original_books_tokenized_freq_without_list <- original_books_tokenized_freq()
+    original_books_tokenized_freq_without_list$sentences <- unlist(original_books_tokenized_freq_without_list_sentences)
+    names(original_books_tokenized_freq_without_list)[2] <- "Number of sentences"
     #Choosing the data selected in the plot. It is done by crosstalk, see CRAN R Crosstalk SharedData for more details
-    dsel <- original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),]
+    dsel <- original_books_tokenized_freq_without_list[original_books_tokenized_freq_shared()$selection(),]
     #Creating the data table with the initial data
-    dt <-DT::datatable(original_books_tokenized_freq(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
+    dt <-DT::datatable(original_books_tokenized_freq_without_list,options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
     #This condition is whether a data is selected on the plot
     if (NROW(dsel) == 0) {
       dt
@@ -700,46 +706,77 @@ output$description_type_data_possible_analyzed <- renderUI({
     input$selected_word
   })
   
+  
   ####################################################################  DATA  ################################################################################
   
   word_freq_wordcloud_selected_filter <- reactive({input$selected_word})
-  word_wordcloud_selected_filter <- reactive({gsub(":[0-9]+", "", word_freq_wordcloud_selected_filter())})
-  list_sentences_wordcloud_filter <- reactive({subset(original_books_tokenized_freq(), word == word_wordcloud_selected_filter())$sentences})
-  data_selected_sentences_wordcloud <- reactive({
-    local_data_selected_sentences_wordcloud <- c()
-    for(i in list_sentences_wordcloud_filter()){
-      local_data_selected_sentences_wordcloud <- c(local_data_selected_sentences_wordcloud , original_books_tokenized()[[1]]$sentence[i])
+  word_wordcloud_selected_filter <- reactive({
+    if(is.null(input$selected_word)){
+      ""
     }
-    data.frame(sentence = unlist(local_data_selected_sentences_wordcloud))
+    else{
+    gsub(":[0-9]+", "", word_freq_wordcloud_selected_filter())
+    }
+  })
+  
+  list_sentences_wordcloud_filter <- reactive({
+    if(length(subset(original_books_tokenized_freq(), word == word_wordcloud_selected_filter())$sentences) == 0){
+      list(c(0))
+    }
+    else{    
+      subset(original_books_tokenized_freq(), word == word_wordcloud_selected_filter())$sentences
+  }
+})
+  
+  data_selected_sentences_wordcloud <- reactive({
+      local_data_selected_sentences_wordcloud <- c()
+      for(i in list_sentences_wordcloud_filter()){
+        local_data_selected_sentences_wordcloud <- c(local_data_selected_sentences_wordcloud , original_books_tokenized()[[1]]$sentence[i])
+      }
+      data.frame(sentence = unlist(local_data_selected_sentences_wordcloud))
     })
   
   ########################################################################## DATA table analysis sentences  ########################################################
   
   output$sentence_table_wordcloud <- DT::renderDataTable({
     DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20),searchHighlight = TRUE, search = list(search = word_wordcloud_selected_filter())),class = 'display')
-    
+
   })
   
   #Data fot the wordcloud
   lien <- paste(my_path,"/backend_analysis/wordcloud_data_func.R", sep="")
   source(lien)
   
-  data_wordcloud_freq_tokenized <- reactive({wordcloud.data.func(original_books_tokenized()[[2]], list_sentences_wordcloud_filter()[[1]], word_wordcloud_selected_filter())})
-   
+  data_wordcloud_freq_tokenized <- reactive({
+    if(list_sentences_wordcloud_filter()[[1]]==0){
+      data.frame(word=c("Nowordselected"), freq=c(1))
+    }
+    else{
+    wordcloud.data.func(original_books_tokenized()[[2]], list_sentences_wordcloud_filter()[[1]], word_wordcloud_selected_filter())
+  }
+})
   #Creating the title for the wordcloud
-  
-  output$title_wordcloud2 <- renderUI({
+  output$title_wordcloud_2 <- renderUI({
     tagList(
-      renderText("fkjfjofrnjnjo"),
-      renderPrint(paste("Wordcloud of the words in the same sentences of ",word_wordcloud_selected_filter()))
+      renderText(paste("Wordcloud of the words in the same sentence as '",word_wordcloud_selected_filter(), "'"))
     )
   })
+  
+  # output$title_wordcloud2 <- renderUI({
+  #   tagList(
+  #     renderText("fkjfjofrnjnjo"),
+  #     renderPrint({data_wordcloud_freq_tokenized()})
+  #   )
+  # })
+  
   #Creating the wordcloud with the sentences
+  # Make the wordcloud drawing predictable during a session
+  wordcloud_rep <- repeatable(wordcloud)
+  bp.cols <- c("light blue","cornflowerblue", "coral2", brewer.pal(8,"Dark2"))
+  output$wordcloud2_sentences <- renderPlot({wordcloud_rep(data_wordcloud_freq_tokenized()$word, data_wordcloud_freq_tokenized()$freq,random.order=FALSE, random.color=TRUE,colors=bp.cols)})
   
-  output$wordcloud2_sentences  <- renderWordcloud2(wordcloud2(data = data_wordcloud_freq_tokenized() ,
-                                                  shape = 'star', size = 0.8, shuffle =FALSE))
-  
-  
+  # output$wordcloud2_sentences  <- renderWordcloud2(wordcloud2(data = data_wordcloud_freq_tokenized(),
+  #                                                  shape = 'star', size = 0.8, shuffle =FALSE))
   ###########################################################################  Report ##############################################################
   
   progress <- reactive({
@@ -761,7 +798,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       
       withProgress(message ="Generating report", detail =  "it might takes a little while", expr = {tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
-      
       # Set up parameters to pass to Rmd document
       params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
@@ -772,7 +808,7 @@ output$description_type_data_possible_analyzed <- renderUI({
                     table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
                     max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter(),
-                    sentences_selected_cloud = data_selected_sentences_wordcloud())
+                    sentences_selected_cloud = data_selected_sentences_wordcloud(), data_last_wordcloud = data_wordcloud_freq_tokenized())
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
@@ -785,7 +821,7 @@ output$description_type_data_possible_analyzed <- renderUI({
       envir = new.env(parent = globalenv())
       )
       },
-      min = 1,
+      min =1,
       value = 1
       )
     }
