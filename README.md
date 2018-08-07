@@ -40,8 +40,8 @@ You need to:
 ### Small description of the repository
 Description:
         <ul>
-        <li>[app](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/app): This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
-        front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app</li>
-         <li>[backend_analysis](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/backend_analysis): </li>
+        <li>[app](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/app): This is where the app is. In it, you will find the [ui.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/app/ui.R) and [server.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/app/server.R). These are the function that makes the app, it is the                                    
+        front-end. You will also find [report.rmd](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/app/report.Rmd) file which is the file that creates the report that you can download in the app</li>
+         <li>[backend_analysis](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/backend_analysis): This is the backend where all the preprocessing are made to the data and the laws for analysis are applied.</li>
         </ul>
         
