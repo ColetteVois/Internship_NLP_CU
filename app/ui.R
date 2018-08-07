@@ -206,12 +206,12 @@ body <- dashboardBody(
                )),
       fluidRow(
         box(
-          uiOutput("title_wordcloud2")
-          
-        )),
+        tags$b(uiOutput("title_wordcloud_2"))
+      )),
       fluidRow(
         box(
-          wordcloud2Output("wordcloud2_sentences")
+          plotOutput("wordcloud2_sentences")
+          # wordcloud2Output("wordcloud2_sentences")
         )
       )
   )

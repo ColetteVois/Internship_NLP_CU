@@ -3,8 +3,8 @@
 #If you want to add one, go to tokenizer.sentence.i, tokenizer.word.i or normalization.i and add one to description
 
 n.tokenizer.sentence <- length(list.files(paste(my_path,"/preprocessing/tokenizer_sentence/", sep = "")))
-n.tokenizer.word <- length(list.files(paste(my_path,"/preprocessing/tokenizer_word/", sep=""))) - 1
-n.normalization <- length(list.files(paste(my_path,"/preprocessing/normalization/", sep=""))) - 1
+n.tokenizer.word <- length(list.files(paste(my_path,"/preprocessing/tokenizer_word/", sep="")))
+n.normalization <- length(list.files(paste(my_path,"/preprocessing/normalization/", sep="")))
 
 token_sentence_description <- c()
 token_word_description <- c()
