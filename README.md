@@ -23,7 +23,7 @@
          
 ### Launch the application
 
-  -If you want to use the app, you need to: 
+
          <ul>
         <li>Open the [main.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/main.R) file</li>
         <li>Choose the path of the GitHub repository on your computer. You need to change the antislashes ( \ ) in slashes (/) in the path you put.
@@ -43,5 +43,6 @@
         <ul>
         <li>[app](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/app): This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
         front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app</li>
+         <li>[backend_analysis](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/backend_analysis): </li>
         </ul>
         
