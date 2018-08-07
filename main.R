@@ -2,11 +2,11 @@
 
 #Write your path to go to your file. 
 #This path should be the path before the folder you just downloaded on GitHub.
-#For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Intership_NLP_CU/app"
-#Then you should put "C:/Users/Projet/Intership_NLP_CU" as my_path.
+#For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Internship_NLP_CU/app"
+#Then you should put "C:/Users/Projet/Internship_NLP_CU" as my_path.
 
-my_path <- "C:/Users/Projet/Intership_NLP_CU-master"
-# my_path <- "C:/Users/rubik/Desktop/Intership_NLP_CU-master"
+my_path <- "C:/Users/Projet/Internship_NLP_CU"
+my_path <- "C:/Users/rubik/Desktop/Internship_NLP_CU-master"
 
 
 #For us to debug the programm
@@ -60,7 +60,7 @@ n <- 20
 #########################################################  Running the shiny app ########################################################
 
 lien <- paste(my_path,"/app", sep="")
-# launch the a pp with Rstudio
+# launch the app with Rstudio
 # runApp(lien)
 # launch th app in a navigator
 runApp(lien, launch.browser = TRUE)

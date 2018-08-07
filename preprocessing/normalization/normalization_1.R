@@ -2,7 +2,7 @@
 #' 
 #' @param token_word_freq A tibble with four colums. 
 #' token_sentence$word are the words of the text in alphabetical order occuring just one. 
-#' token_sentence$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appear.
+#' token_sentence$sentences is the list of numbers of sentences (line of the sentence in token_sentence) in which each word appears.
 #' token_sentence$freq is the frequence each word appears in the text.
 #' token_sentence$tf is the terme frequency of each word.
 #' @return token_word_stem A tibble with four colums. 
