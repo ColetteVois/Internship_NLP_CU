@@ -5,8 +5,8 @@
 #For instance, if the path to the folder "app" in the folder you downloaded on GitHub is "C:/Users/Projet/Internship_NLP_CU/app"
 #Then you should put "C:/Users/Projet/Internship_NLP_CU" as my_path.
 
-my_path <- "C:/Users/Projet/Internship_NLP_CU"
-my_path <- "C:/Users/rubik/Desktop/Internship_NLP_CU-master"
+my_path <- "C:/Users/Projet/Internship_NLP_CU-master"
+# my_path <- "C:/Users/rubik/Desktop/Internship_NLP_CU-master"
 
 
 #For us to debug the programm

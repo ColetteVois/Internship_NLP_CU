@@ -52,11 +52,10 @@ original_books <- reactive({
       }
     }
   }
-    local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
-    
     if(is.null(local_original_books$book)) {
       local_original_books <- local_original_books %>% mutate(book = "allthesame")
     }
+    local_original_books <- local_original_books %>% mutate(rowname = 1:nrow(local_original_books))
     local_original_books
 })
 
@@ -498,24 +497,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       }
     )
   })
-  
-  #Creating the data with the chosen tokenization
-  # id_token_sentence_selected <- reactive({strtoi(gsub("TokenizationSentence", "",token_sentence_radio_button()))})
-  # id_token_word_selected <- reactive({strtoi(gsub("TokenizationWord", "",token_word_radio_button()))})
-  # tokenizer.sentence.i <- reactive({sprintf("tokenizer.sentence.%d(original_books_selected_used())", id_token_sentence_selected())})
-  # original_books_tokenized_sentence <- reactive({eval(parse(text=tokenizer.sentence.i()))})
-  # tokenizer.word.i <- reactive({sprintf("tokenizer.word.%d(original_books_tokenized_sentence())", id_token_word_selected())})
-  # 
-  # nb_of_sentences <- reactive({dim(original_books_tokenized_sentence()[1])})
-  # original_books_tokenized <- reactive({
-  #   original_books_tokenized <- c()
-  #   for(k in 1:nb_of_sentences()[1]) {
-  #     new_original_books_tokenized <- eval(parse(text=tokenizer.word.i()))
-  #     original_books_tokenized <- dplyr::bind_rows(original_books_tokenized,new_original_books_tokenized)
-  #   }
-  #   original_books_tokenized
-  # })
-  
   
   ########################################################################## DATA  ###########################################################
   #Data created using a function taking the koens used as arguments

@@ -27,7 +27,7 @@ table.info <- function(token_info) {
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of types word", "Mtyp", nrow(token_word_freq))
+  ligne <- list("number of type words", "Mtyp", nrow(token_word_freq))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
@@ -39,7 +39,7 @@ table.info <- function(token_info) {
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("mean number of terme in vocabulary per document", " ", nrow(token_word_stop)/length(unique(token_sentence$book)))
+  ligne <- list("average number of terms in vocabulary per document", " ", nrow(token_word_stop)/length(unique(token_sentence$book)))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
