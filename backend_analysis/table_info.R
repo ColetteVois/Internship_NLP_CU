@@ -19,23 +19,23 @@ table.info <- function(token_info) {
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number total occurences of words", "M", nrow(token_word))
+  ligne <- list("total number of word occurences", "M", nrow(token_word))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("means number words per document", " ", nrow(token_word)/length(unique(token_sentence$book)))
+  ligne <- list("average number of words per document", " ", nrow(token_word)/length(unique(token_sentence$book)))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of type words", " ", nrow(token_word_freq))
+  ligne <- list("number of types word", "Mtyp", nrow(token_word_freq))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of type words after steaming", "My", nrow(token_word_stem))
+  ligne <- list("number of type words after nomalization", "Mnor", nrow(token_word_stem))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
-  ligne <- list("number of terme in vocabulary", " ", nrow(token_word_stop))
+  ligne <- list("number of terms of the vocabulary", "V", nrow(token_word_stop))
   names(ligne) <- c("Variables","Symboles", "Values")
   table_info <- dplyr::bind_rows(table_info,ligne)
   
