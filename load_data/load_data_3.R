@@ -42,7 +42,7 @@ load.data.3 <- function(path) {
   
 }
 
-#path <- "C:/Users/rubik/Desktop/Intership_NLP_CU/Document/craft-2.0/articles/txt/"
+#path <- "C:/Users/rubik/Desktop/Internship_NLP_CU/Document/craft-2.0/articles/txt/"
 #path <- "C:/Users/rubik/Desktop/Document/craft-2.0/articles/txt/"
 #path <- "C:/Users/rubik/Desktop/Document/pestian_suicide_notes/i2b2/"
 

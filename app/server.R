@@ -721,7 +721,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   })
   
   #Data fot the wordcloud
-  lien <- paste(my_path,"/Intership_NLP_CU-master/backend_analysis/wordcloud_data_func.R", sep="")
+  lien <- paste(my_path,"/backend_analysis/wordcloud_data_func.R", sep="")
   source(lien)
   
   data_wordcloud_freq_tokenized <- reactive({wordcloud.data.func(original_books_tokenized()[[2]], list_sentences_wordcloud_filter()[[1]], word_wordcloud_selected_filter())})
