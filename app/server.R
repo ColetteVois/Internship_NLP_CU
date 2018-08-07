@@ -319,6 +319,12 @@ output$description_type_data_possible_analyzed <- renderUI({
       add_trace(d_boxplot_5(), x=0, y=~token_normalization, type = "box", marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
   })
   
+  #Creating data to pass to the report
+  data_boxplot_1 <- reactive({boxplot.stats(d_boxplot_1()$token_sentence_col)$stats})
+  data_boxplot_2 <- reactive({boxplot.stats(d_boxplot_2()$token_word_ocu_col)$stats})
+  data_boxplot_3 <- reactive({boxplot.stats(d_boxplot_3()$token_word_type_col)$stats})
+  data_boxplot_4 <- reactive({boxplot.stats(d_boxplot_4()$token_ratio_col)$stats})
+  data_boxplot_5 <- reactive({boxplot.stats(d_boxplot_5()$token_normalization)$stats})
   
   #Doing the hover descritpion
   output$description_token <- renderUI({
@@ -365,8 +371,6 @@ output$description_type_data_possible_analyzed <- renderUI({
     #Creating the data that will appear on the app
     
     tagList(
-      renderPrint({d2}),
-      renderPrint({d3}),
       tags$b(renderText({"Boxplot 1:"})),
       tags$br(),
       if(length(n1)==1){
@@ -803,7 +807,8 @@ output$description_type_data_possible_analyzed <- renderUI({
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
                     overview_choice_data_all = input$all, overview_choice_data_num_check = input$num_check,overview_choice_offset =input$num_offset_data,
                     overview_choice_num_word=input$num_word_data, overview_choice_book = input$book, data_selected_lines = original_books_selected_used(),
-                    data_boxplot = d_token_boxplot(), data_complete = original_books_tokenized_freq(), 
+                    data_boxplot = d_token_boxplot(), data_complete = original_books_tokenized_freq(), boxplot_1_data = data_boxplot_1(),
+                    boxplot_2_data = data_boxplot_2(),boxplot_3_data = data_boxplot_3(),boxplot_4_data = data_boxplot_4(),boxplot_5_data = data_boxplot_5(),
                     occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
                     table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],

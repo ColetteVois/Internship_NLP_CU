@@ -10,7 +10,7 @@ wordcloud.data.func <- function(my.texte_tokenized_word_sentence, list_sentences
     }
   }
   local_list <- data.frame(word=local_list)
-  }, message= "cr")
+  }, message= "Creating wordcloud")
 
     #Sort data_tokenized_word by alphabetical order
     token_word_sort <- local_list %>% arrange(word)

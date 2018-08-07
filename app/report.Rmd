@@ -23,12 +23,17 @@ params:
   overview_choice_book: NA
   data_selected_lines: NA
   data_boxplot: NA
+  data_complete: NA
+  boxplot_1_data: NA
+  boxplot_2_data: NA
+  boxplot_3_data: NA
+  boxplot_4_data: NA
+  boxplot_5_data: NA
   occurence_word: NA
   occurence_stop_word: NA
   regression_lin: NA
   result_zipfs_law_passed: NA
   table_info_laws: NA
-  data_complete: NA
   data_selected_plot: NA
   min_freq_wordcloud: NA
   max_freq_wordcloud: NA
@@ -141,25 +146,41 @@ p1_box <- plot_ly(d_boxplot_1,x = rep(0, length(d_boxplot_1$token_sentence_col))
 tmpFile <- tempfile(fileext = ".png")
 export(p1_box, file = tmpFile)
 
+cat(paste("Lower whisker: ", params$boxplot_1_data[1], ". First quartile: ", params$boxplot_1_data[2], ". Median: ", params$boxplot_1_data[3],
+      ".", "\n", " Third quartile: ", params$boxplot_1_data[4], ". Upper whisker: ", params$boxplot_1_data[5], "."))
+
 p2_box <- plot_ly(d_boxplot_2,x = rep(0, length(d_boxplot_2$token_word_ocu_col)), y=~token_word_ocu_col, key  =~ key_2, type = "scatter", source = "box2", mode='markers')%>%add_trace(d_boxplot_2, y=~token_word_ocu_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word tokenization', yaxis =list(title ='Number of words'), titlefont = 'arial', showlegend = FALSE)
 
 tmpFile <- tempfile(fileext = ".png")
 export(p2_box, file = tmpFile)
+
+cat(paste("Lower whisker: ", params$boxplot_2_data[1], ". First quartile: ", params$boxplot_2_data[2], ". Median: ", params$boxplot_2_data[3],
+      ".", "\n", " Third quartile: ", params$boxplot_2_data[4], ". Upper whisker: ", params$boxplot_2_data[5], "."))
 
 p3_box <- plot_ly(d_boxplot_3,x = rep(0, length(d_boxplot_3$token_word_type_col)), y=~token_word_type_col, key  =~ key_3, type = "scatter", source = "box3", mode='markers')%>%add_trace(d_boxplot_3, y=~token_word_type_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the word type tokenization', yaxis =list(title ='Number of different words'), titlefont = 'arial', showlegend = FALSE)
 
 tmpFile <- tempfile(fileext = ".png")
 export(p3_box, file = tmpFile)
 
+cat(paste("Lower whisker: ", params$boxplot_3_data[1], ". First quartile: ", params$boxplot_3_data[2], ". Median: ", params$boxplot_3_data[3],
+      ".", "\n", " Third quartile: ", params$boxplot_3_data[4], ". Upper whisker: ", params$boxplot_3_data[5], "."))
+
 p4_box <- plot_ly(d_boxplot_4,x = rep(0, length(d_boxplot_4$token_ratio_col)), y=~token_ratio_col, key  =~ key_4, type = "scatter", source = "box4", mode='markers')%>%add_trace(d_boxplot_4, y=~token_ratio_col, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the ratio', yaxis =list(title ='Ratio'), titlefont = 'arial', showlegend = FALSE)
 
 tmpFile <- tempfile(fileext = ".png")
 export(p4_box, file = tmpFile)
 
+cat(paste("Lower whisker: ", params$boxplot_4_data[1], ". First quartile: ", params$boxplot_4_data[2], ". Median: ", params$boxplot_4_data[3],
+     ".", "\n", " Third quartile: ", params$boxplot_4_data[4], ". Upper whisker: ", params$boxplot_4_data[5], "."))
+
 p5_box <- plot_ly(d_boxplot_5,x = rep(0, length(d_boxplot_5$token_normalization)), y=~token_normalization, key  =~ key_5, type = "scatter", source = "box5", mode='markers')%>%add_trace(d_boxplot_5, y=~token_normalization, type = "box",  marker = list(outliercolor = "red"))%>%layout(title = 'Box plot of the normalization', yaxis =list(title ='Number of normalized words'), titlefont = 'arial', showlegend = FALSE)
 
 tmpFile <- tempfile(fileext = ".png")
 export(p5_box, file = tmpFile)
+
+cat(paste("Lower whisker: ", params$boxplot_5_data[1], ". First quartile: ", params$boxplot_5_data[2], ". Median: ", params$boxplot_5_data[3],
+      ".", "\n", " Third quartile: ", params$boxplot_5_data[4], ". Upper whisker: ", params$boxplot_5_data[5], "."))
+
 ```
 
 ##Details on demand
