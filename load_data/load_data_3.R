@@ -1,6 +1,6 @@
 #' Load the data from the file which has been uploaded in the app.
 #' Put it in a tibble to use it after.
-#' @description Usually use to load medical type data. 
+#' @description Input : a folder. Usually use to load medical type data. 
 #' 
 #' @param lien A character, the path to the data
 #' @return original_book A tibble with two colums. 
