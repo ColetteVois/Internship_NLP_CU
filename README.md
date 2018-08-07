@@ -15,15 +15,14 @@
 **R version :**  R version 3.5.0 (2018-04-23) <br />
 
 ### Installation
-
+You must:
          <ul>
          <li>Download the GitHub repository</li>
          <li>Run the [install_packages.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/install_packages.R) file in RStudio</li>
          </ul>
          
 ### Launch the application
-
-
+You need to:
          <ul>
         <li>Open the [main.R](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/main.R) file</li>
         <li>Choose the path of the GitHub repository on your computer. You need to change the antislashes ( \ ) in slashes (/) in the path you put.
@@ -39,7 +38,7 @@
   If you want to add data and it doesn't work with the current choice, go to the user's [guide](https://github.com/ColetteVois/Internship_NLP_CU/blob/master/guide/guide_word.docx) to see how to add your data.
   
 ### Small description of the repository
-
+Description:
         <ul>
         <li>[app](https://github.com/ColetteVois/Internship_NLP_CU/tree/master/app): This is where the app is. In it, you will find the ui.R and server.R. These are the function that makes the app, it is the                                    
         front-end. You will also find report.rmd file which is the file that creates the report that you can download in the app</li>
