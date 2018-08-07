@@ -798,7 +798,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       
       withProgress(message ="Generating report", detail =  "it might takes a little while", expr = {tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
-      
       # Set up parameters to pass to Rmd document
       params <- list(choice_data = input$data_type_choice, time_choice_token = input$choice_token_moment,token_choosen_sentence = token_sentence_radio_button(),
                     token_choosen_word = token_word_radio_button(), token_choosen_norma = token_norma_radio_button(),
@@ -822,14 +821,8 @@ output$description_type_data_possible_analyzed <- renderUI({
       envir = new.env(parent = globalenv())
       )
       },
-      value = 0, {
-        #time_report_max is the maximum time for a report, here estimated about 90 seconds. 
-        time_report_max <- 90
-        for(i in 1:time_report_max){
-          incProgress(1/time_report_max)
-          Sys.sleep(1)
-        }
-      }
+      min =1,
+      value = 1
       )
     }
   )
