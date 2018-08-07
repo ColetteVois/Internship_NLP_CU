@@ -1,4 +1,4 @@
-#' @description Input : checl choose data 1. Load the data from a roman type, here any Jan Austeen's book. 
+#' @description Input : check 'choose data 1'. Load the data from a roman type, here any Jan Austeen's book. 
 #' Put it in a tibble to use it after.
 #' 
 #' @param lien A character, not use here but necessary for other load.data.i with i>1
