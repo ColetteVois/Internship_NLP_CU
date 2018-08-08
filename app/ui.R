@@ -1,7 +1,7 @@
 #Shiny App
 #UI and layout. It implements the front-end
 #Creating a navbar page with different tabs, which are created by tabPanel
-header <- dashboardHeader(title="NLP App",dropdownMenuOutput("warningMenu"))
+header <- dashboardHeader(title="NLP App")
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
@@ -156,7 +156,7 @@ body <- dashboardBody(
       fluidRow(
               box(width = 4,
                selectInput(inputId = 'choice', label = 'Choose a metric', 
-                           choice = c('Frequency', 'Term Frequency')),
+                           choice = c('Frequency', 'Term Frequency', 'New Metric Example')),
                checkboxInput("stemming_choice", label = "Normalization/Stemming", value = FALSE),
                checkboxInput("stopword_choice", label = "Stopwords", value = FALSE)
                ),

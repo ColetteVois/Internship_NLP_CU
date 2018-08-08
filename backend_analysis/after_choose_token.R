@@ -114,7 +114,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   token_word_stem_stop <- token_word_stem_stop %>% bind_tf_idf(word, book, freq) 
   token_word_stem <- token_word_stem %>% mutate(book = "all")
   token_word_stem <- token_word_stem %>% bind_tf_idf(word, book, freq) 
-
+  
   # take off useless columns
   token_word_freq <- token_word_freq[ , - c(4,6,7)]
   token_word_stem <- token_word_stem[ , - c(4,6,7)]

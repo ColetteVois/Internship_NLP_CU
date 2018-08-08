@@ -760,8 +760,6 @@ output$description_type_data_possible_analyzed <- renderUI({
   bp.cols <- c("light blue","cornflowerblue", "coral2", brewer.pal(8,"Dark2"))
   output$wordcloud2_sentences <- renderPlot({wordcloud_rep(data_wordcloud_freq_tokenized()$word, data_wordcloud_freq_tokenized()$freq,random.order=FALSE, random.color=TRUE,colors=bp.cols)})
   
-  # output$wordcloud2_sentences  <- renderWordcloud2(wordcloud2(data = data_wordcloud_freq_tokenized(),
-  #                                                  shape = 'star', size = 0.8, shuffle =FALSE))
   ###########################################################################  Report ##############################################################
   
   progress <- reactive({
@@ -812,25 +810,6 @@ output$description_type_data_possible_analyzed <- renderUI({
       )
     }
   )
-  
-  ###############################################################################  Message Menu  ###########################################################
-  
-  # output$warningMenu <- renderMenu({
-  #   # Code to generate each of the messageItems
-  #   war <- list(notificationItem(text = "Everything seems to work", icon("users")))
-  #   l_wc <- reactive({length(filter_d()$d_real_shared...word)})
-  #   if(l_wc()==1){
-  #     list.append(war, notificationItem(
-  #       text = "Only one word is selected on the wordcloud and none appears",
-  #       icon = icon("exclamation-triangle"),
-  #       status = "warning"
-  #     )
-  #     )
-  #   }
-  #   # This is equivalent to calling:
-  #   #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
-  #   dropdownMenu(type = "notifications", .list = war)
-  # })
   
 }
 return(server)
