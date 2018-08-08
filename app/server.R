@@ -622,10 +622,10 @@ output$description_type_data_possible_analyzed <- renderUI({
     #If there are row selected, you can't higlight the plot because it is already highlighted 
     else if(length(s)){
       if(input$choice=='Frequency'){
-        plot_ly(original_books_selected_used(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)
+        plot_ly(original_books_tokenized_freq(), x = ~rowname, y = ~freq, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Frequency'), titlefont = 'arial', showlegend = FALSE)
       }
       else if(input$choice=='Term Frequency'){
-        plot_ly(original_books_selected_used(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)      
+        plot_ly(original_books_tokenized_freq(), x = ~rowname, y = ~tf, key = ~key(), type = 'scatter', mode='lines+markers',  marker = list(color = 'blue', opacity=2))%>%layout(title = 'Term Frequency according to the word', xaxis = list(title ='Word'), yaxis =list(title ='Term Frequency'), titlefont = 'arial', showlegend = FALSE)      
       }
     }
   })
