@@ -121,7 +121,7 @@ body <- dashboardBody(
                              check_choices_token_word_check, inline = TRUE),
           radioButtons("token_norma_radio_button_later", "Normalization of words",
                        check_choices_token_norma_check, inline = TRUE),
-          textOutput("choice_tokenizations_reminded"),
+          uiOutput("choice_tokenizations_reminded"),
           tags$br(),
           tags$b(uiOutput("warning_choose_before"))
         )
@@ -156,7 +156,7 @@ body <- dashboardBody(
       fluidRow(
               box(width = 4,
                selectInput(inputId = 'choice', label = 'Choose a metric', 
-                           choice = c('Frequency', 'Term Frequency', 'New Metric Example')),
+                           choice = c('Frequency', 'Term Frequency')),
                checkboxInput("stemming_choice", label = "Normalization/Stemming", value = FALSE),
                checkboxInput("stopword_choice", label = "Stopwords", value = FALSE)
                ),

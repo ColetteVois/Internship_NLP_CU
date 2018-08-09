@@ -40,7 +40,7 @@ original_books <- reactive({
     load.data.i <- sprintf('load.data.%d(link_data_uploaded())', strtoi(input$data_type_choice))
     
     if(is.null(link_data_uploaded()) | length(link_data_uploaded())==0){
-      local_original_books <- tibble(text = rep("This is not a text, choose a data!", 200))
+      local_original_books <- tibble(text = unlist(rep("This is not a text, choose a data!", 200)))
     }
     else{
       if(strtoi(input$data_type_choice)==1){
@@ -484,12 +484,36 @@ output$description_type_data_possible_analyzed <- renderUI({
       input$token_norma_radio_button_later
     }
   })
-  #Warning if Now chosen
   
-  output$choice_tokenizations_reminded <- renderText({
-    paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), ", the word tokenization ", id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")
+  #Calculating the results of the boxplots for the chosen tokenization
+  d_result_box_chosen_sentence <- reactive({d_boxplot_1()$token_sentence_col[id_token_sentence_selected()]})
+  d_result_box_chosen_word <- reactive({d_boxplot_2()$token_word_ocu_col[n.tokenizer.word*(id_token_sentence_selected()-1) + id_token_word_selected()]})
+  d_result_box_chosen_word_type <- reactive({d_boxplot_3()$token_word_type_col[n.tokenizer.word*(id_token_sentence_selected()-1) + id_token_word_selected()]})
+  d_result_box_chosen_ratio <- reactive({d_boxplot_4()$token_ratio_col[n.tokenizer.word*(id_token_sentence_selected()-1) + id_token_word_selected()]})
+  d_result_box_chosen_normalization <- reactive({d_boxplot_5()$token_normalization[n.normalization*n.tokenizer.word*(id_token_sentence_selected()-1) + n.normalization*(id_token_word_selected()-1) + id_token_norma_selected()]})
+  
+  
+  
+  output$choice_tokenizations_reminded <- renderUI({
+    tagList(
+      renderText({paste("You have chosen the sentence tokenization ",id_token_sentence_selected(), ", the word tokenization ", 
+                        id_token_word_selected(),"and the word normalization ", id_token_norma_selected(),".")}),
+      tags$br(),
+      renderText({"Here are the results of this tokenization:"}),
+      tags$br(),
+      renderText({paste("Sentences:", d_result_box_chosen_sentence())}),
+      tags$br(),
+      renderText({paste("Words:", d_result_box_chosen_word())}),
+      tags$br(),
+      renderText({paste("Word types:", d_result_box_chosen_word_type())}),
+      tags$br(),
+      renderText({paste("Ratio:",d_result_box_chosen_ratio())}),
+      tags$br(),
+      renderText({paste("Normalization:", d_result_box_chosen_normalization())})
+    )
   })
-      
+  
+  #Warning if Now chosen
   output$warning_choose_before <- renderUI({
     tagList(
       if(input$choice_token_moment == "Now"){
@@ -629,18 +653,21 @@ output$description_type_data_possible_analyzed <- renderUI({
       }
     }
   })
+  #Changing a little bit the data to avoid having a huge lsit of sentences that don't appear well on screen
+  original_books_tokenized_freq_without_list_sentences <- reactive({lapply(original_books_tokenized_freq()$sentences, function(x) length(x))})
+  original_books_tokenized_freq_without_list <- reactive({
+    local_list <- original_books_tokenized_freq()
+    local_list$sentences <- unlist(original_books_tokenized_freq_without_list_sentences())
+    names(local_list)[2] <- "Number of sentences"
+    local_list
+  })
   
   #Plotting the Data Table
   output$table_overview <- DT::renderDataTable({
-    #Changing a little bit the data to avoid having a huge lsit of sentences that don't appear well on screen
-    original_books_tokenized_freq_without_list_sentences <- lapply(original_books_tokenized_freq()$sentences, function(x) length(x))
-    original_books_tokenized_freq_without_list <- original_books_tokenized_freq()
-    original_books_tokenized_freq_without_list$sentences <- unlist(original_books_tokenized_freq_without_list_sentences)
-    names(original_books_tokenized_freq_without_list)[2] <- "Number of sentences"
     #Choosing the data selected in the plot. It is done by crosstalk, see CRAN R Crosstalk SharedData for more details
-    dsel <- original_books_tokenized_freq_without_list[original_books_tokenized_freq_shared()$selection(),]
+    dsel <- original_books_tokenized_freq_without_list()[original_books_tokenized_freq_shared()$selection(),]
     #Creating the data table with the initial data
-    dt <-DT::datatable(original_books_tokenized_freq_without_list,options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
+    dt <-DT::datatable(original_books_tokenized_freq_without_list(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20)),class = 'display')
     #This condition is whether a data is selected on the plot
     if (NROW(dsel) == 0) {
       dt
@@ -788,8 +815,11 @@ output$description_type_data_possible_analyzed <- renderUI({
                     overview_choice_num_word=input$num_word_data, overview_choice_book = input$book, data_selected_lines = original_books_selected_used(),
                     data_boxplot = d_token_boxplot(), data_complete = original_books_tokenized_freq(), boxplot_1_data = data_boxplot_1(),
                     boxplot_2_data = data_boxplot_2(),boxplot_3_data = data_boxplot_3(),boxplot_4_data = data_boxplot_4(),boxplot_5_data = data_boxplot_5(),
+                    result_choice_box_1 = d_result_box_chosen_sentence(), result_choice_box_2 = d_result_box_chosen_word(), result_choice_box_3 =d_result_box_chosen_word_type(),
+                    result_choice_box_4 = d_result_box_chosen_ratio(), result_choice_box_5 = d_result_box_chosen_normalization(),
                     occurence_word = nb.of.word.occu(),occurence_stop_word = nb.of.stop.word(), regression_lin = reg_lin(), result_zipfs_law_passed = zipfs_law_result(),
-                    table_info_laws = table_info_result(), data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], 
+                    table_info_laws = table_info_result(), stop_words = input$stopword_choice, stemming = input$stemming_choice,
+                    data_selected_plot = original_books_tokenized_freq()[original_books_tokenized_freq_shared()$selection(),], data_table_selected_plot = original_books_tokenized_freq_without_list()[original_books_tokenized_freq_shared()$selection(),], 
                     min_freq_wordcloud = input$slide_value_freq[1], max_freq_wordcloud = input$slide_value_freq[2],
                     max_word_wordcloud = input$slide_value_word,key = key(), selected_word_cloud = word_wordcloud_selected_filter(),
                     sentences_selected_cloud = data_selected_sentences_wordcloud(), data_last_wordcloud = data_wordcloud_freq_tokenized())

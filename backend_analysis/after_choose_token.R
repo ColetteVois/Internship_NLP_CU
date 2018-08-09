@@ -52,6 +52,9 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   # choose_tokenizer_word <- 1
   # choose_normalization <- 1
   
+  #There is only one stop word
+  choose_stop_word <- 1
+  
   #if there is no text
   if(nrow(my.texte)==0) {
     return(c(list(tribble(~sentence,~book)), list(tribble(~word,~sentence,~book)), list(tribble(~word,~sentences,~freq))))
@@ -68,7 +71,7 @@ after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_token
   lien <- paste(my_path,sprintf("/preprocessing/normalization/normalization_%d.R", choose_normalization), sep="")
   source(lien)
   
-  lien <- paste(my_path,sprintf("/preprocessing/stop_word/stop_word_%d.R", choose_normalization), sep="")
+  lien <- paste(my_path,sprintf("/preprocessing/stop_word/stop_word_%d.R", choose_stop_word), sep="")
   source(lien)
 
   tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", choose_tokenizer_sentence)

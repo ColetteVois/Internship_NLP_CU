@@ -29,12 +29,20 @@ params:
   boxplot_3_data: NA
   boxplot_4_data: NA
   boxplot_5_data: NA
+  result_choice_box_1: NA
+  result_choice_box_2: NA
+  result_choice_box_3: NA
+  result_choice_box_4: NA
+  result_choice_box_5: NA
   occurence_word: NA
   occurence_stop_word: NA
   regression_lin: NA
   result_zipfs_law_passed: NA
   table_info_laws: NA
+  stop_words: NA
+  stemming: NA
   data_selected_plot: NA
+  data_table_selected_plot: NA
   min_freq_wordcloud: NA
   max_freq_wordcloud: NA
   max_word_wordcloud: NA
@@ -110,6 +118,8 @@ Choice of data in the pre-processing overview:
 
 Analysis:
 
+* Stopwords: `r params$stop_words`
+* Normalization/Stemming: `r params$stemming`
 * Data selected: `r result_selection_analysis`
 * Wordcloud frequencies:
     + minimum `r mifw`
@@ -117,8 +127,18 @@ Analysis:
 * Wordcloud maximum number of words: `r mww`
 * Selected word in the wordcloud: `r selected_cloud_word`
 
+
 #Pre-processing
 ##Filter
+
+
+Boxplot results for the chosen tokenization:
+
+* Sentences: `r params$result_choice_box_1`
+* Words: `r params$result_choice_box_2`
+* Word types: `r params$result_choice_box_3`
+* Ratio: `r params$result_choice_box_4`
+* Normalization: `r params$result_choice_box_5`
 
 ```{r warning=FALSE}
 d_boxplot_1 <-  data.frame(token_sentence_col = unlist( d_token_boxplot[1]))
@@ -266,7 +286,7 @@ Here is the table with the selected points from the overview:
 
 ```{r}
 if(l){
-kable(ds, caption ="Table of the data selected in the plot")
+kable(params$data_table_selected_plot, caption ="Table of the data selected in the plot")
 }
 ```
 
