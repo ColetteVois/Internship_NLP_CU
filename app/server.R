@@ -711,8 +711,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   
   #Creating the wordcloud and making it reactive to change in the input values
-  output$wordcloud  <- renderWordcloud2(wordcloud2(data = filter_d(),
-                                                   shape = 'star', size = 0.8, shuffle =FALSE))
+  output$wordcloud  <- renderWordcloud2(wordcloud2(data= filter_d(), size = 0.1))
   output$test <- renderPrint({
     # filter_d()
     input$selected_word
@@ -751,7 +750,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   ########################################################################## DATA table analysis sentences  ########################################################
   
   output$sentence_table_wordcloud <- DT::renderDataTable({
-    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20),searchHighlight = TRUE, search = list(search = word_wordcloud_selected_filter())),class = 'display')
+    DT::datatable(data_selected_sentences_wordcloud(),options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")),pageLength = 5, lengthMenu = c(5, 10, 15, 20, 50, 100),searchHighlight = TRUE, search = list(search = word_wordcloud_selected_filter())),class = 'display')
 
   })
   
@@ -770,7 +769,13 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Creating the title for the wordcloud
   output$title_wordcloud_2 <- renderUI({
     tagList(
-      renderText(paste("Wordcloud of the words in the same sentence as '",word_wordcloud_selected_filter(), "'"))
+      renderText(paste("Wordcloud of the words in the same sentence as '",word_wordcloud_selected_filter(), "'")),
+      renderPrint(list_sentences_wordcloud_filter()),
+      renderPrint(data_selected_sentences_wordcloud()),
+      renderPrint(original_books_tokenized()[[1]]$sentence[3]),
+      renderPrint(original_books_tokenized()[[1]]$sentence[8]),
+      renderPrint(subset(original_books_tokenized()[[2]], sentence == 3)),
+      renderPrint(subset(original_books_tokenized()[[2]], sentence == 8))
     )
   })
   

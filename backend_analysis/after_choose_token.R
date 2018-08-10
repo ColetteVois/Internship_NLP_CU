@@ -46,7 +46,7 @@
 #' ## token_word_stem_stop <- token_info[[6]]
 
 after.choose.token <- function(my.texte, choose_tokenizer_sentence, choose_tokenizer_word, choose_normalization) {
-  
+
   # my.texte <- original_books_bis
   # choose_tokenizer_sentence <- 1
   # choose_tokenizer_word <- 1

@@ -317,7 +317,7 @@ if(l){
 ###Table
 
 ```{r}
-kable(params$sentences_selected_cloud, caption = "Sentences associated with the selected word of the cloud")   
+kable(params$sentences_selected_cloud, caption = paste("Sentences associated with", `r selected_cloud_word`))   
 ```
 
 ###Wordcloud

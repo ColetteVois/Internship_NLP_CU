@@ -39,8 +39,11 @@ normalization.2 <- function(my.texte) {
   
   tokens1 <- text_tokens(my_texte, stemmer = stem_hunspell)
   tokens2 <- unlist(tokens1, recursive = FALSE)
-  tokens3 <- sort(tokens2)
-
+  tokens2bis <- as.tibble(tokens2) %>% mutate(my.texte$sentences, my.texte$freq)
+  names(tokens2bis) <- c("word","sentences","freq")
+  tokens2ter <- arrange(tokens2bis, word)
+  tokens3 <- tokens2ter[[1]]
+  
   #add colums sentences and freq
   listfiles <- unique(tokens3)
   pre_curseur <- 1
@@ -53,8 +56,8 @@ normalization.2 <- function(my.texte) {
     freq <- 0
     sentence <- c()
     while(identical(listfiles[word], tokens3[curseur])) {
-      freq <- freq + my.texte[curseur,]$freq
-      sentence <- c(sentence, unlist(my.texte[curseur,]$sentences))
+      freq <- freq + tokens2ter[curseur,]$freq
+      sentence <- c(sentence, unlist(tokens2ter[curseur,]$sentences))
       curseur <- curseur + 1
     }
     col_word <- c(col_word, tokens3[(curseur-1)])
