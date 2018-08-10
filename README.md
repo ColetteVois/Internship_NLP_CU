@@ -13,7 +13,7 @@
 ### Prerequisites
 You need:
          <ul>
-         <li> **R version :**  R version 3.5.0 (2018-04-23) </li>
+         <li> **R version:**  R version 3.5.0 (2018-04-23) </li>
          <li> Java </li>
          <li> RStudio </li>
          </ul>
