@@ -81,6 +81,10 @@ token.boxplot <- function(my.texte) {
     
         #normalization
         for(l in 1:n.normalization) {
+          print("i,j,l")
+          print(i)
+          print(j)
+          print(l)
           inc = 1/(n.tokenizer.sentence*n.tokenizer.word*n.normalization)
           incProgress(amount = inc)
           #l = 1

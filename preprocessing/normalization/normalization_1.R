@@ -17,10 +17,15 @@
 
 normalization.1 <- function(my.texte) {
   
-  #my.texte <- token_word_freq
+  # my.texte <- token_word_freq
   
   tokens1 <- tokenize_word_stems(paste0(my.texte[[1]]))
-  tokens2 <- unlist(tokens1, recursive=FALSE)
+  tokens2 <- c()
+  for(i in 1:length(tokens1)) {
+    #warning, there were a problem because sometime tokenize_word_stems() divided tokens and it is not suppose to. So we concatene those parts 
+    tokens2[i] <- paste(tokens1[[i]],  collapse = "")
+    
+  }
   tokens2bis <- as.tibble(tokens2) %>% mutate(my.texte$sentences, my.texte$freq)
   names(tokens2bis) <- c("word","sentences","freq")
   tokens2ter <- arrange(tokens2bis, word)
