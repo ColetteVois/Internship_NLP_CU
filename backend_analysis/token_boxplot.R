@@ -14,7 +14,7 @@
 
 token.boxplot <- function(my.texte) {
 
-  #my.texte <- original_books_bis
+  #my.texte <- original_books
   
   n.tokenizer.sentence <- length(list.files(paste(my_path,"/preprocessing/tokenizer_sentence/", sep = "")))
   n.tokenizer.word <- length(list.files(paste(my_path,"/preprocessing/tokenizer_word/", sep="")))
@@ -29,7 +29,7 @@ token.boxplot <- function(my.texte) {
   withProgress( expr = {
     for (i in 1:n.tokenizer.sentence){
       
-      #i = 2 #2,3
+      #i = #1 #2,3
       lien <- paste(my_path, sprintf("/preprocessing/tokenizer_sentence/tokenizer_sentence_%d.R", i), sep = "")
       source(lien)
       tokenizer.sentence.i <- sprintf("tokenizer.sentence.%d(my.texte)", i)
@@ -42,7 +42,7 @@ token.boxplot <- function(my.texte) {
       for (j in 1:n.tokenizer.word){
       
         token_word <- c()
-        #j = 5 #3,4,5
+        #j = 3 #3,4,5
         if(i==1) {
           lien <- paste(my_path,sprintf("/preprocessing/tokenizer_word/tokenizer_word_%d.R", j), sep="")
           source(lien)
@@ -81,10 +81,6 @@ token.boxplot <- function(my.texte) {
     
         #normalization
         for(l in 1:n.normalization) {
-          print("i,j,l")
-          print(i)
-          print(j)
-          print(l)
           inc = 1/(n.tokenizer.sentence*n.tokenizer.word*n.normalization)
           incProgress(amount = inc)
           #l = 1

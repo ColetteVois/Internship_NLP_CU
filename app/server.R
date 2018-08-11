@@ -711,7 +711,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   
   #Creating the wordcloud and making it reactive to change in the input values
-  output$wordcloud  <- renderWordcloud2(wordcloud2(data= filter_d(), size = 0.1))
+  output$wordcloud  <- renderWordcloud2(wordcloud2(data= filter_d(), size = 0.4))
   output$test <- renderPrint({
     # filter_d()
     input$selected_word
@@ -769,22 +769,9 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Creating the title for the wordcloud
   output$title_wordcloud_2 <- renderUI({
     tagList(
-      renderText(paste("Wordcloud of the words in the same sentence as '",word_wordcloud_selected_filter(), "'")),
-      renderPrint(list_sentences_wordcloud_filter()),
-      renderPrint(data_selected_sentences_wordcloud()),
-      renderPrint(original_books_tokenized()[[1]]$sentence[3]),
-      renderPrint(original_books_tokenized()[[1]]$sentence[8]),
-      renderPrint(subset(original_books_tokenized()[[2]], sentence == 3)),
-      renderPrint(subset(original_books_tokenized()[[2]], sentence == 8))
+      renderText(paste("Wordcloud of the words in the same sentence as '",word_wordcloud_selected_filter(), "'"))
     )
   })
-  
-  # output$title_wordcloud2 <- renderUI({
-  #   tagList(
-  #     renderText("fkjfjofrnjnjo"),
-  #     renderPrint({data_wordcloud_freq_tokenized()})
-  #   )
-  # })
   
   #Creating the wordcloud with the sentences
   # Make the wordcloud drawing predictable during a session
