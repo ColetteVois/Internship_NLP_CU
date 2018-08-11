@@ -698,14 +698,15 @@ output$description_type_data_possible_analyzed <- renderUI({
   #Updating the value of the maximum of the slider input for the number of words and for the frequency
   m_act <- reactive({max(original_books_tokenized_freq()$freq)})
   n_act <- reactive({NROW(original_books_tokenized_freq())})
-  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
-  observeEvent(original_books_selected_used(),{updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
+  observe({updateSliderInput(session,inputId = "slide_value_freq", label = "Filter the frequency", min = 1, max = m_act(), value = c(1,m_act()), step = 1)})
+  observe({updateSliderInput(session,inputId = "slide_value_word", label = "Choose the maximum number of words", min = 1, max = n_act(), value = n_act(), step = 1)})
   
   #Creating the title for the word cloud
   
   output$title_wordcloud <- renderUI({
     tagList(
-      renderText("Wordcloud of the selected words from the previous plot")
+      renderText("Wordcloud of the selected words from the previous plot"),
+      renderPrint(m_act())
     )
   })
   
