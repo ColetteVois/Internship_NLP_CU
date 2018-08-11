@@ -15,7 +15,7 @@
 load.data.2 <- function(path) {
   
   path1 <- gsub("\\","/", path, fixed=TRUE)
-  path1 <- "C:/Users/Projet/Desktop/Internship/Data/Twitter-Data/cancer+#smoking.csv"
+  #path1 <- "C:/Users/Projet/Desktop/Internship/Data/Twitter-Data/cancer+#smoking.csv"
   twitter <- read.csv(path1, sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
   #twitter2 <- read.csv("C:/Users/Projet/Desktop/Internship/Data/Twitter-Data/cancer+smoking.csv", sep=",", encoding = "UTF-8", header = FALSE, col.names = "text", stringsAsFactors = FALSE)
   

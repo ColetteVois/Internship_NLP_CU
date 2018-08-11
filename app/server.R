@@ -705,8 +705,7 @@ output$description_type_data_possible_analyzed <- renderUI({
   
   output$title_wordcloud <- renderUI({
     tagList(
-      renderText("Wordcloud of the selected words from the previous plot"),
-      renderPrint(m_act())
+      renderText("Wordcloud of the selected words from the previous plot")
     )
   })
   
